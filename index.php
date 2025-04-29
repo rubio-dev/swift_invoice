@@ -68,8 +68,6 @@ require_once 'includes/header.php';
     
     <div class="dashboard-footer">
         <div class="footer-content">
-            <p class="copyright">© <?php echo date('Y'); ?> Swift Invoice. Todos los derechos reservados.</p>
-            <p class="version">v2.1.0</p>
         </div>
     </div>
 </div>

@@ -60,6 +60,7 @@ $mpdf = new \Mpdf\Mpdf([
     'margin_footer' => 10
 ]);
 
+
 // Configurar encabezado y pie de página
 $mpdf->SetHTMLHeader('
 <div style="text-align: right; border-bottom: 1px solid #ddd; padding-bottom: 10px;">
@@ -139,9 +140,13 @@ $html = '
     }
 </style>
 
-<div class="logo">
-    <img src="file://' . realpath('../../' . $invoice['logo_path']) . '" alt="Logo">
-</div>
+<div class="logo">';
+if (file_exists('../../' . $invoice['logo_path'])) {
+    $html .= '<img src="file://' . realpath('../../' . $invoice['logo_path']) . '" alt="Logo">';
+} else {
+    $html .= '<p>No se encontró el logo.</p>';
+}
+$html .= '</div>
 
 <div class="invoice-title">
     <h1>Factura</h1>
@@ -226,5 +231,5 @@ $mpdf->WriteHTML($html);
 $filename = 'Factura_' . $invoice['invoice_number'] . '.pdf';
 
 // Descargar o mostrar el PDF
-$mpdf->Output($filename, \Mpdf\Output\Destination::DOWNLOAD);
+$mpdf->Output($filename, 'D');
 ?>
