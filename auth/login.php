@@ -46,8 +46,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 </head>
 <body>
     <div class="auth-container">
-        <h1>Swift Invoice</h1>
-        <h2>Iniciar Sesión</h2>
+        <h1>SWIFT INVOICE</h1>
+        <h2>INICIO DE SESIÓN</h2>
         
         <?php if ($error): ?>
             <div class="alert error"><?php echo $error; ?></div>

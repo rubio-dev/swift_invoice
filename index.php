@@ -6,84 +6,71 @@ $page_title = "Inicio - Swift Invoice";
 require_once 'includes/header.php';
 ?>
 
-<style>
-    .dashboard-buttons {
-        display: grid;
-        grid-template-columns: repeat(2, 1fr);
-        gap: 20px;
-        margin-top: 30px;
-    }
-    
-    .dashboard-btn {
-        padding: 30px 15px;
-        border-radius: 12px;
-        font-size: 1.2rem;
-        font-weight: 600;
-        text-align: center;
-        transition: all 0.3s ease;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        height: 180px;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        border: none;
-        color: white;
-    }
-    
-    .dashboard-btn i {
-        font-size: 2.5rem;
-        margin-bottom: 15px;
-    }
-    
-    .dashboard-btn:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
-    }
-    
-    .btn-sales {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    }
-    
-    .btn-clients {
-        background: linear-gradient(135deg, #2b5876 0%, #4e4376 100%);
-    }
-    
-    .btn-invoices {
-        background: linear-gradient(135deg, #0f4c81 0%, #1a2980 100%);
-    }
-    
-    .btn-company {
-        background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
-    }
-</style>
+<div class="dashboard-container">
+    <!-- Botón flotante de cierre -->
+    <div class="logout-floating">
+        <a href="/swift_invoice/auth/logout.php" class="logout-btn" title="Cerrar sesión">
+            <span class="logout-icon">🚪</span>
+            <span class="logout-text">Salir</span>
+        </a>
+    </div>
 
-<div class="container">
-    <div class="text-center mb-5">
-        <h1 class="display-4">Bienvenido</h1>
-        <p class="lead">Selecciona una opción para comenzar</p>
+    <div class="welcome-banner">
+        <h1 class="welcome-heading">Bienvenido, <span class="username"><?php echo htmlspecialchars($_SESSION['first_name']); ?></span></h1>
+        <p class="welcome-message">¿En qué podemos ayudarte hoy?</p>
     </div>
     
-    <div class="dashboard-buttons">
-        <a href="/swift_invoice/modules/sales/create.php" class="dashboard-btn btn-sales">
-            <i class="fas fa-cash-register"></i>
-            Nueva Venta
+    <div class="quick-actions">
+        <a href="/swift_invoice/modules/sales/create.php" class="action-card sales">
+            <div class="card-icon-container">
+                <span class="card-icon">💼</span>
+            </div>
+            <div class="card-content">
+                <h3 class="card-title">Nueva Venta</h3>
+                <p class="card-description">Crear factura de venta</p>
+                <span class="card-link">Acceder →</span>
+            </div>
         </a>
         
-        <a href="/swift_invoice/modules/clients/" class="dashboard-btn btn-clients">
-            <i class="fas fa-users"></i>
-            Gestión de Clientes
+        <a href="/swift_invoice/modules/clients/" class="action-card clients">
+            <div class="card-icon-container">
+                <span class="card-icon">👥</span>
+            </div>
+            <div class="card-content">
+                <h3 class="card-title">Clientes</h3>
+                <p class="card-description">Administrar lista de clientes</p>
+                <span class="card-link">Ver todos →</span>
+            </div>
         </a>
         
-        <a href="/swift_invoice/modules/invoices/" class="dashboard-btn btn-invoices">
-            <i class="fas fa-file-invoice-dollar"></i>
-            Ver Facturas
+        <a href="/swift_invoice/modules/invoices/" class="action-card invoices">
+            <div class="card-icon-container">
+                <span class="card-icon">📋</span>
+            </div>
+            <div class="card-content">
+                <h3 class="card-title">Facturas</h3>
+                <p class="card-description">Historial de facturación</p>
+                <span class="card-link">Consultar →</span>
+            </div>
         </a>
         
-        <a href="/swift_invoice/modules/company/" class="dashboard-btn btn-company">
-            <i class="fas fa-chart-pie"></i>
-            Compañías
+        <a href="/swift_invoice/modules/company/" class="action-card company">
+            <div class="card-icon-container">
+                <span class="card-icon">🏛️</span>
+            </div>
+            <div class="card-content">
+                <h3 class="card-title">Compañías</h3>
+                <p class="card-description">Gestionar empresas</p>
+                <span class="card-link">Administrar →</span>
+            </div>
         </a>
+    </div>
+    
+    <div class="dashboard-footer">
+        <div class="footer-content">
+            <p class="copyright">© <?php echo date('Y'); ?> Swift Invoice. Todos los derechos reservados.</p>
+            <p class="version">v2.1.0</p>
+        </div>
     </div>
 </div>
 

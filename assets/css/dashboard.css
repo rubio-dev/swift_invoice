@@ -1,0 +1,188 @@
+/* Estructura principal */
+.dashboard-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem 1rem;
+    min-height: calc(100vh - 120px);
+}
+
+/* Banner de bienvenida */
+.welcome-banner {
+    text-align: center;
+    margin-bottom: 3rem;
+    padding: 1.5rem;
+    background: linear-gradient(135deg, #f6f9fc 0%, #eef2f5 100%);
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+}
+
+.welcome-heading {
+    font-size: 2.4rem;
+    color: #2d3748;
+    margin-bottom: 0.5rem;
+    font-weight: 700;
+}
+
+.username {
+    color: #4e73df;
+    font-weight: 700;
+}
+
+.welcome-message {
+    font-size: 1.2rem;
+    color: #4a5568;
+    margin-bottom: 0;
+}
+
+/* Tarjetas de acción */
+.quick-actions {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+    margin: 3rem 0;
+}
+
+.action-card {
+    background: white;
+    border-radius: 12px;
+    padding: 1.5rem;
+    text-decoration: none;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    border: 1px solid #e2e8f0;
+    position: relative;
+    overflow: hidden;
+}
+
+.action-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 20px rgba(0, 0, 0, 0.1);
+    border-color: #c3dafe;
+}
+
+.card-icon-container {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1.5rem;
+    font-size: 1.8rem;
+    background: rgba(78, 115, 223, 0.1);
+}
+
+.card-icon {
+    font-size: 1.8rem;
+}
+
+.card-content {
+    flex-grow: 1;
+}
+
+.card-title {
+    font-size: 1.3rem;
+    color: #2d3748;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+}
+
+.card-description {
+    color: #4a5568;
+    font-size: 0.95rem;
+    line-height: 1.5;
+    margin-bottom: 1.5rem;
+}
+
+.card-link {
+    color: #4e73df;
+    font-weight: 500;
+    font-size: 0.9rem;
+    display: inline-block;
+    transition: transform 0.2s ease;
+}
+
+.action-card:hover .card-link {
+    transform: translateX(5px);
+}
+
+/* Colores específicos para cada tarjeta */
+.action-card.sales .card-icon-container {
+    background: rgba(102, 126, 234, 0.1);
+}
+.action-card.sales .card-icon {
+    color: #667eea;
+}
+
+.action-card.clients .card-icon-container {
+    background: rgba(28, 200, 138, 0.1);
+}
+.action-card.clients .card-icon {
+    color: #1cc88a;
+}
+
+.action-card.invoices .card-icon-container {
+    background: rgba(239, 68, 68, 0.1);
+}
+.action-card.invoices .card-icon {
+    color: #ef4444;
+}
+
+.action-card.company .card-icon-container {
+    background: rgba(124, 58, 237, 0.1);
+}
+.action-card.company .card-icon {
+    color: #7c3aed;
+}
+
+/* Footer */
+.dashboard-footer {
+    margin-top: 4rem;
+    padding-top: 2rem;
+    border-top: 1px solid #e2e8f0;
+}
+
+.footer-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.copyright, .version {
+    color: #718096;
+    font-size: 0.9rem;
+    margin: 0;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .welcome-heading {
+        font-size: 2rem;
+    }
+    
+    .welcome-message {
+        font-size: 1.1rem;
+    }
+    
+    .quick-actions {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+@media (max-width: 480px) {
+    .welcome-heading {
+        font-size: 1.8rem;
+    }
+    
+    .quick-actions {
+        grid-template-columns: 1fr;
+    }
+    
+    .footer-content {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+}
