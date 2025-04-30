@@ -26,7 +26,7 @@ require_once 'includes/header.php';
                 <span class="card-icon">💼</span>
             </div>
             <div class="card-content">
-                <h3 class="card-title">Nueva Venta</h3>
+                <h3 class="card-title">Ventas</h3>
                 <p class="card-description">Crear factura de venta</p>
                 <span class="card-link">Acceder →</span>
             </div>
