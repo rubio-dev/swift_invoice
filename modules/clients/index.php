@@ -31,9 +31,7 @@ $clients = $stmt->fetchAll(PDO::FETCH_ASSOC);
 <body>
     <nav class="navbar navbar-expand navbar-custom py-2 sticky-top">
         <div class="container-fluid">
-            <a class="navbar-brand navbar-brand-custom ms-3" href="/swift_invoice">
-                Inicio
-            </a>
+            <a class="navbar-brand navbar-brand-custom ms-3" href="/swift_invoice">SWIFT INVOICE</a>
         </div>
     </nav>
 
