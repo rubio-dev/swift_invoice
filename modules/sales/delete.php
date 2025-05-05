@@ -3,18 +3,32 @@ require_once '../../config/setup.php';
 requireAuth();
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['id'])) {
-    $saleId = $_POST['id'];
+    $saleId = (int) $_POST['id'];
 
-    $db = new Database();
+    $db   = new Database();
     $conn = $db->connect();
 
-    $stmt = $conn->prepare("DELETE FROM sales WHERE id = :id");
-    $stmt->bindParam(':id', $saleId, PDO::PARAM_INT);
+    try {
+        // Iniciar transacción
+        $conn->beginTransaction();
 
-    if ($stmt->execute()) {
+        // 1) Borrar detalles de la venta
+        $delDetails = $conn->prepare("DELETE FROM sale_details WHERE sale_id = :id");
+        $delDetails->bindParam(':id', $saleId, PDO::PARAM_INT);
+        $delDetails->execute();
+
+        // 2) Borrar la venta
+        $delSale = $conn->prepare("DELETE FROM sales WHERE id = :id");
+        $delSale->bindParam(':id', $saleId, PDO::PARAM_INT);
+        $delSale->execute();
+
+        // Confirmar cambios
+        $conn->commit();
         $_SESSION['success_message'] = "Venta eliminada correctamente.";
-    } else {
-        $_SESSION['success_message'] = "Error al eliminar la venta.";
+    } catch (Exception $e) {
+        // Revertir si algo falla
+        $conn->rollBack();
+        $_SESSION['error_message'] = "No se pudo eliminar la venta: " . $e->getMessage();
     }
 }
 
