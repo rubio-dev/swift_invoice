@@ -12,5 +12,9 @@
     <?php if (basename($_SERVER['PHP_SELF']) == 'index.php'): ?>
     <link rel="stylesheet" href="assets/css/dashboard.css?v=<?php echo filemtime('assets/css/dashboard.css'); ?>">
     <?php endif; ?>
+
+     <!-- Bootstrap CSS (v5 ejemplo) -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
 </head>
 <body>

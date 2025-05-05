@@ -1,0 +1,391 @@
+:root {
+    /* Colores principales */
+    --primary: #2563eb;
+    --primary-dark: #1d4ed8;
+    --primary-light: rgba(37, 99, 235, 0.1);
+    --secondary: #0ea5e9;
+    --text: #e5e7eb;
+    --text-light: #9ca3af;
+    --text-lighter: #6b7280;
+    --bg-dark: #0f172a;
+    --bg-darker: #020617;
+    --card-bg: #1e293b;
+    --card-hover: #334155;
+    --border-dark: #334155;
+    --border-light: #475569;
+    --danger: #ef4444;
+    --success: #10b981;
+    --warning: #f59e0b;
+    --purple: #8b5cf6;
+
+    /* Sombras y efectos */
+    --shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3), 0 4px 6px -4px rgba(0, 0, 0, 0.3);
+    --shadow-hover: 0 20px 25px -5px rgba(0, 0, 0, 0.4), 0 10px 10px -5px rgba(0, 0, 0, 0.2);
+    --glow: 0 0 15px rgba(59, 130, 246, 0.4);
+
+    /* Transiciones */
+    --transition-smooth: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    --transition-bounce: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+
+    /* Bordes redondeados */
+    --radius-sm: 0.5rem;
+    --radius-md: 1rem;
+    --radius-lg: 1.5rem;
+    --radius-xl: 2rem;
+}
+
+/* General */
+body {
+    background: linear-gradient(135deg, var(--bg-darker), var(--bg-dark));
+    font-family: 'Inter', sans-serif;
+    color: var(--text);
+    padding: 1.5rem;
+}
+
+html,
+body {
+    height: 100%;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+.card-title {
+    margin-bottom: 0.75rem;
+    color: var(--white);
+    font-size: 2.75rem;
+    padding-top: 2rem;
+    font-weight: 700;
+    background: linear-gradient(to right, var(--primary), var(--secondary));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.btnAgregar {
+    width: auto;
+    padding: .50rem 2rem;
+    background: linear-gradient(to right, var(--primary), var(--secondary));
+    color: var(--text) !important;
+    font-weight: 550;
+    border: none;
+    border-radius: 10px;
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: 0.75rem;
+    letter-spacing: 0.5px;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.2);
+    z-index: 1;
+    text-decoration: none;
+    text-align: center;
+}
+
+.btnAgregar::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to right, var(--primary-dark), var(--primary));
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    z-index: -1;
+}
+
+.btnAgregar:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 15px rgba(0, 0, 0, 0.2), 0 4px 6px rgba(0, 0, 0, 0.2);
+}
+
+.btnAgregar:hover::before {
+    opacity: 1;
+}
+
+
+.table-responsive{
+    background-color: transparent;
+}
+
+.styled-table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: var(--card-bg);
+    color: var(--text);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    box-shadow: var(--shadow);
+    transform: translateY(0);
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    position: relative;
+    overflow: hidden;
+    font-size: 1.1rem;
+}
+
+.styled-table::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    background: linear-gradient(90deg, var(--primary), var(--secondary));
+    box-shadow: var(--glow);
+}
+
+.styled-table:hover {
+    transform: translateY(-8px);
+    box-shadow: var(--shadow-hover);
+    border-color: var(--primary);
+}
+
+
+
+.styled-table thead {
+    background:  linear-gradient(90deg, var(--primary), var(--secondary));
+    color: #fff;
+    border-bottom: 2px solid var(--border-light);
+}
+
+.styled-table thead th {
+    padding: 0.75rem;
+    text-align: left;
+    font-weight: 600;
+    border-bottom: 1px solid var(--border-light);
+    text-transform: uppercase;
+}
+
+.styled-table tbody td {
+    padding: 0.75rem;
+    border-bottom: 1px solid var(--border-dark);
+}
+
+.styled-table tbody tr:hover {
+    background-color: var(--card-hover);
+}
+
+
+
+
+/* Estilo para el label de 'Mostrar X registros' */
+.dataTables_length label {
+    color: var(--text);
+    font-weight: 500;
+    font-size: 1.3rem;
+    margin-bottom: 1.5rem;
+    margin-top: 1.5rem;
+  }
+  
+  /* Estilo para el label de 'Buscar:' */
+  .dataTables_filter label {
+    color: var(--text);
+    font-weight: 500;
+    font-size: 1.3rem;
+    margin-bottom: 1.5rem;
+    margin-top: 1.5rem;
+  }
+
+/* Input de búsqueda */
+.dataTables_filter input {
+    border: 1px solid var(--border-dark);
+    border-radius: 10px;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    background-color: rgba(15, 23, 42, 0.5);
+    color: var(--text) !important;
+    font-size: 1.1rem;
+    box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+.dataTables_filter input::placeholder {
+    color: var(--text-light);
+    opacity: 0.7;
+}
+
+.dataTables_filter input:focus {
+    outline: none;
+    border-color: var(--primary);
+    background-color: rgba(15, 23, 42, 0.8);
+    box-shadow: 0 0 0 3px var(--primary-light), inset 0 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+
+/* Selector de cantidad */
+.dataTables_length select {
+    background: var(--card-bg);
+    color: var(--text);
+    border: 1px solid var(--border-light);
+    border-radius: var(--radius-sm);
+    padding: 4px 8px;
+    font-size: 1.1rem;
+}
+
+/* Información y mensajes */
+.dataTables_info {
+    color: var(--text-light);
+    font-size: 1.1rem;
+}
+
+.btnEdit {
+    padding: .30rem 1.5rem;
+    background: transparent;
+    color: var(--text) !important;
+    font-weight: 550;
+    border: none;
+    border-radius: 10px;
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: 0.75rem;
+    letter-spacing: 0.5px;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.2);
+    z-index: 1;
+    border: 3px solid var(--primary);
+    text-decoration: none;
+    text-align: center;
+}
+
+.btnEdit::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to right, var(--primary-dark), var(--primary));
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    z-index: -1;
+   
+}
+
+.btnEdit:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 15px rgba(0, 0, 0, 0.2), 0 4px 6px rgba(0, 0, 0, 0.2);
+}
+
+.btnEdit:hover::before {
+    opacity: 1;
+}
+
+.btnDelete {
+    padding: .30rem 1.5rem;
+    background: transparent;
+    color: var(--text) !important;
+    font-weight: 550;
+    border: none;
+    border-radius: 10px;
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: 0.75rem;
+    letter-spacing: 0.5px;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.2);
+    z-index: 1;
+    border: 3px solid var(--danger);
+    text-decoration: none;
+    text-align: center;
+}
+
+.btnDelete::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to right, #b82d2d, var(--danger));
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    z-index: -1;
+   
+}
+
+.btnDelete:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 15px rgba(0, 0, 0, 0.2), 0 4px 6px rgba(0, 0, 0, 0.2);
+}
+
+.btnDelete:hover::before {
+    opacity: 1;
+}
+
+.btnEdit,
+.btnDelete {
+    display: inline-block;
+    vertical-align: middle;
+    padding: 0.3rem 1.5rem;
+    margin: 0;
+    font-size: 1.1rem;
+    line-height: 1.2;
+}
+
+
+/* Estilos base para el <a> de paginación */
+.dataTables_wrapper .dataTables_paginate .page-item .page-link {
+    background: var(--card-bg) !important;
+    color: var(--text) !important;
+    font-size: 1.2rem !important;
+    border: 3px solid var(--primary) !important;
+    padding: 0.3rem 1.5rem !important;
+    margin: 0.875rem 0.3rem !important;
+    border-radius: var(--radius-sm) !important;
+    box-shadow: none !important;
+    transition: var(--transition-smooth) !important;
+  }
+  
+  /* Hover sobre cualquier enlace de paginación */
+  .dataTables_wrapper .dataTables_paginate .page-item .page-link:hover {
+    background: var(--primary-dark) !important;
+    color: #fff !important;
+    border-color: var(--primary-dark) !important;
+  }
+  
+  /* Estado activo: el enlace dentro del li.active */
+  .dataTables_wrapper .dataTables_paginate .page-item.active .page-link {
+    background: var(--primary) !important;
+    color: #fff !important;
+    border-color: var(--primary) !important;
+  }
+  
+
+  /* Navbar transparente con borde inferior degradado */
+/* en clients.css (o tu archivo de estilos global) */
+
+.navbar-custom {
+    background: transparent !important;
+    position: relative;
+    box-shadow: var(--shadow) !important;
+    border-bottom: 3px solid var(--primary-dark) !important;
+  }
+  
+  .navbar-brand-custom {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu,
+                 Cantarell, sans-serif;
+    margin-bottom: 0.75rem;
+    font-size: 2.25rem;
+    font-weight: 800;
+    letter-spacing: -0.5px;
+    background: linear-gradient(to right, var(--primary), var(--secondary));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  }
+  
+  .navbar-brand-custom:hover,
+  .navbar-brand-custom:focus {
+    /* Fuerza a que siga transparente y mantenga el background-clip */
+    color: transparent !important;
+    -webkit-text-fill-color: transparent !important;
+    text-decoration: none;
+    background-clip: text;
+    -webkit-background-clip: text;
+  } 
