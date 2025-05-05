@@ -141,6 +141,7 @@ $clients = $stmt->fetchAll(PDO::FETCH_ASSOC);
         });
     }
 </script>
+</html>
 
 <?php
 require_once '../../includes/footer.php';
