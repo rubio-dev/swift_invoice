@@ -7,9 +7,10 @@ $conn = $db->connect();
 
 $errors = [];
 
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Recoger y sanitizar datos
-    $client_id = isset($_POST['client_id']) ? (int)$_POST['client_id'] : null;
+    $client_id = isset($_POST['client_id']) ? (int) $_POST['client_id'] : null;
     $first_name = trim($_POST['first_name']);
     $last_name = trim($_POST['last_name']);
     $mother_last_name = trim($_POST['mother_last_name'] ?? '');
@@ -61,7 +62,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     (:first_name, :last_name, :mother_last_name, :phone, :email, :rfc, :address)
                 ");
             }
-            
+
             $stmt->bindParam(':first_name', $first_name);
             $stmt->bindParam(':last_name', $last_name);
             $stmt->bindParam(':mother_last_name', $mother_last_name);
@@ -69,25 +70,40 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $stmt->bindParam(':email', $email);
             $stmt->bindParam(':rfc', $rfc);
             $stmt->bindParam(':address', $address);
-            
+
             if ($stmt->execute()) {
-                $_SESSION['success_message'] = $client_id ? 
-                    'Cliente actualizado correctamente' : 
-                    'Cliente agregado correctamente';
-                redirect('/swift_invoice/modules/clients/');
+                if ($client_id) {
+                    $_SESSION['success_message'] = 'Cliente actualizado correctamente';
+                    redirect('/swift_invoice/modules/clients/edit.php?id=' . $client_id);
+                } else {
+                    $_SESSION['success_message'] = 'Cliente creado correctamente';
+                    redirect('/swift_invoice/modules/clients/create.php');
+                }
             } else {
-                $errors['general'] = 'Error al guardar el cliente. Intente nuevamente.';
+                $_SESSION['client_save_error'] = 'Error al guardar el cliente. Intente nuevamente.';
+                if ($client_id) {
+                    redirect('/swift_invoice/modules/clients/edit.php?id=' . $client_id);
+                } else {
+                    redirect('/swift_invoice/modules/clients/create.php');
+                }
             }
+
         } catch (PDOException $e) {
             if ($e->getCode() == 23000) {
                 // Error de duplicado (email o RFC)
-                $errors['general'] = 'El email o RFC ya están registrados para otro cliente';
+                $_SESSION['client_save_error'] = 'El email o RFC ya están registrados para otro cliente';
+                if ($client_id) {
+                    redirect('/swift_invoice/modules/clients/edit.php?id=' . $client_id);
+                } else {
+                    redirect('/swift_invoice/modules/clients/create.php');
+                }
             } else {
                 $errors['general'] = 'Error en la base de datos: ' . $e->getMessage();
             }
         }
+
     }
-    
+
     // Si hay errores, mostrar el formulario nuevamente
     if (!empty($errors)) {
         $client = [
@@ -99,10 +115,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             'rfc' => $rfc,
             'address' => $address
         ];
-        
+
         $_SESSION['client_form_errors'] = $errors;
         $_SESSION['client_form_data'] = $client;
-        
+
         if ($client_id) {
             redirect('/swift_invoice/modules/clients/edit.php?id=' . $client_id);
         } else {

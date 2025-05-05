@@ -21,7 +21,7 @@ require_once 'includes/header.php';
     </div>
     
     <div class="quick-actions">
-        <a href="/swift_invoice/modules/sales/create.php" class="action-card sales">
+        <a href="/swift_invoice/modules/sales/" class="action-card sales">
             <div class="card-icon-container">
                 <span class="card-icon">💼</span>
             </div>
