@@ -16,7 +16,7 @@ $company = $stmt->fetch(PDO::FETCH_ASSOC);
 $errors = [];
 if (isset($_SESSION['company_form_errors'])) {
     $errors = $_SESSION['company_form_errors'];
-    unset($_SESSION['company_form_errors']);
+    unset($_SESSION['company_form_errors']);//bngugrundngngnd9ugn
     
     // Usar los datos enviados en lugar de los de la base de datos
     if (isset($_SESSION['company_form_data'])) {
