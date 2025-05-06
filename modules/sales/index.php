@@ -112,11 +112,11 @@ $sales = $stmt->fetchAll(PDO::FETCH_ASSOC);
     $(document).ready(function () {
         $('#ventasTable').DataTable({
             language: {
-                lengthMenu: "Mostrar MENU registros",
+                lengthMenu: "Mostrar _MENU_ registros",
                 zeroRecords: "No se encontraron resultados",
-                info: "Mostrando START a END de TOTAL registros",
+                info: "Mostrando _START_ a _END_ de _TOTAL_ registros",
                 infoEmpty: "Mostrando 0 a 0 de 0 registros",
-                infoFiltered: "(filtrado de MAX registros totales)",
+                infoFiltered: "(filtrado de _MAX_ registros totales)",
                 search: "Buscar:",
                 paginate: {
                     first: "Primero",
