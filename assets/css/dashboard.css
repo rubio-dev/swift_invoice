@@ -35,12 +35,12 @@
     --radius-xl: 2rem;
 }
 
-/* Estructura principal - Mejorada con animación */
+/* Estructura principal -- Mejorada con animación */
 .dashboard-container {
-    max-width: 1400px;
     margin: 0 auto;
     padding: 2.5rem 1.5rem;
     min-height: calc(100vh - 120px);
+    height: 100vh;
     background: var(--bg-dark);
     animation: fadeIn 0.6s ease-out forwards;
 }
