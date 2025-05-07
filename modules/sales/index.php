@@ -86,6 +86,7 @@ $sales = $stmt->fetchAll(PDO::FETCH_ASSOC);
                         <td><?php echo htmlspecialchars($sale['created_at']); ?></td>
                         <td>
                 <div class="d-flex gap-2">
+                    <a href="view.php?id=<?php echo $sale['id']; ?>" class="btnDetails">Detalles</a>
                     <a href="edit.php?id=<?php echo $sale['id']; ?>" class="btnEdit">Editar</a>
                     <button class="btnDelete" onclick="confirmDelete(<?php echo $sale['id']; ?>)">Eliminar</button>
                 </div>
