@@ -39,7 +39,7 @@ body {
     background: linear-gradient(135deg, var(--bg-darker), var(--bg-dark));
     font-family: 'Inter', sans-serif;
     color: var(--text);
-    padding: 1.5rem;
+    padding: 1rem 2.5rem;
 }
 
 html,
@@ -151,7 +151,7 @@ body {
 }
 
 .styled-table thead th {
-    padding: 0.75rem;
+    padding: 0.6rem;
     text-align: left;
     font-weight: 600;
     border-bottom: 1px solid var(--border-light);
@@ -159,7 +159,7 @@ body {
 }
 
 .styled-table tbody td {
-    padding: 0.75rem;
+    padding: 0.3rem;
     border-bottom: 1px solid var(--border-dark);
 }
 
@@ -175,8 +175,8 @@ body {
     color: var(--text);
     font-weight: 500;
     font-size: 1.3rem;
-    margin-bottom: 1.5rem;
-    margin-top: 1.5rem;
+    margin-bottom: 1rem;
+    margin-top: 1rem;
   }
   
   /* Estilo para el label de 'Buscar:' */
@@ -184,8 +184,8 @@ body {
     color: var(--text);
     font-weight: 500;
     font-size: 1.3rem;
-    margin-bottom: 1.5rem;
-    margin-top: 1.5rem;
+    margin-bottom: 1rem;
+    margin-top: 1rem;
   }
 
 /* Input de búsqueda */
@@ -230,7 +230,7 @@ body {
 }
 
 .btnEdit {
-    padding: .30rem 1.5rem;
+    padding: .20rem 1rem;
     background: transparent;
     color: var(--text) !important;
     font-weight: 550;
@@ -274,7 +274,7 @@ body {
 }
 
 .btnDelete {
-    padding: .30rem 1.5rem;
+    padding: .20rem 1rem;
     background: transparent;
     color: var(--text) !important;
     font-weight: 550;
@@ -327,6 +327,61 @@ body {
     line-height: 1.2;
 }
 
+.btnDetails {
+    padding: .20rem 1rem;
+    background: transparent;
+    color: var(--text) !important;
+    font-weight: 550;
+    border: none;
+    border-radius: 10px;
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: 0.75rem;
+    letter-spacing: 0.5px;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.2);
+    z-index: 1;
+    border: 3px solid var(--text-light);
+    text-decoration: none;
+    text-align: center;
+}
+
+.btnDetails::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to right, var(--text-lighter), var(--text-light));
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    z-index: -1;
+   
+}
+
+.btnDetails:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 15px rgba(0, 0, 0, 0.2), 0 4px 6px rgba(0, 0, 0, 0.2);
+}
+
+.btnDetails:hover::before {
+    opacity: 1;
+}
+
+.btnEdit,
+.btnDelete,
+.btnDetails {
+    display: inline-block;
+    vertical-align: middle;
+    padding: 0.3rem 1.5rem;
+    margin: 0;
+    font-size: 1.1rem;
+    line-height: 1.2;
+}
+
 
 /* Estilos base para el <a> de paginación */
 .dataTables_wrapper .dataTables_paginate .page-item .page-link {
@@ -334,7 +389,7 @@ body {
     color: var(--text) !important;
     font-size: 1.2rem !important;
     border: 3px solid var(--primary) !important;
-    padding: 0.3rem 1.5rem !important;
+    padding: 0.2rem 1rem !important;
     margin: 0.875rem 0.3rem !important;
     border-radius: var(--radius-sm) !important;
     box-shadow: none !important;
