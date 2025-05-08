@@ -34,7 +34,6 @@ $totals = calculateSaleTotals($sale_products);
 <div class="card">
     <div class="card-header">
         <h2 class="card-title">Nueva Venta</h2>
-        <a href="index.php" class="btn btn-secondary">Cancelar</a>
     </div>
     
     <div class="card-body">
@@ -152,6 +151,7 @@ $totals = calculateSaleTotals($sale_products);
             <input type="hidden" name="total" value="<?php echo $totals['total']; ?>">
             
             <div class="form-group">
+            <a href="index.php" class="btn btn-secondary">Cancelar</a>
                 <button type="submit" class="btn btn-success" <?php echo empty($sale_products) ? 'disabled' : ''; ?>>Guardar Venta</button>
             </div>
         </form>
