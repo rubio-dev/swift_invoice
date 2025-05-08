@@ -19,10 +19,21 @@ $sale_products = isset($_SESSION['sale_products']) ? $_SESSION['sale_products'] 
 $totals = calculateSaleTotals($sale_products);
 ?>
 
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Swift Invoice - Login</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Tus estilos personalizados -->
+    <link rel="stylesheet" href="/swift_invoice/assets/css/sales.css">
+    <!---->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css">
+</head>
+
 <div class="card">
     <div class="card-header">
         <h2 class="card-title">Nueva Venta</h2>
-        <a href="index.php" class="btn btn-secondary">Cancelar</a>
     </div>
     
     <div class="card-body">
@@ -140,6 +151,7 @@ $totals = calculateSaleTotals($sale_products);
             <input type="hidden" name="total" value="<?php echo $totals['total']; ?>">
             
             <div class="form-group">
+            <a href="index.php" class="btn btn-secondary">Cancelar</a>
                 <button type="submit" class="btn btn-success" <?php echo empty($sale_products) ? 'disabled' : ''; ?>>Guardar Venta</button>
             </div>
         </form>
@@ -149,3 +161,4 @@ $totals = calculateSaleTotals($sale_products);
 <?php
 require_once '../../includes/footer.php';
 ?>
+

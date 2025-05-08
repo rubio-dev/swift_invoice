@@ -18,7 +18,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $email = trim($_POST['email'] ?? '');
     $rfc = trim($_POST['rfc'] ?? '');
     $address = trim($_POST['address'] ?? '');
-
+    //
     // Validaciones (igual que antes)
     if (empty($first_name)) {
         $errors['first_name'] = 'El nombre es requerido';
@@ -128,4 +128,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 } else {
     redirect('/swift_invoice/modules/clients/');
 }
+
+// que rollo willy
 ?>
+

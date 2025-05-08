@@ -1,0 +1,409 @@
+:root {
+   /* Colores principales */
+   --primary: #2563eb;
+   --primary-dark: #1d4ed8;
+   --primary-light: rgba(37, 99, 235, 0.1);
+   --secondary: #0ea5e9;
+   --text: #f1f1f1;
+   --text-light: #9ca3af;
+   --text-lighter: #6b7280;
+   --bg-dark: #0f172a;
+   --bg-darker: #020617;
+   --card-bg: #1e293b;
+   --card-hover: #334155;
+   --table-bg: #2d3748;
+   --table-alt: #1e293b;
+   --table-hover: #4a5568;
+   --border-dark: #4a5568;
+   --border-light: #e5e7eb;
+   --danger: #ef4444;
+   --success: #10b981;
+   --warning: #f59e0b;
+   --purple: #8b5cf6;
+
+
+   /* Sombras y efectos */
+   --shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
+   --shadow-hover: 0 20px 25px -5px rgba(0, 0, 0, 0.15), 0 10px 10px -5px rgba(0, 0, 0, 0.2);
+   --glow: 0 0 15px rgba(59, 130, 246, 0.4);
+
+
+   /* Transiciones */
+   --transition-smooth: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+   --transition-bounce: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+
+
+   /* Bordes redondeados 888*/
+   --radius-sm: 0.5rem;
+   --radius-md: 1rem;
+   --radius-lg: 1.5rem;
+   --radius-xl: 2rem;
+}
+
+
+/* Generallllll */
+body {
+   background: linear-gradient(135deg, var(--bg-darker), var(--bg-dark));
+   color: var(--text);
+   font-family: 'Segoe UI', sans-serif;
+   margin: 0;
+   padding: 20px;
+   display: flex;
+   flex-direction: column;
+   align-items: center;
+   justify-content: center;
+   min-height: 100vh;
+}
+
+
+/* Tarjeta contenedora */
+.card {
+   background-color: var(--card-bg);
+   color: var(--text);
+   border: 1px solid var(--border-dark);
+   border-radius: var(--radius-md);
+   padding: 25px;
+   box-shadow: var(--shadow);
+   width: 100%;
+   max-width: 800px;
+   margin-bottom: 20px;
+   transition: var(--transition-smooth);
+}
+
+
+.card:hover {
+   box-shadow: var(--shadow-hover);
+ 
+}
+
+
+/* Encabezado de tarjeta */
+.card-header {
+   display: flex;
+   justify-content: space-between;
+   align-items: center;
+}
+
+
+.card-title {
+   font-size: 1.5rem;
+   font-weight: bold;
+   margin: 0;
+}
+
+
+.card-header .btn {
+   transition: var(--transition-smooth);
+}
+
+
+.card-header .btn:hover {
+   background-color: var(--primary-dark);
+   color: #fff;
+}
+
+
+/* Tabla moderna con diseño claro */
+.table-responsive {
+   background-color: transparent;
+   overflow-x: auto;
+}
+
+
+.styled-table {
+   width: 100%;
+   border-collapse: collapse;
+   background-color: var(--table-bg);
+   color: var(--text);
+   border-radius: var(--radius-md);
+   overflow: hidden;
+   box-shadow: var(--shadow);
+   transform: translateY(0);
+   transition: var(--transition-bounce);
+   position: relative;
+   font-size: 1.1rem;
+}
+
+
+.styled-table::before {
+   content: '';
+   position: absolute;
+   top: 0;
+   left: 0;
+   width: 100%;
+   height: 4px;
+   background: linear-gradient(90deg, var(--primary), var(--secondary));
+   box-shadow: var(--glow);
+}
+
+
+.styled-table:hover {
+   transform: translateY(-8px);
+   box-shadow: var(--shadow-hover);
+   border-color: var(--primary);
+}
+
+
+/* Enabezado   */
+.styled-table thead {
+   background: linear-gradient(90deg, var(--primary), var(--secondary));
+   color: #fff;
+   border-bottom: 2px solid var(--border-light);
+}
+
+
+.styled-table thead th {
+   padding: 0.6rem;
+   text-align: left;
+   font-weight: 600;
+   border-bottom: 1px solid var(--border-light);
+   text-transform: uppercase;
+}
+
+
+/* Cuerpo */
+.styled-table tbody td {
+   padding: 0.6rem;
+   border-bottom: 1px solid var(--border-dark);
+}
+
+
+.styled-table tbody tr:nth-child(even) {
+   background-color: var(--table-alt);
+}
+
+
+.styled-table tbody tr:nth-child(odd) {
+   background-color: var(--table-bg);
+}
+
+
+.styled-table tbody tr:hover {
+   background-color: var(--table-hover);
+}
+
+
+/* Botones y formularios */
+.btn {
+   width: auto;
+   padding: .50rem 2rem;
+   background: linear-gradient(to right, var(--primary), var(--secondary));
+   color: var(--text) !important;
+   font-weight: 550;
+   border: none;
+   border-radius: 10px;
+   font-size: 1.2rem;
+   cursor: pointer;
+   transition: all 0.3s ease;
+   margin-top: 0.75rem;
+   letter-spacing: 0.5px;
+   position: relative;
+   overflow: hidden;
+   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.2);
+   z-index: 1;
+   text-decoration: none;
+   text-align: center;
+}
+
+
+.btn:hover {
+   background-color: var(--primary-dark);
+   color: #fff;
+}
+
+
+/* Productos y resumen de venta */
+.summary-card {
+   background-color: var(--card-bg);
+   padding: 15px;
+   border-radius: var(--radius-md);
+   box-shadow: var(--shadow);
+}
+
+
+.summary-row {
+   display: flex;
+   justify-content: space-between;
+   margin-bottom: 10px;
+   font-size: 1.1rem;
+}
+
+
+.summary-row.total {
+   font-weight: bold;
+   font-size: 1.3rem;
+   color: var(--primary);
+}
+
+
+.product-selection {
+   margin-top: 20px;
+}
+
+
+.product-selection h3 {
+   font-size: 1.4rem;
+   font-weight: bold;
+   margin-bottom: 10px;
+}
+
+
+/* Inputs y select */
+input[type="number"],
+input[type="date"],
+select {
+   border-radius: var(--radius-sm);
+   padding: 10px;
+   border: 1px solid var(--border-light);
+   background-color: var(--card-bg);
+   color: var(--text);
+   width: 100%;
+   margin-bottom: 10px;
+   transition: var(--transition-smooth);
+}
+
+
+input[type="number"]:focus,
+input[type="date"]:focus,
+select:focus {
+   outline: none;
+   border-color: var(--primary);
+   box-shadow: 0 0 5px rgba(37, 99, 235, 0.5);
+}
+
+
+/* Lista de productos */
+.product-list {
+   margin-top: 20px;
+   background-color: var(--card-bg);
+   padding: 20px;
+   border-radius: var(--radius-md);
+   box-shadow: var(--shadow);
+}
+
+
+/* Tabla de productos */
+.product-list table {
+   width: 100%;
+   margin-top: 10px;
+   background-color: var(--table-bg);
+   border-radius: var(--radius-md);
+   overflow: hidden;
+   box-shadow: var(--shadow);
+   transition: var(--transition-smooth);
+}
+
+
+.product-list table:hover {
+   transform: translateY(-5px);
+   box-shadow: var(--shadow-hover);
+}
+
+
+/* Encabezado de la tabla */
+.product-list th {
+   padding: 10px;
+   background: linear-gradient(90deg, var(--primary), var(--primary-dark));
+   color: #fff;
+   text-transform: uppercase;
+   font-weight: bold;
+   border-bottom: 2px solid var(--border-light);
+}
+
+
+.product-list th, .product-list td {
+   padding: 15px;
+   text-align: left;
+   font-size: 1rem;
+}
+
+
+/* Fila alternada */
+.product-list tbody tr:nth-child(even) {
+   background-color: var(--table-alt);
+}
+
+
+.product-list tbody tr:nth-child(odd) {
+   background-color: var(--table-bg);
+}
+
+
+/* Fila al pasar el ratón */
+.product-list tbody tr:hover {
+   background-color: var(--table-hover);
+}
+
+
+/* Estilo para el botón de eliminar */
+.remove-product {
+   padding: 0.20rem 1rem;
+   background: transparent;
+   color: var(--text) !important;
+   font-weight: 550;
+   border: none;
+   border-radius: 10px;
+   font-size: 1.2rem;
+   cursor: pointer;
+   transition: all 0.3s ease;
+   margin-top: 0.75rem;
+   letter-spacing: 0.5px;
+   position: relative;
+   overflow: hidden;
+   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.2);
+   z-index: 1;
+   border: 3px solid var(--danger);
+   text-decoration: none;
+   text-align: center;
+}
+
+
+.remove-product::before {
+   content: '';
+   position: absolute;
+   top: 0;
+   left: 0;
+   width: 100%;
+   height: 100%;
+   background: linear-gradient(to right, #b82d2d, var(--danger));
+   opacity: 0;
+   transition: opacity 0.3s ease;
+   z-index: -1;
+}
+
+
+.remove-product:hover {
+   transform: translateY(-2px);
+   box-shadow: 0 10px 15px rgba(0, 0, 0, 0.2), 0 4px 6px rgba(0, 0, 0, 0.2);
+}
+
+
+.remove-product:hover::before {
+   opacity: 1;
+}
+
+
+.remove-product,
+.btnDelete {
+   display: inline-block;
+   vertical-align: middle;
+   padding: 0.3rem 1.5rem;
+   margin: 0;
+   font-size: 1.1rem;
+   line-height: 1.2;
+}
+
+
+
+
+/* Ajustes de la tabla de precios y cantidades */
+.product-list td {
+   font-weight: normal;
+}
+
+
+.product-list td:nth-child(2),
+.product-list td:nth-child(3),
+.product-list td:nth-child(4) {
+   text-align: center;
+}
