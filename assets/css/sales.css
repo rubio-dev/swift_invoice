@@ -41,7 +41,7 @@
 }
 
 
-/* Generallllll */
+/* General*/
 body {
    background: linear-gradient(135deg, var(--bg-darker), var(--bg-dark));
    color: var(--text);
@@ -113,14 +113,15 @@ body {
 .styled-table {
    width: 100%;
    border-collapse: collapse;
-   background-color: var(--table-bg);
+   background-color: var(--card-bg);
    color: var(--text);
    border-radius: var(--radius-md);
    overflow: hidden;
    box-shadow: var(--shadow);
    transform: translateY(0);
-   transition: var(--transition-bounce);
+   transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
    position: relative;
+   overflow: hidden;
    font-size: 1.1rem;
 }
 
@@ -146,7 +147,7 @@ body {
 
 /* Enabezado   */
 .styled-table thead {
-   background: linear-gradient(90deg, var(--primary), var(--secondary));
+   background:  linear-gradient(90deg, var(--primary), var(--secondary));
    color: #fff;
    border-bottom: 2px solid var(--border-light);
 }
@@ -163,23 +164,19 @@ body {
 
 /* Cuerpo */
 .styled-table tbody td {
-   padding: 0.6rem;
+   padding: 0.3rem;
    border-bottom: 1px solid var(--border-dark);
 }
 
 
-.styled-table tbody tr:nth-child(even) {
-   background-color: var(--table-alt);
-}
 
 
-.styled-table tbody tr:nth-child(odd) {
-   background-color: var(--table-bg);
-}
+
+
 
 
 .styled-table tbody tr:hover {
-   background-color: var(--table-hover);
+   background-color: var(--card-hover);
 }
 
 
@@ -214,7 +211,7 @@ body {
 
 /* Productos y resumen de venta */
 .summary-card {
-   background-color: var(--card-bg);
+   background-color: var(--bg-dark);
    padding: 15px;
    border-radius: var(--radius-md);
    box-shadow: var(--shadow);
