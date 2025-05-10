@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: localhost
--- Tiempo de generación: 10-05-2025 a las 20:04:46
+-- Tiempo de generación: 10-05-2025 a las 20:41:46
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -20,6 +20,33 @@ SET time_zone = "+00:00";
 --
 -- Base de datos: `swift_invoice_db`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `business_types`
+--
+
+CREATE TABLE `business_types` (
+  `id` int(11) NOT NULL,
+  `name` varchar(50) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `business_types`
+--
+
+INSERT INTO `business_types` (`id`, `name`) VALUES
+(1, 'S.A. de C.V.'),
+(2, 'S. de R.L.'),
+(3, 'S. de R.L. de C.V.'),
+(4, 'S.C.'),
+(5, 'A.C.'),
+(6, 'S.N.C.'),
+(7, 'S.A.P.I. de C.V.'),
+(8, 'S.A.'),
+(9, 'S.R.L.'),
+(10, 'Cooperativa');
 
 -- --------------------------------------------------------
 
@@ -59,10 +86,11 @@ CREATE TABLE `companies` (
   `fiscal_address` text NOT NULL,
   `phone` varchar(20) DEFAULT NULL,
   `email` varchar(100) DEFAULT NULL,
-  `tax_regime` varchar(100) DEFAULT NULL,
   `legal_representative` varchar(100) DEFAULT NULL,
   `logo_path` varchar(255) DEFAULT NULL,
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `business_type_id` int(11) DEFAULT NULL,
+  `tax_regime_id` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -190,6 +218,33 @@ INSERT INTO `sale_details` (`id`, `sale_id`, `product_id`, `quantity`, `unit_pri
 -- --------------------------------------------------------
 
 --
+-- Estructura de tabla para la tabla `tax_regimes`
+--
+
+CREATE TABLE `tax_regimes` (
+  `id` int(11) NOT NULL,
+  `name` varchar(100) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `tax_regimes`
+--
+
+INSERT INTO `tax_regimes` (`id`, `name`) VALUES
+(1, 'General de Ley Personas Morales'),
+(2, 'Régimen Simplificado de Confianza'),
+(3, 'Régimen de Incorporación Fiscal'),
+(4, 'Régimen de Actividades Empresariales y Profesionales'),
+(5, 'Régimen de Sueldos y Salarios'),
+(6, 'Régimen de Arrendamiento'),
+(7, 'Régimen de Personas Morales con Fines no Lucrativos'),
+(8, 'Régimen de Enajenación de Bienes'),
+(9, 'Régimen de Dividendos'),
+(10, 'Régimen de Plataformas Digitales');
+
+-- --------------------------------------------------------
+
+--
 -- Estructura de tabla para la tabla `users`
 --
 
@@ -216,6 +271,12 @@ INSERT INTO `users` (`id`, `username`, `password`, `first_name`, `last_name`, `p
 --
 
 --
+-- Indices de la tabla `business_types`
+--
+ALTER TABLE `business_types`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indices de la tabla `clients`
 --
 ALTER TABLE `clients`
@@ -227,7 +288,9 @@ ALTER TABLE `clients`
 -- Indices de la tabla `companies`
 --
 ALTER TABLE `companies`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `fk_business_type` (`business_type_id`),
+  ADD KEY `fk_tax_regime` (`tax_regime_id`);
 
 --
 -- Indices de la tabla `invoices`
@@ -259,6 +322,12 @@ ALTER TABLE `sale_details`
   ADD KEY `product_id` (`product_id`);
 
 --
+-- Indices de la tabla `tax_regimes`
+--
+ALTER TABLE `tax_regimes`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indices de la tabla `users`
 --
 ALTER TABLE `users`
@@ -269,6 +338,12 @@ ALTER TABLE `users`
 --
 -- AUTO_INCREMENT de las tablas volcadas
 --
+
+--
+-- AUTO_INCREMENT de la tabla `business_types`
+--
+ALTER TABLE `business_types`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT de la tabla `clients`
@@ -307,6 +382,12 @@ ALTER TABLE `sale_details`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
+-- AUTO_INCREMENT de la tabla `tax_regimes`
+--
+ALTER TABLE `tax_regimes`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+
+--
 -- AUTO_INCREMENT de la tabla `users`
 --
 ALTER TABLE `users`
@@ -315,6 +396,13 @@ ALTER TABLE `users`
 --
 -- Restricciones para tablas volcadas
 --
+
+--
+-- Filtros para la tabla `companies`
+--
+ALTER TABLE `companies`
+  ADD CONSTRAINT `fk_business_type` FOREIGN KEY (`business_type_id`) REFERENCES `business_types` (`id`),
+  ADD CONSTRAINT `fk_tax_regime` FOREIGN KEY (`tax_regime_id`) REFERENCES `tax_regimes` (`id`);
 
 --
 -- Filtros para la tabla `invoices`
