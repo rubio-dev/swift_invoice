@@ -1,5 +1,4 @@
 :root {
-    /* Variables que ya definiste */
     --primary: #2563eb;
     --primary-dark: #1d4ed8;
     --primary-light: rgba(37, 99, 235, 0.1);
@@ -21,14 +20,12 @@
     --transition-smooth: all 0.3s ease-in-out;
 }
 
-/* Estilo global */
 body {
     background-color: var(--bg-dark);
     color: var(--text);
     font-family: 'Inter', sans-serif;
 }
 
-/* Tarjeta principal */
 .card {
     background-color: var(--card-bg);
     border-radius: var(--radius-md);
@@ -37,7 +34,6 @@ body {
     margin-top: 2rem;
 }
 
-/* Encabezado */
 .card-header {
     background: linear-gradient(to right, var(--primary), var(--secondary));
     color: white;
@@ -52,7 +48,6 @@ body {
     margin: 0;
 }
 
-/* Formulario */
 .form-group label {
     color: var(--text);
     font-weight: 500;
@@ -74,7 +69,36 @@ body {
     background-color: #1e293b;
 }
 
-/* Botón */
+/* Input tipo archivo personalizado */
+input[type="file"].form-control {
+    padding: 0.45rem;
+    background-color: #0f172a;
+    color: var(--text);
+    border: 1px solid var(--border-dark);
+    border-radius: var(--radius-sm);
+    width: 100%;
+    font-size: 1rem;
+    display: flex;
+    align-items: center;
+}
+
+input[type="file"]::file-selector-button {
+    background-color: var(--primary);
+    color: white;
+    border: none;
+    padding: 0.25rem 0.8rem;
+    margin-left: auto;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    font-weight: 600;
+    font-size: 0.85rem;
+    border-radius: var(--radius-sm);
+}
+
+input[type="file"]::file-selector-button:hover {
+    background-color: var(--primary-dark);
+}
+
 .btn-success {
     background: linear-gradient(to right, var(--primary), var(--secondary));
     color: white;
@@ -92,7 +116,6 @@ body {
     transform: translateY(-2px);
 }
 
-/* Errores */
 .alert-error {
     background-color: var(--danger);
     color: white;
@@ -108,7 +131,6 @@ body {
     margin-top: 0.25rem;
 }
 
-/* Logo actual */
 .current-logo img {
     margin-top: 0.5rem;
     max-width: 200px;
