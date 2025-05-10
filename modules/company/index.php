@@ -12,6 +12,14 @@ $conn = $db->connect();
 $stmt = $conn->query("SELECT * FROM companies LIMIT 1");
 $company = $stmt->fetch(PDO::FETCH_ASSOC);
 
+// Obtener catálogo de razones sociales
+$types_stmt = $conn->query("SELECT id, name FROM business_types ORDER BY name");
+$business_types = $types_stmt->fetchAll(PDO::FETCH_ASSOC);
+
+// Obtener catálogo de regímenes fiscales
+$regimes_stmt = $conn->query("SELECT id, name FROM tax_regimes ORDER BY name");
+$tax_regimes = $regimes_stmt->fetchAll(PDO::FETCH_ASSOC);
+
 // Mostrar errores si existen
 $errors = [];
 if (isset($_SESSION['company_form_errors'])) {
@@ -47,11 +55,27 @@ if (isset($_SESSION['company_form_errors'])) {
             <div class="row">
                 <div class="col-md-6">
                     <div class="form-group">
-                        <label for="business_name">Razón Social:</label>
+                        <label for="business_name">Nombre de la Empresa:</label>
                         <input type="text" id="business_name" name="business_name" class="form-control" 
                                value="<?php echo htmlspecialchars($company['business_name'] ?? ''); ?>" required>
                         <?php if (isset($errors['business_name'])): ?>
                             <span class="error-text"><?php echo $errors['business_name']; ?></span>
+                        <?php endif; ?>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="business_type_id">Razón Social:</label>
+                        <select id="business_type_id" name="business_type_id" class="form-control" required>
+                            <option value="">Seleccione una opción</option>
+                            <?php foreach ($business_types as $type): ?>
+                                <option value="<?php echo $type['id']; ?>"
+                                    <?php echo (isset($company['business_type_id']) && $company['business_type_id'] == $type['id']) ? 'selected' : ''; ?>>
+                                    <?php echo htmlspecialchars($type['name']); ?>
+                                </option>
+                            <?php endforeach; ?>
+                        </select>
+                        <?php if (isset($errors['business_type_id'])): ?>
+                            <span class="error-text"><?php echo $errors['business_type_id']; ?></span>
                         <?php endif; ?>
                     </div>
                     
@@ -89,11 +113,21 @@ if (isset($_SESSION['company_form_errors'])) {
                             <span class="error-text"><?php echo $errors['email']; ?></span>
                         <?php endif; ?>
                     </div>
-                    
+
                     <div class="form-group">
-                        <label for="tax_regime">Régimen Fiscal:</label>
-                        <input type="text" id="tax_regime" name="tax_regime" class="form-control" 
-                               value="<?php echo htmlspecialchars($company['tax_regime'] ?? ''); ?>">
+                        <label for="tax_regime_id">Régimen Fiscal:</label>
+                        <select id="tax_regime_id" name="tax_regime_id" class="form-control" required>
+                            <option value="">Seleccione una opción</option>
+                            <?php foreach ($tax_regimes as $regime): ?>
+                                <option value="<?php echo $regime['id']; ?>"
+                                    <?php echo (isset($company['tax_regime_id']) && $company['tax_regime_id'] == $regime['id']) ? 'selected' : ''; ?>>
+                                    <?php echo htmlspecialchars($regime['name']); ?>
+                                </option>
+                            <?php endforeach; ?>
+                        </select>
+                        <?php if (isset($errors['tax_regime_id'])): ?>
+                            <span class="error-text"><?php echo $errors['tax_regime_id']; ?></span>
+                        <?php endif; ?>
                     </div>
                     
                     <div class="form-group">
