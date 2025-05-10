@@ -1,0 +1,120 @@
+:root {
+    /* Variables que ya definiste */
+    --primary: #2563eb;
+    --primary-dark: #1d4ed8;
+    --primary-light: rgba(37, 99, 235, 0.1);
+    --secondary: #0ea5e9;
+    --text: #e5e7eb;
+    --text-light: #9ca3af;
+    --text-lighter: #6b7280;
+    --bg-dark: #0f172a;
+    --bg-darker: #020617;
+    --card-bg: #1e293b;
+    --card-hover: #334155;
+    --border-dark: #334155;
+    --border-light: #475569;
+    --danger: #ef4444;
+    --success: #10b981;
+    --radius-sm: 0.5rem;
+    --radius-md: 1rem;
+    --shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3), 0 4px 6px -4px rgba(0, 0, 0, 0.3);
+    --transition-smooth: all 0.3s ease-in-out;
+}
+
+/* Estilo global */
+body {
+    background-color: var(--bg-dark);
+    color: var(--text);
+    font-family: 'Inter', sans-serif;
+}
+
+/* Tarjeta principal */
+.card {
+    background-color: var(--card-bg);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow);
+    padding: 2rem;
+    margin-top: 2rem;
+}
+
+/* Encabezado */
+.card-header {
+    background: linear-gradient(to right, var(--primary), var(--secondary));
+    color: white;
+    padding: 1rem 1.5rem;
+    border-top-left-radius: var(--radius-md);
+    border-top-right-radius: var(--radius-md);
+}
+
+.card-title {
+    font-size: 2rem;
+    font-weight: bold;
+    margin: 0;
+}
+
+/* Formulario */
+.form-group label {
+    color: var(--text);
+    font-weight: 500;
+    margin-top: 0.5rem;
+}
+
+.form-control {
+    background-color: #0f172a;
+    color: var(--text);
+    border: 1px solid var(--border-dark);
+    border-radius: var(--radius-sm);
+    padding: 0.6rem;
+    transition: var(--transition-smooth);
+}
+
+.form-control:focus {
+    outline: none;
+    border-color: var(--primary);
+    background-color: #1e293b;
+}
+
+/* Botón */
+.btn-success {
+    background: linear-gradient(to right, var(--primary), var(--secondary));
+    color: white;
+    font-weight: 600;
+    border: none;
+    border-radius: var(--radius-sm);
+    padding: 0.75rem 1.5rem;
+    margin-top: 1.5rem;
+    transition: var(--transition-smooth);
+    box-shadow: var(--shadow);
+}
+
+.btn-success:hover {
+    background: var(--primary-dark);
+    transform: translateY(-2px);
+}
+
+/* Errores */
+.alert-error {
+    background-color: var(--danger);
+    color: white;
+    padding: 0.75rem;
+    border-radius: var(--radius-sm);
+    margin-bottom: 1rem;
+}
+
+.error-text {
+    color: var(--danger);
+    font-size: 0.9rem;
+    display: block;
+    margin-top: 0.25rem;
+}
+
+/* Logo actual */
+.current-logo img {
+    margin-top: 0.5rem;
+    max-width: 200px;
+    max-height: 100px;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border-light);
+    background-color: var(--bg-darker);
+    padding: 0.25rem;
+}

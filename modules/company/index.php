@@ -16,7 +16,7 @@ $company = $stmt->fetch(PDO::FETCH_ASSOC);
 $errors = [];
 if (isset($_SESSION['company_form_errors'])) {
     $errors = $_SESSION['company_form_errors'];
-    unset($_SESSION['company_form_errors']);//bngugrundngngnd9ugn
+    unset($_SESSION['company_form_errors']);
     
     // Usar los datos enviados en lugar de los de la base de datos
     if (isset($_SESSION['company_form_data'])) {
@@ -26,7 +26,10 @@ if (isset($_SESSION['company_form_errors'])) {
 }
 ?>
 
-<div class="card">
+<!-- Incluir hoja de estilos personalizada -->
+<link rel="stylesheet" href="/swift_invoice/assets/css/companies.css">
+
+<div class="card container">
     <div class="card-header">
         <h2 class="card-title">Datos de la Empresa</h2>
     </div>
