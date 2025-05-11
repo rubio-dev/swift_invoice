@@ -21,19 +21,17 @@ require_once 'includes/header.php';
     </div>
     
     <div class="quick-actions">
-        <!-- Ventas -->
         <a href="/swift_invoice/modules/sales/" class="action-card sales">
             <div class="card-icon-container">
                 <span class="card-icon">💼</span>
             </div>
             <div class="card-content">
                 <h3 class="card-title">Ventas</h3>
-                <p class="card-description">Crear y consultar ventas</p>
-                <span class="card-link">Ir al módulo →</span>
+                <p class="card-description">Crear factura de venta</p>
+                <span class="card-link">Acceder →</span>
             </div>
         </a>
-
-        <!-- Clientes -->
+        
         <a href="/swift_invoice/modules/clients/" class="action-card clients">
             <div class="card-icon-container">
                 <span class="card-icon">👥</span>
@@ -44,27 +42,38 @@ require_once 'includes/header.php';
                 <span class="card-link">Ver todos →</span>
             </div>
         </a>
-
-        <!-- Empresas -->
+        
+        <a href="/swift_invoice/modules/invoices/" class="action-card invoices">
+            <div class="card-icon-container">
+                <span class="card-icon">📋</span>
+            </div>
+            <div class="card-content">
+                <h3 class="card-title">Facturas</h3>
+                <p class="card-description">Historial de facturación</p>
+                <span class="card-link">Consultar →</span>
+            </div>
+        </a>
+        
         <a href="/swift_invoice/modules/company/" class="action-card company">
             <div class="card-icon-container">
                 <span class="card-icon">🏛️</span>
             </div>
             <div class="card-content">
-                <h3 class="card-title">Empresas</h3>
-                <p class="card-description">Administrar lista de empresas</p>
+                <h3 class="card-title">Compañías</h3>
+                <p class="card-description">Gestionar empresas</p>
                 <span class="card-link">Administrar →</span>
             </div>
         </a>
     </div>
-
+    
     <div class="dashboard-footer">
         <div class="footer-content">
-            <!-- Puedes personalizar este espacio -->
         </div>
     </div>
 </div>
 
 <?php
 require_once 'includes/footer.php';
+
+// Tester desde Linux, amen 
 ?>
