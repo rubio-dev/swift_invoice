@@ -253,3 +253,22 @@ body {
     overflow-x: hidden;
     overflow-y: auto;
 }
+
+.detailsData {
+    display: block;        /* asegura que ocupe todo el ancho */
+    text-align: left !important;
+    width: 100% !important;
+    font-size: 1.1rem;
+  }
+
+  .input-title-Details {
+    font-size: 1.18rem;
+    color: var(--text);
+    font-weight: 600;
+    position: relative;
+    padding-bottom: 0.2rem;
+    padding-top: 0.2rem;
+    text-align: justify;
+    width: 100%;
+}
+  

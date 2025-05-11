@@ -15,6 +15,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $phone = trim($_POST['phone']);
     $email = trim($_POST['email']);
 
+    $first_name = mb_strtoupper($first_name, 'UTF-8');
+    $last_name = mb_strtoupper($last_name, 'UTF-8');
+
     // Validaciones
     if (empty($username)) {
         $errors['username'] = 'El usuario es requerido';

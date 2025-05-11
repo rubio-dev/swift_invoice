@@ -31,7 +31,7 @@ document.addEventListener('DOMContentLoaded', function() {
             <td>${quantity}</td>
             <td>$${(productPrice * quantity).toFixed(2)}</td>
             <td>
-                <button type="button" class="btn btn-danger btn-sm remove-product">Eliminar</button>
+                <button type="button" class="DeleteBtn remove-product">Eliminar</button>
                 <input type="hidden" name="products[${rowIndex}][id]" value="${productId}">
                 <input type="hidden" name="products[${rowIndex}][name]" value="${productName}">
                 <input type="hidden" name="products[${rowIndex}][price]" value="${productPrice}">

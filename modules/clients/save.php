@@ -18,6 +18,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $email = trim($_POST['email'] ?? '');
     $rfc = trim($_POST['rfc'] ?? '');
     $address = trim($_POST['address'] ?? '');
+
+    // 2) Convertir todo a mayúsculas preservando acentos
+    $first_name = mb_strtoupper($first_name, 'UTF-8');
+    $last_name = mb_strtoupper($last_name, 'UTF-8');
+    $mother_last_name = mb_strtoupper($mother_last_name, 'UTF-8');
+    $rfc = mb_strtoupper($rfc, 'UTF-8');
+    $address = mb_strtoupper($address, 'UTF-8');
+
     //
     // Validaciones (igual que antes)
     if (empty($first_name)) {
@@ -131,4 +139,3 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 // que rollo willy
 ?>
-

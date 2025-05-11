@@ -71,6 +71,7 @@ $clients = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                 <td><?php echo htmlspecialchars($client['rfc'] ?? '-'); ?></td>
                                 <td>
                                     <div class="d-flex gap-2">
+                                        <a href="view.php?id=<?php echo $client['id']; ?>" class="btnDetails">Detalles</a>
                                         <a href="edit.php?id=<?php echo $client['id']; ?>" class="btnEdit">Editar</a>
                                         <button class="btnDelete"
                                             onclick="confirmDelete(<?php echo $client['id']; ?>)">Eliminar</button>
@@ -141,6 +142,7 @@ $clients = $stmt->fetchAll(PDO::FETCH_ASSOC);
         });
     }
 </script>
+
 </html>
 
 <?php

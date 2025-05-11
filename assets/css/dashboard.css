@@ -99,7 +99,7 @@
 
 .username {
     font-weight: 700;
-    text-shadow: 0 0 8px rgba(59, 130, 246, 0.5);
+    color: rgba(59, 130, 246);
     position: relative;
     display: inline-block;
 }
