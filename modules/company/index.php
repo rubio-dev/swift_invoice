@@ -2,162 +2,148 @@
 require_once '../../config/setup.php';
 requireAuth();
 
-$page_title = "Datos de la Empresa - Swift Invoice";
+$page_title = "Empresas - Swift Invoice";
 require_once '../../includes/header.php';
 
 $db = new Database();
 $conn = $db->connect();
 
-// Obtener datos de la empresa (asumimos solo una empresa)
-$stmt = $conn->query("SELECT * FROM companies LIMIT 1");
-$company = $stmt->fetch(PDO::FETCH_ASSOC);
-
-// Obtener catálogo de razones sociales
-$types_stmt = $conn->query("SELECT id, name FROM business_types ORDER BY name");
-$business_types = $types_stmt->fetchAll(PDO::FETCH_ASSOC);
-
-// Obtener catálogo de regímenes fiscales
-$regimes_stmt = $conn->query("SELECT id, name FROM tax_regimes ORDER BY name");
-$tax_regimes = $regimes_stmt->fetchAll(PDO::FETCH_ASSOC);
-
-// Mostrar errores si existen
-$errors = [];
-if (isset($_SESSION['company_form_errors'])) {
-    $errors = $_SESSION['company_form_errors'];
-    unset($_SESSION['company_form_errors']);
-    
-    // Usar los datos enviados en lugar de los de la base de datos
-    if (isset($_SESSION['company_form_data'])) {
-        $company = $_SESSION['company_form_data'];
-        unset($_SESSION['company_form_data']);
-    }
-}
+// Obtener lista de empresas con su razón social
+$stmt = $conn->query("SELECT c.id, c.business_name, c.rfc, c.email, bt.name AS business_type, c.legal_representative FROM companies c JOIN business_types bt ON c.business_type_id = bt.id ORDER BY c.business_name");
+$companies = $stmt->fetchAll(PDO::FETCH_ASSOC);
 ?>
 
-<!-- Incluir hoja de estilos personalizada -->
-<link rel="stylesheet" href="/swift_invoice/assets/css/companies.css">
+<!DOCTYPE html>
+<html lang="es">
 
-<div class="card container">
-    <div class="card-header">
-        <h2 class="card-title">Datos de la Empresa</h2>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Empresas - Swift Invoice</title>
+    <!-- Bootstrap + DataTables CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css">
+    <!-- Estilos personalizados -->
+    <link rel="stylesheet" href="/swift_invoice/assets/css/tableCompanies.css">
+</head>
+
+<body>
+    <nav class="navbar navbar-expand navbar-custom py-2 sticky-top">
+        <div class="container-fluid">
+            <a class="navbar-brand navbar-brand-custom ms-3" href="/swift_invoice">SWIFT INVOICE</a>
+        </div>
+    </nav>
+
+    <div class="card-header d-flex justify-content-between align-items-center">
+        <h2 class="card-title">Empresas</h2>
+        <a href="create.php" class="btnAgregar">Agregar Empresa</a>
     </div>
-    
-    <div class="card-body">
+
+    <main class="container mt-4">
         <?php if (isset($_SESSION['success_message'])): ?>
-            <div class="alert alert-success"><?php echo $_SESSION['success_message']; unset($_SESSION['success_message']); ?></div>
-        <?php endif; ?>
-        
-        <?php if (isset($errors['general'])): ?>
-            <div class="alert alert-error"><?php echo $errors['general']; ?></div>
-        <?php endif; ?>
-        
-        <form method="POST" action="save.php" enctype="multipart/form-data">
-            <div class="row">
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label for="business_name">Nombre de la Empresa:</label>
-                        <input type="text" id="business_name" name="business_name" class="form-control" 
-                               value="<?php echo htmlspecialchars($company['business_name'] ?? ''); ?>" required>
-                        <?php if (isset($errors['business_name'])): ?>
-                            <span class="error-text"><?php echo $errors['business_name']; ?></span>
-                        <?php endif; ?>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="business_type_id">Razón Social:</label>
-                        <select id="business_type_id" name="business_type_id" class="form-control" required>
-                            <option value="">Seleccione una opción</option>
-                            <?php foreach ($business_types as $type): ?>
-                                <option value="<?php echo $type['id']; ?>"
-                                    <?php echo (isset($company['business_type_id']) && $company['business_type_id'] == $type['id']) ? 'selected' : ''; ?>>
-                                    <?php echo htmlspecialchars($type['name']); ?>
-                                </option>
-                            <?php endforeach; ?>
-                        </select>
-                        <?php if (isset($errors['business_type_id'])): ?>
-                            <span class="error-text"><?php echo $errors['business_type_id']; ?></span>
-                        <?php endif; ?>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="rfc">RFC:</label>
-                        <input type="text" id="rfc" name="rfc" class="form-control" 
-                               value="<?php echo htmlspecialchars($company['rfc'] ?? ''); ?>" required>
-                        <?php if (isset($errors['rfc'])): ?>
-                            <span class="error-text"><?php echo $errors['rfc']; ?></span>
-                        <?php endif; ?>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="fiscal_address">Dirección Fiscal:</label>
-                        <textarea id="fiscal_address" name="fiscal_address" class="form-control" 
-                                  rows="3" required><?php echo htmlspecialchars($company['fiscal_address'] ?? ''); ?></textarea>
-                        <?php if (isset($errors['fiscal_address'])): ?>
-                            <span class="error-text"><?php echo $errors['fiscal_address']; ?></span>
-                        <?php endif; ?>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="phone">Teléfono:</label>
-                        <input type="tel" id="phone" name="phone" class="form-control" 
-                               value="<?php echo htmlspecialchars($company['phone'] ?? ''); ?>">
-                    </div>
-                </div>
-                
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label for="email">Email:</label>
-                        <input type="email" id="email" name="email" class="form-control" 
-                               value="<?php echo htmlspecialchars($company['email'] ?? ''); ?>">
-                        <?php if (isset($errors['email'])): ?>
-                            <span class="error-text"><?php echo $errors['email']; ?></span>
-                        <?php endif; ?>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="tax_regime_id">Régimen Fiscal:</label>
-                        <select id="tax_regime_id" name="tax_regime_id" class="form-control" required>
-                            <option value="">Seleccione una opción</option>
-                            <?php foreach ($tax_regimes as $regime): ?>
-                                <option value="<?php echo $regime['id']; ?>"
-                                    <?php echo (isset($company['tax_regime_id']) && $company['tax_regime_id'] == $regime['id']) ? 'selected' : ''; ?>>
-                                    <?php echo htmlspecialchars($regime['name']); ?>
-                                </option>
-                            <?php endforeach; ?>
-                        </select>
-                        <?php if (isset($errors['tax_regime_id'])): ?>
-                            <span class="error-text"><?php echo $errors['tax_regime_id']; ?></span>
-                        <?php endif; ?>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="legal_representative">Representante Legal:</label>
-                        <input type="text" id="legal_representative" name="legal_representative" class="form-control" 
-                               value="<?php echo htmlspecialchars($company['legal_representative'] ?? ''); ?>">
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="logo">Logo:</label>
-                        <input type="file" id="logo" name="logo" class="form-control" accept="image/*">
-                        <?php if (isset($errors['logo'])): ?>
-                            <span class="error-text"><?php echo $errors['logo']; ?></span>
-                        <?php endif; ?>
-                        
-                        <?php if (!empty($company['logo_path'])): ?>
-                            <div class="current-logo mt-2">
-                                <p>Logo actual:</p>
-                                <img src="<?php echo '/swift_invoice/' . $company['logo_path']; ?>" 
-                                     alt="Logo de la empresa" style="max-width: 200px; max-height: 100px;">
-                            </div>
-                        <?php endif; ?>
-                    </div>
-                </div>
+            <div class="alert alert-success">
+                <?php echo $_SESSION['success_message']; unset($_SESSION['success_message']); ?>
             </div>
-            
-            <button type="submit" class="btn btn-success">Guardar Datos</button>
-        </form>
-    </div>
-</div>
+        <?php endif; ?>
+
+        <?php if (empty($companies)): ?>
+            <p>No hay empresas registradas.</p>
+        <?php else: ?>
+            <div class="table-responsive">
+                <table id="empresasTable" class="styled-table display nowrap">
+                    <thead>
+                        <tr>
+                            <th>Nombre</th>
+                            <th>RFC</th>
+                            <th>Email</th>
+                            <th>Razón Social</th>
+                            <th>Representante Legal</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php foreach ($companies as $company): ?>
+                            <tr>
+                                <td><?php echo htmlspecialchars($company['business_name']); ?></td>
+                                <td><?php echo htmlspecialchars($company['rfc']); ?></td>
+                                <td><?php echo htmlspecialchars($company['email']); ?></td>
+                                <td><?php echo htmlspecialchars($company['business_type']); ?></td>
+                                <td><?php echo htmlspecialchars($company['legal_representative']); ?></td>
+                                <td>
+                                    <div class="d-flex gap-2">
+                                        <a href="edit.php?id=<?php echo $company['id']; ?>" class="btnEdit">Editar</a>
+                                        <button class="btnDelete" onclick="confirmDelete(<?php echo $company['id']; ?>)">Eliminar</button>
+                                    </div>
+                                </td>
+                            </tr>
+                        <?php endforeach; ?>
+                    </tbody>
+                </table>
+            </div>
+        <?php endif; ?>
+
+        <div class="d-flex justify-content-start mt-4">
+            <a href="/swift_invoice/" class="btn btn-secondary">← Volver al inicio</a>
+        </div>
+    </main>
+
+    <!-- JS de jQuery + DataTables -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
+    <!-- SweetAlert -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <script>
+        $(document).ready(function () {
+            $('#empresasTable').DataTable({
+                language: {
+                    lengthMenu: "Mostrar _MENU_ registros",
+                    zeroRecords: "No se encontraron resultados",
+                    info: "Mostrando _START_ a _END_ de _TOTAL_ registros",
+                    infoEmpty: "Mostrando 0 a 0 de 0 registros",
+                    infoFiltered: "(filtrado de _MAX_ registros totales)",
+                    search: "Buscar:",
+                    paginate: {
+                        first: "Primero",
+                        previous: "Anterior",
+                        next: "Siguiente",
+                        last: "Último"
+                    }
+                }
+            });
+        });
+
+        function confirmDelete(companyId) {
+            Swal.fire({
+                title: '¿Eliminar empresa?',
+                text: 'Esta acción no se puede deshacer.',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#6c757d',
+                confirmButtonText: 'Eliminar',
+                cancelButtonText: 'Cancelar'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    const form = document.createElement('form');
+                    form.method = 'POST';
+                    form.action = 'delete.php';
+
+                    const input = document.createElement('input');
+                    input.type = 'hidden';
+                    input.name = 'id';
+                    input.value = companyId;
+
+                    form.appendChild(input);
+                    document.body.appendChild(form);
+                    form.submit();
+                }
+            });
+        }
+    </script>
+</body>
+</html>
 
 <?php
 require_once '../../includes/footer.php';

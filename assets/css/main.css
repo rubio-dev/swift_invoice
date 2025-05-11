@@ -1,4 +1,3 @@
-/* assets/css/main.css */
 :root {
     --primary: #2563eb;
     --primary-dark: #1d4ed8;
@@ -32,7 +31,7 @@ body {
 .logout-floating {
     position: fixed;
     top: 0.25rem;
-    right: 0; /* Cero píxeles de margen derecho */
+    right: 0;
     z-index: 100;
 }
 
@@ -44,13 +43,13 @@ body {
     width: 28px;
     height: 28px;
     background: rgba(239, 68, 68, 0.07);
-    border-radius: 50% 0 0 50%; /* Redondeo solo en lado izquierdo */
+    border-radius: 50% 0 0 50%;
     text-decoration: none;
     color: var(--text-light);
     border: 1px solid rgba(239, 68, 68, 0.08);
-    border-right: none; /* Sin borde en el lado derecho */
+    border-right: none;
     transition: all 0.2s ease;
-    box-shadow: -2px 1px 3px rgba(0, 0, 0, 0.05); /* Sombra solo en izquierda */
+    box-shadow: -2px 1px 3px rgba(0, 0, 0, 0.05);
 }
 
 .logout-btn:hover {
@@ -61,14 +60,13 @@ body {
 }
 
 .logout-icon {
-    font-size: 0.8rem; /* Icono más pequeño */
+    font-size: 0.8rem;
 }
 
 .logout-text {
     display: none;
 }
 
-/* Versión móvil */
 @media (max-width: 768px) {
     .logout-floating {
         top: 0.2rem;
@@ -79,4 +77,68 @@ body {
         width: 24px;
         height: 24px;
     }
+}
+
+/* ========================= */
+/* Tarjetas del dashboard ✨ */
+/* ========================= */
+
+.quick-actions {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+    padding: 2rem 1rem;
+}
+
+.action-card {
+    background-color: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 1rem;
+    box-shadow: var(--shadow);
+    text-decoration: none;
+    color: var(--text);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 1.5rem;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    position: relative;
+}
+
+.action-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.25);
+    border-color: var(--primary);
+}
+
+.card-icon-container {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+    color: var(--primary);
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+.card-title {
+    font-size: 1.3rem;
+    font-weight: 700;
+    margin: 0;
+    margin-bottom: 0.5rem;
+}
+
+.card-description {
+    font-size: 1rem;
+    color: var(--text-light);
+    margin-bottom: 1.5rem;
+}
+
+.card-link {
+    font-weight: 600;
+    color: var(--secondary);
+    font-size: 0.95rem;
+    margin-top: auto;
+    transition: color 0.2s ease;
+}
+
+.action-card:hover .card-link {
+    color: var(--primary);
 }

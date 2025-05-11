@@ -1,6 +1,4 @@
-/* assets/css/dashboard-dark.css */
 :root {
-    /* Colores principales */
     --primary: #2563eb;
     --primary-dark: #1d4ed8;
     --primary-light: rgba(37, 99, 235, 0.1);
@@ -10,7 +8,7 @@
     --text-lighter: #6b7280;
     --bg-dark: #0f172a;
     --bg-darker: #020617;
-    --card-bg: #1e293b; 
+    --card-bg: #1e293b;
     --card-hover: #334155;
     --border-dark: #334155;
     --border-light: #475569;
@@ -18,24 +16,23 @@
     --success: #10b981;
     --warning: #f59e0b;
     --purple: #8b5cf6;
-    
-    /* Sombras y efectos */
     --shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3), 0 4px 6px -4px rgba(0, 0, 0, 0.3);
     --shadow-hover: 0 20px 25px -5px rgba(0, 0, 0, 0.4), 0 10px 10px -5px rgba(0, 0, 0, 0.2);
     --glow: 0 0 15px rgba(59, 130, 246, 0.4);
-    
-    /* Transiciones */
     --transition-smooth: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
     --transition-bounce: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    
-    /* Bordes redondeados */
     --radius-sm: 0.5rem;
     --radius-md: 1rem;
     --radius-lg: 1.5rem;
     --radius-xl: 2rem;
 }
 
-/* Estructura principal -- Mejorada con animación */
+/* Fade-in animation */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
 .dashboard-container {
     margin: 0 auto;
     padding: 2.5rem 1.5rem;
@@ -45,12 +42,7 @@
     animation: fadeIn 0.6s ease-out forwards;
 }
 
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(10px); }
-    to { opacity: 1; transform: translateY(0); }
-}
-
-/* Banner de bienvenida - Mejorado */
+/* Banner */
 .welcome-banner {
     text-align: center;
     margin-bottom: 3rem;
@@ -131,15 +123,13 @@
 .welcome-message {
     font-size: 1.25rem;
     color: var(--text-light);
-    margin-bottom: 0;
+    margin: 0 auto;
     line-height: 1.6;
     max-width: 700px;
-    margin-left: auto;
-    margin-right: auto;
     position: relative;
 }
 
-/* Tarjetas de acción - Mejoradas */
+/* Tarjetas */
 .quick-actions {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -150,7 +140,7 @@
 .action-card {
     background: var(--card-bg);
     border-radius: var(--radius-lg);
-    padding: 2rem;
+    padding: 2.25rem 2rem;
     text-decoration: none;
     box-shadow: var(--shadow);
     transition: var(--transition-bounce);
@@ -197,7 +187,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-bottom: 1.75rem;
+    margin-bottom: 2.2rem;
     font-size: 2rem;
     background: rgba(37, 99, 235, 0.15);
     transition: var(--transition-bounce);
@@ -218,9 +208,9 @@
 }
 
 .card-title {
-    font-size: 1.5rem;
+    font-size: 1.6rem;
     color: var(--text);
-    margin-bottom: 0.75rem;
+    margin-bottom: 1rem;
     font-weight: 700;
     letter-spacing: -0.25px;
     position: relative;
@@ -244,20 +234,21 @@
 
 .card-description {
     color: var(--text-light);
-    font-size: 1rem;
-    line-height: 1.6;
-    margin-bottom: 1.75rem;
+    font-size: 1.05rem;
+    margin-bottom: 2rem;
+    line-height: 1.7;
 }
 
 .card-link {
     color: var(--secondary);
     font-weight: 600;
-    font-size: 0.95rem;
+    font-size: 1rem;
     display: inline-flex;
     align-items: center;
     gap: 0.5rem;
     transition: var(--transition-smooth);
     position: relative;
+    padding-top: 0.25rem;
 }
 
 .card-link::after {
@@ -280,7 +271,7 @@
     width: 100%;
 }
 
-/* Tooltips para iconos */
+/* Tooltips */
 [data-tooltip] {
     position: relative;
     cursor: pointer;
@@ -308,7 +299,7 @@
     visibility: visible;
 }
 
-/* Estilos para los gráficos del dashboard */
+/* Contenedor de gráficos */
 .chart-container {
     margin-top: 3rem;
     background: var(--card-bg);

@@ -14,7 +14,6 @@
     --shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
 
-/* Estilo general */
 body {
     background-color: var(--bg-dark);
     color: var(--text);
@@ -22,7 +21,7 @@ body {
     margin: 0;
 }
 
-/* Encabezado de la tarjeta */
+/* Encabezado */
 .card-header {
     background: linear-gradient(to right, var(--primary), var(--secondary));
     color: white;
@@ -33,25 +32,24 @@ body {
 
 .card-title {
     font-size: 2rem;
-    margin: 0;
     font-weight: bold;
+    margin: 0;
 }
 
-/* Tabla de DataTables */
+/* Tabla */
 .styled-table {
     width: 100%;
     border-collapse: collapse;
-    border-radius: var(--radius);
-    overflow: hidden;
     background-color: var(--card-bg);
     color: var(--text);
+    border-radius: var(--radius);
+    overflow: hidden;
 }
 
 .styled-table th,
 .styled-table td {
     padding: 0.75rem 1rem;
     border: 1px solid var(--border);
-    text-align: left;
 }
 
 .styled-table thead {
@@ -77,37 +75,18 @@ body {
     font-weight: 600;
     border: none;
     cursor: pointer;
-    transition: 0.2s ease-in-out;
     text-decoration: none;
     display: inline-block;
+    transition: 0.2s ease-in-out;
 }
 
-.btnAgregar {
-    background: var(--success);
-    color: white;
-}
+.btnAgregar { background: var(--success); color: white; }
+.btnEdit { background: var(--primary); color: white; }
+.btnDelete { background: var(--danger); color: white; }
 
-.btnEdit {
-    background: var(--primary);
-    color: white;
-}
-
-.btnDelete {
-    background: var(--danger);
-    color: white;
-}
-
-.btnAgregar:hover {
-    background: #059669;
-}
-
-.btnEdit:hover {
-    background: var(--primary-dark);
-}
-
-.btnDelete:hover {
-    background: #b91c1c;
-}
+.btnAgregar:hover { background: #059669; }
+.btnEdit:hover { background: var(--primary-dark); }
+.btnDelete:hover { background: #b91c1c; }
 
 /* Alertas */
 .alert-success {
@@ -116,26 +95,25 @@ body {
     padding: 1rem;
     margin-bottom: 1.5rem;
     border-radius: var(--radius);
-    box-shadow: var(--shadow);
 }
 
-/* DataTables custom */
-.dataTables_wrapper .dataTables_filter input {
+/* DataTables */
+.dataTables_wrapper .dataTables_filter input,
+.dataTables_wrapper .dataTables_length select {
     background-color: var(--bg-dark);
     border: 1px solid var(--border);
     color: var(--text);
-    padding: 0.5rem;
+    padding: 0.4rem;
     border-radius: var(--radius);
 }
 
-.dataTables_wrapper .dataTables_length select,
 .dataTables_wrapper .dataTables_paginate .paginate_button {
     background-color: var(--bg-dark);
-    color: var(--text);
     border: 1px solid var(--border);
+    color: var(--text);
+    padding: 0.4rem 0.6rem;
     border-radius: var(--radius);
-    padding: 0.4rem;
-    margin: 0 0.25rem;
+    margin: 0 0.2rem;
 }
 
 .dataTables_wrapper .dataTables_paginate .paginate_button.current {
@@ -146,5 +124,4 @@ body {
 
 .dataTables_wrapper .dataTables_info {
     color: var(--text-light);
-    margin-top: 1rem;
 }
