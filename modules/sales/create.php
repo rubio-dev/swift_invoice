@@ -131,8 +131,11 @@ $totals = calculateSaleTotals($sale_products);
                                     <td>$<?php echo number_format($product['price'], 2); ?></td>
                                     <td><?php echo $product['quantity']; ?></td>
                                     <td>$<?php echo number_format($product['price'] * $product['quantity'], 2); ?></td>
-                                    <td>
+                                    <td> 
+                                      <div class="d-flex gap-2">
+                                        <button type="button" class="btn btn-warning btn-sm edit-product me-1">Editar</button>
                                         <button type="button" class="btn btn-danger btn-sm remove-product">Eliminar</button>
+                                     </div>
                                         <input type="hidden" name="products[<?php echo $index; ?>][id]" value="<?php echo $product['id']; ?>">
                                         <input type="hidden" name="products[<?php echo $index; ?>][name]" value="<?php echo htmlspecialchars($product['name']); ?>">
                                         <input type="hidden" name="products[<?php echo $index; ?>][price]" value="<?php echo $product['price']; ?>">
