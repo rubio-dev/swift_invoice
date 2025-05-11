@@ -3,7 +3,7 @@ require_once '../../config/setup.php';
 requireAuth();
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['id'])) {
-    $companyId = intval($_POST['id']);
+    $companyId = $_POST['id'];
 
     $db = new Database();
     $conn = $db->connect();
@@ -18,7 +18,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['id'])) {
             $_SESSION['success_message'] = "Error al eliminar la empresa.";
         }
     } catch (PDOException $e) {
-        $_SESSION['success_message'] = "Error en la base de datos: " . $e->getMessage();
+        $_SESSION['success_message'] = "Error al eliminar la empresa: " . $e->getMessage();
     }
 }
 

@@ -1,0 +1,164 @@
+:root {
+    --primary: #2563eb;
+    --primary-dark: #1d4ed8;
+    --secondary: #0ea5e9;
+    --text: #e5e7eb;
+    --text-light: #9ca3af;
+    --bg-dark: #0f172a;
+    --card-bg: #1e293b;
+    --card-hover: #334155;
+    --border-dark: #334155;
+    --success: #10b981;
+    --danger: #ef4444;
+    --radius-sm: 0.5rem;
+    --radius-md: 1rem;
+    --shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3), 0 4px 6px -4px rgba(0, 0, 0, 0.3);
+}
+
+/* General */
+body {
+    background-color: var(--bg-dark);
+    color: var(--text);
+    font-family: 'Inter', sans-serif;
+}
+
+/* Botón regresar */
+.btn-container {
+    margin: 1.5rem 0 1rem 0;
+}
+
+.btn-back {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background-color: var(--border-dark);
+    color: white;
+    font-size: 0.95rem;
+    font-weight: 600;
+    padding: 0.5rem 1rem;
+    border-radius: var(--radius-sm);
+    text-decoration: none;
+    box-shadow: var(--shadow);
+    transition: background-color 0.3s ease;
+}
+
+.btn-back:hover {
+    background-color: var(--card-hover);
+    text-decoration: none;
+}
+
+/* Tarjeta */
+.card {
+    background-color: var(--card-bg);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow);
+    margin-top: 2rem;
+    padding: 1.5rem;
+}
+
+/* Encabezado */
+.card-header {
+    background: linear-gradient(to right, var(--primary), var(--secondary));
+    color: white;
+    padding: 1rem;
+    border-top-left-radius: var(--radius-md);
+    border-top-right-radius: var(--radius-md);
+}
+
+.card-title {
+    font-size: 2rem;
+    font-weight: 700;
+    margin: 0;
+}
+
+/* Cuerpo de tarjeta */
+.card-body {
+    color: var(--text);
+}
+
+/* Tabla */
+.table-responsive {
+    margin-top: 1rem;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: var(--card-bg);
+    color: var(--text);
+}
+
+table th,
+table td {
+    padding: 0.75rem;
+    border-bottom: 1px solid var(--border-dark);
+    text-align: left;
+    background-color: transparent;
+}
+
+table thead {
+    background: linear-gradient(to right, var(--primary), var(--secondary));
+    color: white;
+}
+
+.table-striped tbody tr:nth-of-type(odd) {
+    background-color: rgba(255, 255, 255, 0.03);
+}
+
+.table-striped tbody tr:hover {
+    background-color: var(--card-hover);
+}
+
+/* Botones */
+.btn {
+    display: inline-block;
+    padding: 0.4rem 1rem;
+    border-radius: var(--radius-sm);
+    text-decoration: none;
+    font-weight: 600;
+    transition: 0.3s ease;
+}
+
+.btn-sm {
+    font-size: 0.9rem;
+    padding: 0.3rem 0.8rem;
+}
+
+.btn-primary {
+    background-color: var(--primary);
+    color: white;
+}
+
+.btn-primary:hover {
+    background-color: var(--primary-dark);
+}
+
+.btn-secondary {
+    background-color: var(--border-dark);
+    color: white;
+}
+
+.btn-secondary:hover {
+    background-color: var(--card-hover);
+}
+
+/* Alerta de éxito */
+.alert-success {
+    background-color: var(--success);
+    color: white;
+    padding: 0.75rem;
+    border-radius: var(--radius-sm);
+    margin-bottom: 1rem;
+}
+
+/* Asegurar visibilidad general */
+.card-body,
+.card-header,
+.card,
+table,
+table th,
+table td,
+p,
+h2 {
+    color: var(--text);
+}
