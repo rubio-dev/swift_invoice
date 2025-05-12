@@ -1,25 +1,5 @@
--- phpMyAdmin SQL Dump
--- version 5.2.1
--- https://www.phpmyadmin.net/
---
--- Servidor: localhost
--- Tiempo de generación: 12-05-2025 a las 05:34:27
--- Versión del servidor: 10.4.32-MariaDB
--- Versión de PHP: 8.2.12
-
-SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-START TRANSACTION;
-SET time_zone = "+00:00";
-
-
-/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
-/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
-/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8mb4 */;
-
---
--- Base de datos: `swift_invoice_db`
---
+CREATE DATABASE IF NOT EXISTS `swift_invoice_db` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
+USE `swift_invoice_db`;
 
 -- --------------------------------------------------------
 
@@ -71,7 +51,8 @@ CREATE TABLE `clients` (
 --
 
 INSERT INTO `clients` (`id`, `first_name`, `last_name`, `mother_last_name`, `phone`, `email`, `rfc`, `address`, `created_at`) VALUES
-(2, 'Panfilomeno', 'Momichis', 'Insano', '6624560923', 'momichiscorp@gmail.com', 'MOM123124215', 'AV DEL PARQUE S/N MESA DE OTAY, 22430, TIJUANA, BC, MEXICO.', '2025-05-10 03:54:57');
+(2, 'PANFILOMENO', 'MOMICHIS', 'INSANO', '6624560923', 'momichiscorjjp@gmail.com', 'MOM123124215', 'AV DEL PARQUE S/N MESA DE OTAY, 22430, TIJUANA, BC, MEXICO.', '2025-05-10 03:54:57'),
+(3, 'JUAN', 'TORRES', 'VASQUEZ', '6641234567', 'jtorres@gmail.com', 'JAM123124213', 'COL LAS TORRES, 22476. TIJUANA, BAJA CALIFORNIA.', '2025-05-11 05:20:52');
 
 -- --------------------------------------------------------
 
@@ -98,7 +79,7 @@ CREATE TABLE `companies` (
 --
 
 INSERT INTO `companies` (`id`, `business_name`, `rfc`, `fiscal_address`, `phone`, `email`, `legal_representative`, `logo_path`, `created_at`, `business_type_id`, `tax_regime_id`) VALUES
-(2, 'Camiones Azul con Blanco', 'CAM212512312', 'Calle Benito Juárez 2da, 8107 (Tijuana)', '6629851234', 'camionesazul@gmail.com', 'Momichis Tilin', NULL, '2025-05-11 02:46:15', 1, 7);
+(1, 'Los Pollos Hermanos', 'JFDKJKSJF3322', 'DSJFKDSJFD F DKFKDS FKJDS JKFS', '6641234567', 'jesus@gmail.com', 'hjhjhj', NULL, '2025-05-11 04:51:58', 10, 4);
 
 -- --------------------------------------------------------
 
@@ -198,7 +179,11 @@ CREATE TABLE `sales` (
 --
 
 INSERT INTO `sales` (`id`, `client_id`, `sale_date`, `subtotal`, `tax_percentage`, `tax_amount`, `total`, `created_at`, `client_type`) VALUES
-(1, 2, '2025-05-10', 1824.00, 16.00, 291.84, 2115.84, '2025-05-10 04:26:33', 'person');
+(4, 2, '2025-05-11', 430.00, 16.00, 68.80, 498.80, '2025-05-11 21:46:22', 'person'),
+(30, 2, '2025-05-11', 120.00, 16.00, 19.20, 139.20, '2025-05-12 04:46:51', 'person'),
+(32, 1, '2025-05-12', 53.50, 16.00, 8.56, 62.06, '2025-05-12 04:52:47', 'company'),
+(33, 1, '2025-05-12', 15.00, 16.00, 2.40, 17.40, '2025-05-12 04:55:13', 'company'),
+(34, 1, '2025-05-13', 70.00, 16.00, 11.20, 81.20, '2025-05-12 22:16:56', 'company');
 
 -- --------------------------------------------------------
 
@@ -220,8 +205,14 @@ CREATE TABLE `sale_details` (
 --
 
 INSERT INTO `sale_details` (`id`, `sale_id`, `product_id`, `quantity`, `unit_price`, `subtotal`) VALUES
-(1, 1, 12, 3, 600.00, 1800.00),
-(2, 1, 27, 1, 24.00, 24.00);
+(62, 4, 39, 1, 70.00, 70.00),
+(63, 4, 33, 1, 120.00, 120.00),
+(64, 4, 33, 2, 120.00, 240.00),
+(65, 30, 33, 1, 120.00, 120.00),
+(67, 32, 36, 2, 15.00, 30.00),
+(68, 32, 26, 1, 23.50, 23.50),
+(69, 33, 36, 1, 15.00, 15.00),
+(72, 34, 39, 1, 70.00, 70.00);
 
 -- --------------------------------------------------------
 
@@ -272,7 +263,9 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `username`, `password`, `first_name`, `last_name`, `phone`, `email`, `created_at`) VALUES
-(3, 'admin', '$2y$10$s1Xs.yQ5SXvgnBh0oX7w3e/M4pvRt9ufsCXTQ2mMoeIeoVu6Tg.pW', 'Admin', 'Invoice', '6631234567', 'l22211924@tectijuana.edu.mx', '2025-05-10 03:46:59');
+(3, 'admin', '$2y$10$s1Xs.yQ5SXvgnBh0oX7w3e/M4pvRt9ufsCXTQ2mMoeIeoVu6Tg.pW', 'Admin', 'Invoice', '6631234567', 'l22211924@tectijuana.edu.mx', '2025-05-10 03:46:59'),
+(4, 'jesus', '$2y$10$nH3qFu286z1OreJ5z9SgkOWR6D5qPwpK9Lyt5SqjEAH7H9UasE4Te', 'jesus', 'triana', '6641234567', 'jesus@gmail.com', '2025-05-11 04:49:53'),
+(5, 'ladoblep', '$2y$10$gfRkLreaITxY9zI56O08JOg5YrLZZ6XgabcyYTOHhUGIRWvCErjLW', 'Peso', 'Pluma', '6641234567', 'pesopluma@gmail.com', '2025-05-11 05:26:08');
 
 --
 -- Índices para tablas volcadas
@@ -318,8 +311,7 @@ ALTER TABLE `products`
 -- Indices de la tabla `sales`
 --
 ALTER TABLE `sales`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `client_id` (`client_id`);
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indices de la tabla `sale_details`
@@ -357,13 +349,13 @@ ALTER TABLE `business_types`
 -- AUTO_INCREMENT de la tabla `clients`
 --
 ALTER TABLE `clients`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT de la tabla `companies`
 --
 ALTER TABLE `companies`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT de la tabla `invoices`
@@ -381,13 +373,13 @@ ALTER TABLE `products`
 -- AUTO_INCREMENT de la tabla `sales`
 --
 ALTER TABLE `sales`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=35;
 
 --
 -- AUTO_INCREMENT de la tabla `sale_details`
 --
 ALTER TABLE `sale_details`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=73;
 
 --
 -- AUTO_INCREMENT de la tabla `tax_regimes`
@@ -399,7 +391,7 @@ ALTER TABLE `tax_regimes`
 -- AUTO_INCREMENT de la tabla `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- Restricciones para tablas volcadas
@@ -419,12 +411,6 @@ ALTER TABLE `invoices`
   ADD CONSTRAINT `invoices_ibfk_1` FOREIGN KEY (`sale_id`) REFERENCES `sales` (`id`);
 
 --
--- Filtros para la tabla `sales`
---
-ALTER TABLE `sales`
-  ADD CONSTRAINT `sales_ibfk_1` FOREIGN KEY (`client_id`) REFERENCES `clients` (`id`);
-
---
 -- Filtros para la tabla `sale_details`
 --
 ALTER TABLE `sale_details`
@@ -432,6 +418,3 @@ ALTER TABLE `sale_details`
   ADD CONSTRAINT `sale_details_ibfk_2` FOREIGN KEY (`product_id`) REFERENCES `products` (`id`);
 COMMIT;
 
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
