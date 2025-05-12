@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: localhost
--- Tiempo de generación: 10-05-2025 a las 20:41:46
+-- Tiempo de generación: 12-05-2025 a las 05:34:27
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -92,6 +92,13 @@ CREATE TABLE `companies` (
   `business_type_id` int(11) DEFAULT NULL,
   `tax_regime_id` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `companies`
+--
+
+INSERT INTO `companies` (`id`, `business_name`, `rfc`, `fiscal_address`, `phone`, `email`, `legal_representative`, `logo_path`, `created_at`, `business_type_id`, `tax_regime_id`) VALUES
+(2, 'Camiones Azul con Blanco', 'CAM212512312', 'Calle Benito Juárez 2da, 8107 (Tijuana)', '6629851234', 'camionesazul@gmail.com', 'Momichis Tilin', NULL, '2025-05-11 02:46:15', 1, 7);
 
 -- --------------------------------------------------------
 
@@ -182,15 +189,16 @@ CREATE TABLE `sales` (
   `tax_percentage` decimal(5,2) NOT NULL,
   `tax_amount` decimal(10,2) NOT NULL,
   `total` decimal(10,2) NOT NULL,
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `client_type` enum('person','company') NOT NULL DEFAULT 'person'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Volcado de datos para la tabla `sales`
 --
 
-INSERT INTO `sales` (`id`, `client_id`, `sale_date`, `subtotal`, `tax_percentage`, `tax_amount`, `total`, `created_at`) VALUES
-(1, 2, '2025-05-10', 1824.00, 16.00, 291.84, 2115.84, '2025-05-10 04:26:33');
+INSERT INTO `sales` (`id`, `client_id`, `sale_date`, `subtotal`, `tax_percentage`, `tax_amount`, `total`, `created_at`, `client_type`) VALUES
+(1, 2, '2025-05-10', 1824.00, 16.00, 291.84, 2115.84, '2025-05-10 04:26:33', 'person');
 
 -- --------------------------------------------------------
 
@@ -355,7 +363,7 @@ ALTER TABLE `clients`
 -- AUTO_INCREMENT de la tabla `companies`
 --
 ALTER TABLE `companies`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT de la tabla `invoices`
