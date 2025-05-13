@@ -21,7 +21,7 @@ require_once 'includes/header.php';
     </div>
     
     <div class="quick-actions">
-        <a href="/swift_invoice/modules/sales/" class="action-card sales">
+        <a href="/swift_invoice/modules/sales/" class="action-card sales" style="--order: 1;">
             <div class="card-icon-container">
                 <span class="card-icon">💼</span>
             </div>
@@ -32,7 +32,7 @@ require_once 'includes/header.php';
             </div>
         </a>
         
-        <a href="/swift_invoice/modules/clients/" class="action-card clients">
+        <a href="/swift_invoice/modules/clients/" class="action-card clients" style="--order: 2;">
             <div class="card-icon-container">
                 <span class="card-icon">👥</span>
             </div>
@@ -43,7 +43,7 @@ require_once 'includes/header.php';
             </div>
         </a>
         
-        <a href="/swift_invoice/modules/invoices/" class="action-card invoices">
+        <a href="/swift_invoice/modules/invoices/" class="action-card invoices" style="--order: 3;">
             <div class="card-icon-container">
                 <span class="card-icon">📋</span>
             </div>
@@ -54,7 +54,7 @@ require_once 'includes/header.php';
             </div>
         </a>
         
-        <a href="/swift_invoice/modules/company/" class="action-card company">
+        <a href="/swift_invoice/modules/company/" class="action-card company" style="--order: 4;">
             <div class="card-icon-container">
                 <span class="card-icon">🏛️</span>
             </div>
@@ -68,12 +68,11 @@ require_once 'includes/header.php';
     
     <div class="dashboard-footer">
         <div class="footer-content">
+            <!-- Aquí podrías agregar un copyright -->
         </div>
     </div>
 </div>
 
 <?php
 require_once 'includes/footer.php';
-
-// Tester desde Linux, amen 
 ?>
