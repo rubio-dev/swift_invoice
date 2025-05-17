@@ -24,7 +24,6 @@ body, .dashboard-container {
     padding: 2.5rem 1.5rem 3rem;
 }
 
-/* Banner de bienvenida */
 .welcome-banner {
     text-align: center;
     margin-bottom: 3rem;
@@ -53,49 +52,48 @@ body, .dashboard-container {
 }
 .welcome-message { color: var(--text-light); }
 
-/* Carrusel de 3 tarjetas */
+/* Carrusel estático de 3 tarjetas */
 .carousel {
     width: 100%;
-    max-width: 1100px;
+    max-width: 1200px;
     margin: 2.5rem auto;
     position: relative;
     display: flex;
     justify-content: center;
     align-items: center;
-    min-height: 410px;
+    min-height: 420px;
 }
 .carousel-track {
     display: flex;
     justify-content: center;
     align-items: stretch;
     width: 100%;
-    transition: none;
+    gap: 2.2rem;
     pointer-events: none;
 }
 
-/* Tarjeta base - Ocultas por default, solo visibles las de los lados y la activa */
+/* Tarjetas (solo tres siempre) */
 .action-card {
-    min-width: 340px;
+    min-width: 370px;
     max-width: 370px;
-    margin: 0 1.2rem;
     background: var(--card-bg);
     border-radius: var(--radius-lg);
     padding: 2.2rem 2rem;
     text-decoration: none;
     box-shadow: var(--shadow);
-    display: none; /* Solo .active/.prev/.next se muestran */
+    display: flex;
     flex-direction: column;
     border: none;
     opacity: 0;
-    transform: scale(0.85);
-    transition: opacity 0.4s, transform 0.4s, box-shadow 0.4s, background 0.4s;
+    transform: scale(0.87);
+    transition: opacity 0.5s, transform 0.5s, box-shadow 0.5s, background 0.5s;
     z-index: 1;
     pointer-events: none;
+    position: relative;
 }
 
-/* Central - Activa */
+/* Central: activa, siempre centrada y resaltada */
 .action-card.active {
-    display: flex !important;
     opacity: 1;
     transform: scale(1.07);
     box-shadow: 0 16px 38px 0 rgba(37,99,235,0.21), 0 0 0 2.2px var(--primary);
@@ -104,17 +102,16 @@ body, .dashboard-container {
     pointer-events: auto;
 }
 
-/* Laterales */
+/* Laterales (prev y next) */
 .action-card.prev,
 .action-card.next {
-    display: flex !important;
-    opacity: 0.6;
+    opacity: 0.63;
     transform: scale(0.93);
     z-index: 2;
     pointer-events: none;
 }
 
-/* El resto: ni se ve */
+/* Seguridad: ocultar si JS la llega a dejar en blanco */
 .action-card:not(.active):not(.prev):not(.next) {
     display: none !important;
     opacity: 0;
@@ -173,6 +170,7 @@ body, .dashboard-container {
 
 @media (max-width: 900px) {
     .carousel { max-width: 98vw; min-height: 260px; }
+    .carousel-track { gap: 0.7rem; }
     .action-card, .carousel-track .action-card {
         min-width: 80vw;
         max-width: 92vw;
