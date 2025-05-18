@@ -8,6 +8,7 @@ $conn = $db->connect();
 $errors = [];
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    // Recoger y sanitizar datos
     $company_id = isset($_POST['company_id']) ? (int) $_POST['company_id'] : null;
     $business_name = trim($_POST['business_name']);
     $rfc = trim($_POST['rfc']);
@@ -15,8 +16,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $phone = trim($_POST['phone'] ?? '');
     $email = trim($_POST['email'] ?? '');
     $legal_representative = trim($_POST['legal_representative'] ?? '');
-    $business_type_id = (int) $_POST['business_type_id'];
-    $tax_regime_id = (int) $_POST['tax_regime_id'];
+    $business_type_id = isset($_POST['business_type_id']) ? (int) $_POST['business_type_id'] : 0;
+    $tax_regime_id = isset($_POST['tax_regime_id']) ? (int) $_POST['tax_regime_id'] : 0;
+
+    // Convertir a mayúsculas los campos clave
+    $business_name = mb_strtoupper($business_name, 'UTF-8');
+    $rfc = mb_strtoupper($rfc, 'UTF-8');
+    $fiscal_address = mb_strtoupper($fiscal_address, 'UTF-8');
+    $legal_representative = mb_strtoupper($legal_representative, 'UTF-8');
 
     // Validaciones
     if (empty($business_name)) {
@@ -68,10 +75,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             if ($stmt->execute()) {
                 $_SESSION['success_message'] = $company_id ? 'Empresa actualizada correctamente.' : 'Empresa creada correctamente.';
-                $redirect_url = $company_id ? "/swift_invoice/modules/company/edit.php?id=$company_id" : "/swift_invoice/modules/company/create.php";
-                redirect($redirect_url);
+                // Redirige al índice
+                redirect('/swift_invoice/modules/company/index.php');
             } else {
                 $_SESSION['company_save_error'] = 'Error al guardar la empresa. Intente nuevamente.';
+                if ($company_id) {
+                    redirect('/swift_invoice/modules/company/edit.php?id=' . $company_id);
+                } else {
+                    redirect('/swift_invoice/modules/company/create.php');
+                }
             }
         } catch (PDOException $e) {
             if ($e->getCode() == 23000) {
@@ -79,10 +91,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             } else {
                 $_SESSION['company_save_error'] = 'Error de base de datos: ' . $e->getMessage();
             }
+            if ($company_id) {
+                redirect('/swift_invoice/modules/company/edit.php?id=' . $company_id);
+            } else {
+                redirect('/swift_invoice/modules/company/create.php');
+            }
         }
     }
 
-    // Si hay errores, guardar en sesión
+    // Si hay errores, guardar en sesión y regresar al formulario
     if (!empty($errors)) {
         $company = [
             'business_name' => $business_name,
@@ -107,3 +124,4 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 } else {
     redirect('/swift_invoice/modules/company/');
 }
+?>
