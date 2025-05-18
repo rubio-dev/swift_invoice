@@ -94,7 +94,7 @@ $sale_details = $detailStmt->fetchAll(PDO::FETCH_ASSOC);
           </div>
         </div>
 
-        <h5>Productos</h5>
+        <h5>Productos / Servicios</h5>
         <?php if (empty($sale_details)): ?>
           <p>No hay productos registrados para esta venta.</p>
         <?php else: ?>
@@ -102,10 +102,12 @@ $sale_details = $detailStmt->fetchAll(PDO::FETCH_ASSOC);
             <table class="table table-striped table-bordered">
               <thead class="table-dark">
                 <tr>
-                  <th>Producto</th>
+                  <th>Producto / Servicio</th>
                   <th>Precio Unitario</th>
                   <th>Cantidad</th>
+                  <th>Impuesto</th>
                   <th>Subtotal</th>
+                  <th>Total con Impuesto</th>
                 </tr>
               </thead>
               <tbody>
@@ -114,7 +116,14 @@ $sale_details = $detailStmt->fetchAll(PDO::FETCH_ASSOC);
                     <td><?php echo htmlspecialchars($detail['product_name']); ?></td>
                     <td>$<?php echo number_format($detail['unit_price'], 2); ?></td>
                     <td><?php echo htmlspecialchars($detail['quantity']); ?></td>
+                    <td><?php echo number_format($detail['tax_rate'], 2); ?>%</td>
                     <td>$<?php echo number_format($detail['subtotal'], 2); ?></td>
+                    <td>
+                      $<?php
+                        $line_total = $detail['subtotal'] + ($detail['subtotal'] * ($detail['tax_rate'] / 100));
+                        echo number_format($line_total, 2);
+                      ?>
+                    </td>
                   </tr>
                 <?php endforeach; ?>
               </tbody>

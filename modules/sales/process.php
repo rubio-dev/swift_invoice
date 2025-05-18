@@ -90,12 +90,12 @@ try {
         $sale_id = $conn->lastInsertId();
     }
 
-    // 3) Insertar detalles nuevos
+    // 3) Insertar detalles nuevos (incluyendo tax_rate)
     $detailStmt = $conn->prepare("
         INSERT INTO sale_details
-            (sale_id, product_id, quantity, unit_price, subtotal)
+            (sale_id, product_id, quantity, unit_price, subtotal, tax_rate)
         VALUES
-            (:sale_id, :product_id, :quantity, :unit_price, :subtotal)
+            (:sale_id, :product_id, :quantity, :unit_price, :subtotal, :tax_rate)
     ");
     foreach ($_POST['products'] as $p) {
         $detailStmt->execute([
@@ -103,7 +103,8 @@ try {
             ':product_id'  => $p['id'],
             ':quantity'    => $p['quantity'],
             ':unit_price'  => $p['price'],
-            ':subtotal'    => $p['price'] * $p['quantity']
+            ':subtotal'    => $p['price'] * $p['quantity'],
+            ':tax_rate'    => isset($p['tax_rate']) ? $p['tax_rate'] : 0.00
         ]);
     }
 
@@ -130,3 +131,4 @@ try {
     }
     redirect('/swift_invoice/modules/sales/create.php');
 }
+?>

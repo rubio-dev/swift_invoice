@@ -7,7 +7,6 @@ require_once 'functions.php';
 unset($_SESSION['sale_products']);
 
 $page_title = "Nueva Venta - Swift Invoice";
-$custom_js  = '/swift_invoice/assets/js/sales.js';
 require_once '../../includes/header.php';
 
 $db            = new Database();
@@ -22,7 +21,6 @@ $totals        = calculateSaleTotals($sale_products);
 <!-- SweetAlert2 -->
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <?php
-// Éxito: alerta y redirige
 if (isset($_SESSION['success_message'])) {
     echo '<script>
       Swal.fire({
@@ -37,7 +35,6 @@ if (isset($_SESSION['success_message'])) {
     </script>';
     unset($_SESSION['success_message']);
 }
-// Error: alerta y permanece en create.php
 if (isset($_SESSION['error_message'])) {
     echo '<script>
       Swal.fire({
@@ -114,26 +111,39 @@ if (isset($_SESSION['error_message'])) {
         </div>
       </div>
 
-      <!-- Selección de productos -->
-      <h3 class="text-start pt-3">Productos</h3>
+      <!-- Selección de productos/servicios -->
+      <h3 class="text-start pt-3">Productos / Servicios</h3>
       <div class="row align-items-end mb-3">
-        <div class="col-md-6">
-          <label for="product_id" class="input-title">Producto:</label>
-          <select id="product_id" class="form-control">
-            <option value="">Seleccionar producto</option>
-            <?php foreach ($products as $p): ?>
-              <option value="<?php echo $p['id']; ?>" data-price="<?php echo $p['price']; ?>">
-                <?php echo htmlspecialchars($p['name']); ?> ($<?php echo number_format($p['price'],2); ?>)
-              </option>
-            <?php endforeach; ?>
+        <div class="col-md-2">
+          <label for="type_select" class="input-title">Tipo:</label>
+          <select id="type_select" class="form-control">
+            <option value="">Seleccionar...</option>
+            <option value="Producto">Producto</option>
+            <option value="Servicio">Servicio</option>
           </select>
         </div>
         <div class="col-md-3">
+          <label for="product_id" class="input-title">Catálogo:</label>
+          <select id="product_id" class="form-control">
+            <option value="">Seleccionar...</option>
+            <!-- Se llena desde JS -->
+          </select>
+        </div>
+        <div class="col-md-2">
+          <label for="price" class="input-title">Precio:</label>
+          <input type="number" id="price" class="form-control" min="0" step="0.01" />
+        </div>
+        <div class="col-md-2">
+          <label for="tax_rate" class="input-title">Impuesto (%):</label>
+          <input type="number" id="tax_rate" class="form-control" min="0" step="0.01" value="0.00" placeholder="0.00" />
+        </div>
+        <div class="col-md-1">
           <label for="quantity" class="input-title">Cantidad:</label>
           <input type="number" id="quantity" class="form-control" min="1" value="1"/>
         </div>
-        <div class="col-md-3">
-          <button type="button" id="add-product" class="btncss">Agregar</button>
+        <div class="col-md-2">
+          <label>&nbsp;</label>
+          <button type="button" id="add-product" class="btncss w-100">Agregar</button>
         </div>
       </div>
 
@@ -142,9 +152,10 @@ if (isset($_SESSION['error_message'])) {
         <table class="styled-table" id="product-table">
           <thead>
             <tr>
-              <th>Producto</th>
+              <th>Producto/Servicio</th>
               <th>Precio Unitario</th>
               <th>Cantidad</th>
+              <th>Impuesto</th>
               <th>Subtotal</th>
               <th>Acciones</th>
             </tr>
@@ -155,6 +166,7 @@ if (isset($_SESSION['error_message'])) {
                 <td><?php echo htmlspecialchars($prod['name']); ?></td>
                 <td>$<?php echo number_format($prod['price'],2); ?></td>
                 <td><?php echo $prod['quantity']; ?></td>
+                <td><?php echo number_format($prod['tax_rate'],2); ?>%</td>
                 <td>$<?php echo number_format($prod['price']*$prod['quantity'],2); ?></td>
                 <td>
                   <button type="button" class="remove-product DeleteBtn">Eliminar</button>
@@ -162,6 +174,7 @@ if (isset($_SESSION['error_message'])) {
                   <input type="hidden" name="products[<?php echo $i; ?>][name]"     value="<?php echo htmlspecialchars($prod['name']); ?>">
                   <input type="hidden" name="products[<?php echo $i; ?>][price]"    value="<?php echo $prod['price']; ?>">
                   <input type="hidden" name="products[<?php echo $i; ?>][quantity]" value="<?php echo $prod['quantity']; ?>">
+                  <input type="hidden" name="products[<?php echo $i; ?>][tax_rate]" value="<?php echo $prod['tax_rate']; ?>">
                 </td>
               </tr>
             <?php endforeach; ?>
@@ -182,7 +195,7 @@ if (isset($_SESSION['error_message'])) {
   </div>
 </div>
 
-<!-- Reconstrucción dinámica del select de clientes/empresas -->
+<!-- Combo clientes/empresas dinámico -->
 <script>
   const clients   = <?php echo json_encode($clients); ?>;
   const companies = <?php echo json_encode($companies); ?>;
@@ -198,11 +211,19 @@ if (isset($_SESSION['error_message'])) {
       opt.text  = item.name + (typeSelect.value === 'company' ? ' (Empresa)' : '');
       clientSelect.appendChild(opt);
     });
-    // Ajusta el botón de submit si se necesitara
   }
 
   typeSelect.addEventListener('change', rebuildClients);
   document.addEventListener('DOMContentLoaded', rebuildClients);
 </script>
+
+<!-- PASO CLAVE: Exportar productos como array JS global -->
+<script>
+const allProducts = <?php echo json_encode($products); ?>;
+console.log("allProducts:", allProducts); // Para depuración
+</script>
+
+<!-- Incluye tu JS de ventas -->
+<script src="/swift_invoice/assets/js/sales.js"></script>
 
 <?php require_once '../../includes/footer.php'; ?>
