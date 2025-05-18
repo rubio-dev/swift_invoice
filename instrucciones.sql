@@ -435,3 +435,30 @@ COMMIT;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+
+/*MODIFICACIONES - */
+CREATE TABLE sat_regimen_fiscal (
+  codigo CHAR(3) PRIMARY KEY,
+  descripcion VARCHAR(200) NOT NULL
+);
+INSERT INTO sat_regimen_fiscal (codigo, descripcion) VALUES
+  ('605','Sueldos y Salarios e Ingresos Asimilados a Salarios'),
+  ('606','Arrendamiento'),
+  ('607','Régimen de Enajenación o Adquisición de Bienes'),
+  ('608','Demás ingresos'),
+  ('610','Residentes en el Extranjero sin Establecimiento Permanente en México'),
+  ('611','Ingresos por Dividendos (socios y accionistas)'),
+  ('612','Personas Físicas con Actividades Empresariales y Profesionales'),
+  ('614','Ingresos por intereses'),
+  ('615','Régimen de los ingresos por obtención de premios'),
+  ('616','Sin obligaciones fiscales'),
+  ('621','Incorporación Fiscal'),
+  ('625','Actividades Empresariales con ingresos a través de Plataformas Tecnológicas'),
+  ('626','Régimen Simplificado de Confianza (RESICO)');
+
+
+ALTER TABLE clients
+  ADD COLUMN regimen_fiscal CHAR(3) NOT NULL DEFAULT '605',
+  ADD CONSTRAINT fk_clients_regimen
+    FOREIGN KEY (regimen_fiscal)
+    REFERENCES sat_regimen_fiscal(codigo);

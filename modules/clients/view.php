@@ -10,13 +10,22 @@ if (!isset($_GET['id']) || !is_numeric($_GET['id'])) {
     redirect('/swift_invoice/modules/clients/');
 }
 
-$db = new Database();
-$conn = $db->connect();
+$db        = new Database();
+$conn      = $db->connect();
+$client_id = (int)$_GET['id'];
 
-$client_id = $_GET['id'];
-
-$stmt = $conn->prepare("SELECT * FROM clients WHERE id = :id");
-$stmt->bindParam(':id', $client_id);
+// Traer datos del cliente junto con su régimen fiscal
+$stmt = $conn->prepare("
+    SELECT
+      c.*,
+      s.codigo      AS regimen_codigo,
+      s.descripcion AS regimen_desc
+    FROM clients c
+    JOIN sat_regimen_fiscal s
+      ON c.regimen_fiscal = s.codigo
+    WHERE c.id = :id
+");
+$stmt->bindParam(':id', $client_id, PDO::PARAM_INT);
 $stmt->execute();
 
 if ($stmt->rowCount() === 0) {
@@ -28,7 +37,6 @@ $client = $stmt->fetch(PDO::FETCH_ASSOC);
 
 require_once '../../includes/footer.php';
 ?>
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -61,19 +69,30 @@ require_once '../../includes/footer.php';
                 </div>
                 <div class="form-group mb-3">
                     <label class="input-title-Details">Teléfono:</label>
-                    <label class="detailsData"><?php echo htmlspecialchars($client['phone']); ?></label>
+                    <label class="detailsData"><?php echo htmlspecialchars($client['phone'] ?? '-'); ?></label>
                 </div>
                 <div class="form-group mb-3">
                     <label class="input-title-Details">Email:</label>
-                    <label class="detailsData"><?php echo htmlspecialchars($client['email']); ?></label>
+                    <label class="detailsData"><?php echo htmlspecialchars($client['email'] ?? '-'); ?></label>
                 </div>
                 <div class="form-group mb-3">
                     <label class="input-title-Details">RFC:</label>
-                    <label class="detailsData"><?php echo htmlspecialchars($client['rfc']); ?></label>
+                    <label class="detailsData"><?php echo htmlspecialchars($client['rfc'] ?? '-'); ?></label>
                 </div>
+<div class="form-group mb-3">
+    <label class="input-title-Details">Dirección:</label>
+    <label class="detailsData d-block" style="white-space: pre-wrap;"><?php echo nl2br(htmlspecialchars(trim($client['address']))); ?></label>
+</div>
+
                 <div class="form-group mb-3">
-                    <label class="input-title-Details">Dirección:</label>
-                    <label class="detailsData d-block" style="white-space: pre-wrap;"><?php echo htmlspecialchars($client['address']); ?></label>
+                    <label class="input-title-Details">Régimen Fiscal:</label>
+                    <label class="detailsData">
+                        <?php
+                          echo htmlspecialchars(
+                            $client['regimen_codigo'] . ' – ' . $client['regimen_desc']
+                          );
+                        ?>
+                    </label>
                 </div>
 
                 <div class="d-flex justify-content-end mt-4">
