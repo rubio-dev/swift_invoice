@@ -16,7 +16,6 @@ $regimes_stmt = $conn->query("SELECT id, name FROM tax_regimes ORDER BY name");
 $tax_regimes = $regimes_stmt->fetchAll(PDO::FETCH_ASSOC);
 
 // Inicializar datos
-$errors = [];
 $company = [
     'business_name' => '',
     'rfc' => '',
@@ -27,6 +26,17 @@ $company = [
     'business_type_id' => '',
     'tax_regime_id' => ''
 ];
+
+if (isset($_SESSION['company_form_data'])) {
+    $company = $_SESSION['company_form_data'];
+    unset($_SESSION['company_form_data']);
+}
+
+$errors = [];
+if (isset($_SESSION['company_form_errors'])) {
+    $errors = $_SESSION['company_form_errors'];
+    unset($_SESSION['company_form_errors']);
+}
 
 // Mensajes de sesión
 if (isset($_SESSION['success_message'])) {
@@ -68,9 +78,9 @@ if (isset($_SESSION['company_save_error'])) {
     <title>Agregar Empresa</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="/swift_invoice/assets/css/companies.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 <body>
-
 <main class="d-flex align-items-center justify-content-center min-vh-100">
     <div class="company-container" style="max-width: 750px;">
         <div class="card-header rounded-top-4 px-4 py-3">
@@ -85,17 +95,26 @@ if (isset($_SESSION['company_save_error'])) {
                             <label class="input-title" for="business_name">Nombre de la Empresa:</label>
                             <input type="text" id="business_name" name="business_name" class="form-control" 
                                    value="<?php echo htmlspecialchars($company['business_name']); ?>" required>
+                            <?php if (isset($errors['business_name'])): ?>
+                                <span class="text-danger"><?php echo $errors['business_name']; ?></span>
+                            <?php endif; ?>
                         </div>
 
                         <div class="form-group">
                             <label class="input-title" for="rfc">RFC:</label>
                             <input type="text" id="rfc" name="rfc" class="form-control" 
-                                   value="<?php echo htmlspecialchars($company['rfc']); ?>" required>
+                                   value="<?php echo htmlspecialchars($company['rfc']); ?>" required maxlength="13" minlength="12">
+                            <?php if (isset($errors['rfc'])): ?>
+                                <span class="text-danger"><?php echo $errors['rfc']; ?></span>
+                            <?php endif; ?>
                         </div>
 
                         <div class="form-group">
                             <label class="input-title" for="fiscal_address">Dirección Fiscal:</label>
                             <textarea id="fiscal_address" name="fiscal_address" class="form-control" rows="3" required><?php echo htmlspecialchars($company['fiscal_address']); ?></textarea>
+                            <?php if (isset($errors['fiscal_address'])): ?>
+                                <span class="text-danger"><?php echo $errors['fiscal_address']; ?></span>
+                            <?php endif; ?>
                         </div>
 
                         <div class="form-group">
@@ -108,6 +127,9 @@ if (isset($_SESSION['company_save_error'])) {
                             <label class="input-title" for="email">Email:</label>
                             <input type="email" id="email" name="email" class="form-control" 
                                    value="<?php echo htmlspecialchars($company['email']); ?>">
+                            <?php if (isset($errors['email'])): ?>
+                                <span class="text-danger"><?php echo $errors['email']; ?></span>
+                            <?php endif; ?>
                         </div>
                     </div>
 
@@ -116,6 +138,9 @@ if (isset($_SESSION['company_save_error'])) {
                             <label class="input-title" for="legal_representative">Representante Legal:</label>
                             <input type="text" id="legal_representative" name="legal_representative" class="form-control" 
                                    value="<?php echo htmlspecialchars($company['legal_representative']); ?>" required>
+                            <?php if (isset($errors['legal_representative'])): ?>
+                                <span class="text-danger"><?php echo $errors['legal_representative']; ?></span>
+                            <?php endif; ?>
                         </div>
 
                         <div class="form-group">
@@ -129,6 +154,9 @@ if (isset($_SESSION['company_save_error'])) {
                                     </option>
                                 <?php endforeach; ?>
                             </select>
+                            <?php if (isset($errors['business_type_id'])): ?>
+                                <span class="text-danger"><?php echo $errors['business_type_id']; ?></span>
+                            <?php endif; ?>
                         </div>
 
                         <div class="form-group">
@@ -142,6 +170,9 @@ if (isset($_SESSION['company_save_error'])) {
                                     </option>
                                 <?php endforeach; ?>
                             </select>
+                            <?php if (isset($errors['tax_regime_id'])): ?>
+                                <span class="text-danger"><?php echo $errors['tax_regime_id']; ?></span>
+                            <?php endif; ?>
                         </div>
                     </div>
                 </div>
@@ -154,8 +185,6 @@ if (isset($_SESSION['company_save_error'])) {
         </div>
     </div>
 </main>
-
 </body>
 </html>
-
 <?php require_once '../../includes/footer.php'; ?>

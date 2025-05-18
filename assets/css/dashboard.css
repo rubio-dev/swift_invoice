@@ -1,48 +1,29 @@
 :root {
     --primary: #2563eb;
-    --primary-dark: #1d4ed8;
-    --primary-light: rgba(37, 99, 235, 0.1);
     --secondary: #0ea5e9;
     --text: #e5e7eb;
     --text-light: #9ca3af;
-    --text-lighter: #6b7280;
     --bg-dark: #0f172a;
     --bg-darker: #020617;
     --card-bg: #1e293b;
     --card-hover: #334155;
     --border-dark: #334155;
-    --border-light: #475569;
-    --danger: #ef4444;
-    --success: #10b981;
-    --warning: #f59e0b;
-    --purple: #8b5cf6;
-    --shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3), 0 4px 6px -4px rgba(0, 0, 0, 0.3);
-    --shadow-hover: 0 20px 25px -5px rgba(0, 0, 0, 0.4), 0 10px 10px -5px rgba(0, 0, 0, 0.2);
-    --glow: 0 0 15px rgba(59, 130, 246, 0.4);
-    --transition-smooth: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-    --transition-bounce: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    --radius-sm: 0.5rem;
-    --radius-md: 1rem;
-    --radius-lg: 1.5rem;
-    --radius-xl: 2rem;
+    --shadow: 0 10px 32px 0 rgba(20, 30, 45, 0.45);
+    --shadow-hover: 0 16px 36px 0 rgba(37,99,235,0.19);
+    --radius-lg: 1.7rem;
+    --radius-xl: 2.5rem;
 }
 
-/* Fade-in animation */
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(10px); }
-    to { opacity: 1; transform: translateY(0); }
+body, .dashboard-container {
+    background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%) !important;
+    min-height: 100vh;
+    color: var(--text);
 }
 
 .dashboard-container {
-    margin: 0 auto;
-    padding: 2.5rem 1.5rem;
-    min-height: calc(100vh - 120px);
-    height: 100vh;
-    background: var(--bg-dark);
-    animation: fadeIn 0.6s ease-out forwards;
+    padding: 2.5rem 1.5rem 3rem;
 }
 
-/* Banner */
 .welcome-banner {
     text-align: center;
     margin-bottom: 3rem;
@@ -50,195 +31,107 @@
     background: linear-gradient(135deg, var(--bg-darker) 0%, var(--card-bg) 100%);
     border-radius: var(--radius-xl);
     box-shadow: var(--shadow);
-    border: 1px solid var(--border-dark);
+    border: 1.5px solid var(--border-dark);
     position: relative;
     overflow: hidden;
-    transition: var(--transition-smooth);
 }
-
-.welcome-banner:hover {
-    transform: translateY(-3px);
-    box-shadow: var(--shadow-hover);
-}
-
 .welcome-banner::after {
     content: '';
     position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 4px;
+    top: 0; left: 0; width: 100%; height: 4px;
     background: linear-gradient(90deg, var(--primary), var(--secondary));
-    box-shadow: var(--glow);
 }
-
 .welcome-heading {
     font-size: 2.5rem;
-    margin-bottom: 0.75rem;
     font-weight: 800;
-    letter-spacing: -0.5px;
     background: linear-gradient(to right, var(--primary), var(--secondary));
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
-    position: relative;
     display: inline-block;
 }
+.welcome-message { color: var(--text-light); }
 
-.welcome-heading::after {
-    content: '';
-    position: absolute;
-    bottom: -5px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 80px;
-    height: 3px;
-    background: var(--secondary);
-    border-radius: 3px;
-}
-
-.username {
-    font-weight: 700;
-    color: rgba(59, 130, 246);
-    position: relative;
-    display: inline-block;
-}
-
-.username::after {
-    content: '';
-    position: absolute;
-    bottom: -2px;
-    left: 0;
+/* Carrusel estático de 3 tarjetas */
+.carousel {
     width: 100%;
-    height: 2px;
-    background: currentColor;
-    transform: scaleX(0);
-    transition: transform 0.3s ease;
-}
-
-.welcome-banner:hover .username::after {
-    transform: scaleX(1);
-}
-
-.welcome-message {
-    font-size: 1.25rem;
-    color: var(--text-light);
-    margin: 0 auto;
-    line-height: 1.6;
-    max-width: 700px;
+    max-width: 1200px;
+    margin: 2.5rem auto;
     position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 420px;
+}
+.carousel-track {
+    display: flex;
+    justify-content: center;
+    align-items: stretch;
+    width: 100%;
+    gap: 2.2rem;
+    pointer-events: none;
 }
 
-/* Tarjetas */
-.quick-actions {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 2rem;
-    margin: 3rem 0;
-}
-
+/* Tarjetas (solo tres siempre) */
 .action-card {
+    min-width: 370px;
+    max-width: 370px;
     background: var(--card-bg);
     border-radius: var(--radius-lg);
-    padding: 2.25rem 2rem;
+    padding: 2.2rem 2rem;
     text-decoration: none;
     box-shadow: var(--shadow);
-    transition: var(--transition-bounce);
     display: flex;
     flex-direction: column;
-    height: 100%;
-    border: 1px solid var(--border-dark);
+    border: none;
+    opacity: 0;
+    transform: scale(0.87);
+    transition: opacity 0.5s, transform 0.5s, box-shadow 0.5s, background 0.5s;
+    z-index: 1;
+    pointer-events: none;
     position: relative;
-    overflow: hidden;
-    will-change: transform;
-    animation: fadeIn 0.6s ease-out forwards;
-    animation-delay: calc(var(--order) * 0.1s);
 }
 
-.action-card::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 4px;
-    background: var(--primary);
-    transition: var(--transition-smooth);
-}
-
-.action-card:hover {
-    transform: translateY(-8px) scale(1.02);
-    box-shadow: var(--shadow-hover);
-    border-color: var(--primary);
+/* Central: activa, siempre centrada y resaltada */
+.action-card.active {
+    opacity: 1;
+    transform: scale(1.07);
+    box-shadow: 0 16px 38px 0 rgba(37,99,235,0.21), 0 0 0 2.2px var(--primary);
     background: var(--card-hover);
-    z-index: 10;
+    z-index: 3;
+    pointer-events: auto;
 }
 
-.action-card:hover::before {
-    height: 6px;
-    background: var(--secondary);
-    box-shadow: var(--glow);
+/* Laterales (prev y next) */
+.action-card.prev,
+.action-card.next {
+    opacity: 0.63;
+    transform: scale(0.93);
+    z-index: 2;
+    pointer-events: none;
 }
 
+/* Seguridad: ocultar si JS la llega a dejar en blanco */
+.action-card:not(.active):not(.prev):not(.next) {
+    display: none !important;
+    opacity: 0;
+    pointer-events: none;
+}
+
+/* Contenido de la tarjeta */
 .card-icon-container {
-    width: 70px;
-    height: 70px;
-    border-radius: var(--radius-md);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-bottom: 2.2rem;
-    font-size: 2rem;
-    background: rgba(37, 99, 235, 0.15);
-    transition: var(--transition-bounce);
+    width: 66px; height: 66px; border-radius: 1.1rem;
+    display: flex; align-items: center; justify-content: center;
+    margin-bottom: 2rem; font-size: 2rem;
+    background: rgba(37, 99, 235, 0.12);
 }
-
-.action-card:hover .card-icon-container {
-    transform: scale(1.05) rotate(5deg);
-    box-shadow: 0 0 20px rgba(37, 99, 235, 0.2);
-}
-
-.card-icon {
-    font-size: 2rem;
-    transition: var(--transition-smooth);
-}
-
-.card-content {
-    flex-grow: 1;
-}
-
 .card-title {
-    font-size: 1.6rem;
-    color: var(--text);
-    margin-bottom: 1rem;
+    font-size: 1.55rem;
     font-weight: 700;
-    letter-spacing: -0.25px;
-    position: relative;
-    display: inline-block;
+    margin-bottom: 1rem;
+    color: var(--text);
 }
-
-.card-title::after {
-    content: '';
-    position: absolute;
-    bottom: -5px;
-    left: 0;
-    width: 40px;
-    height: 2px;
-    background: currentColor;
-    transition: width 0.3s ease;
-}
-
-.action-card:hover .card-title::after {
-    width: 60px;
-}
-
-.card-description {
-    color: var(--text-light);
-    font-size: 1.05rem;
-    margin-bottom: 2rem;
-    line-height: 1.7;
-}
-
+.card-description { color: var(--text-light); font-size: 1.02rem; margin-bottom: 2rem; }
 .card-link {
     color: var(--secondary);
     font-weight: 600;
@@ -246,83 +139,53 @@
     display: inline-flex;
     align-items: center;
     gap: 0.5rem;
-    transition: var(--transition-smooth);
+    transition: color 0.2s, transform 0.2s;
     position: relative;
-    padding-top: 0.25rem;
+    padding-top: 0.22rem;
 }
+.card-link:hover { color: var(--primary); transform: translateX(3px); }
 
-.card-link::after {
-    content: '';
+/* Botones del carrusel */
+.carousel-btn {
     position: absolute;
-    bottom: -2px;
-    left: 0;
-    width: 0;
-    height: 2px;
-    background: var(--secondary);
-    transition: width 0.3s ease;
-}
-
-.action-card:hover .card-link {
-    color: var(--primary);
-    transform: translateX(5px);
-}
-
-.action-card:hover .card-link::after {
-    width: 100%;
-}
-
-/* Tooltips */
-[data-tooltip] {
-    position: relative;
-    cursor: pointer;
-}
-
-[data-tooltip]::after {
-    content: attr(data-tooltip);
-    position: absolute;
-    bottom: 100%;
-    left: 50%;
-    transform: translateX(-50%);
-    background: rgba(0, 0, 0, 0.75);
-    color: white;
-    padding: 0.5rem 1rem;
-    border-radius: var(--radius-md);
-    font-size: 0.875rem;
-    white-space: nowrap;
-    opacity: 0;
-    visibility: hidden;
-    transition: opacity 0.3s ease-in-out;
-}
-
-[data-tooltip]:hover::after {
-    opacity: 1;
-    visibility: visible;
-}
-
-/* Contenedor de gráficos */
-.chart-container {
-    margin-top: 3rem;
+    top: 50%;
+    transform: translateY(-50%);
     background: var(--card-bg);
-    padding: 1.5rem;
-    border-radius: var(--radius-md);
-    box-shadow: var(--shadow);
-    border: 1px solid var(--border-dark);
-    transition: var(--transition-smooth);
-}
-
-.chart-container:hover {
-    transform: translateY(-5px);
-    box-shadow: var(--shadow-hover);
-}
-
-.chart-container .chart-title {
-    font-size: 1.75rem;
-    color: var(--text);
-    margin-bottom: 1rem;
-    font-weight: 600;
-}
-
-.chart-container .chart-description {
-    font-size: 1rem;
     color: var(--text-light);
+    border: none;
+    font-size: 2.2rem;
+    padding: 0.25em 0.7em;
+    cursor: pointer;
+    z-index: 10;
+    border-radius: 1.7rem;
+    transition: background 0.2s, color 0.2s;
+    box-shadow: 0 2px 12px 0 rgba(0,0,0,0.13);
+}
+.carousel-btn:hover {
+    background: var(--primary);
+    color: #fff;
+}
+.carousel-btn.prev { left: -3.2rem; }
+.carousel-btn.next { right: -3.2rem; }
+
+@media (max-width: 900px) {
+    .carousel { max-width: 98vw; min-height: 260px; }
+    .carousel-track { gap: 0.7rem; }
+    .action-card, .carousel-track .action-card {
+        min-width: 80vw;
+        max-width: 92vw;
+    }
+    .carousel-btn.prev { left: -1.1rem; }
+    .carousel-btn.next { right: -1.1rem; }
+}
+@media (max-width: 600px) {
+    .carousel {
+        min-height: 120px;
+        padding: 0;
+    }
+    .carousel-track .action-card, .action-card {
+        min-width: 96vw;
+        max-width: 98vw;
+        padding: 1.1rem 0.7rem;
+    }
 }
