@@ -10,9 +10,9 @@ if (!isset($_GET['id']) || !is_numeric($_GET['id'])) {
     redirect('/swift_invoice/modules/clients/');
 }
 
-$db        = new Database();
-$conn      = $db->connect();
-$client_id = (int)$_GET['id'];
+$db = new Database();
+$conn = $db->connect();
+$client_id = (int) $_GET['id'];
 
 // Traer datos del cliente junto con su régimen fiscal
 $stmt = $conn->prepare("
@@ -39,6 +39,7 @@ require_once '../../includes/footer.php';
 ?>
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -46,53 +47,87 @@ require_once '../../includes/footer.php';
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="/swift_invoice/assets/css/clients.css" />
 </head>
+
 <body>
     <main class="d-flex align-items-center justify-content-center min-vh-100">
-        <div class="clients-container" style="max-width: 650px;">
+        <div class="clients-container" style="max-width: 820px;">
 
             <div class="card-header rounded-top-4 px-4 py-3">
                 <h2 class="card-title mb-0 fw-bold text-center">Detalles del Cliente</h2>
             </div>
 
             <div class="card-body px-4 py-3">
-                <div class="form-group mb-3">
-                    <label class="input-title-Details">Nombre(s):</label>
-                    <label class="detailsData"><?php echo htmlspecialchars($client['first_name']); ?></label>
-                </div>
-                <div class="form-group mb-3">
-                    <label class="input-title-Details">Apellido Paterno:</label>
-                    <label class="detailsData"><?php echo htmlspecialchars($client['last_name']); ?></label>
-                </div>
-                <div class="form-group mb-3">
-                    <label class="input-title-Details">Apellido Materno:</label>
-                    <label class="detailsData"><?php echo htmlspecialchars($client['mother_last_name']); ?></label>
-                </div>
-                <div class="form-group mb-3">
-                    <label class="input-title-Details">Teléfono:</label>
-                    <label class="detailsData"><?php echo htmlspecialchars($client['phone'] ?? '-'); ?></label>
-                </div>
-                <div class="form-group mb-3">
-                    <label class="input-title-Details">Email:</label>
-                    <label class="detailsData"><?php echo htmlspecialchars($client['email'] ?? '-'); ?></label>
-                </div>
-                <div class="form-group mb-3">
-                    <label class="input-title-Details">RFC:</label>
-                    <label class="detailsData"><?php echo htmlspecialchars($client['rfc'] ?? '-'); ?></label>
-                </div>
-<div class="form-group mb-3">
-    <label class="input-title-Details">Dirección:</label>
-    <label class="detailsData d-block" style="white-space: pre-wrap;"><?php echo nl2br(htmlspecialchars(trim($client['address']))); ?></label>
-</div>
 
-                <div class="form-group mb-3">
-                    <label class="input-title-Details">Régimen Fiscal:</label>
-                    <label class="detailsData">
-                        <?php
-                          echo htmlspecialchars(
-                            $client['regimen_codigo'] . ' – ' . $client['regimen_desc']
-                          );
-                        ?>
-                    </label>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group mb-3">
+                            <label class="input-title-Details">Nombre(s):</label>
+                            <label class="detailsData"><?php echo htmlspecialchars($client['first_name']); ?></label>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="form-group mb-3">
+                            <label class="input-title-Details">Apellido Paterno:</label>
+                            <label class="detailsData"><?php echo htmlspecialchars($client['last_name']); ?></label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group mb-3">
+                            <label class="input-title-Details">Apellido Materno:</label>
+                            <label
+                                class="detailsData"><?php echo htmlspecialchars($client['mother_last_name']); ?></label>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group mb-3">
+                            <label class="input-title-Details">Teléfono:</label>
+                            <label class="detailsData"><?php echo htmlspecialchars($client['phone'] ?? '-'); ?></label>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group mb-3">
+                            <label class="input-title-Details">Email:</label>
+                            <label class="detailsData"><?php echo htmlspecialchars($client['email'] ?? '-'); ?></label>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="form-group mb-3">
+                            <label class="input-title-Details">Dirección:</label>
+                            <label class="detailsData d-block"
+                                style="white-space: pre-wrap;"><?php echo nl2br(htmlspecialchars(trim($client['address']))); ?></label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group mb-3">
+                            <label class="input-title-Details">RFC:</label>
+                            <label class="detailsData"><?php echo htmlspecialchars($client['rfc'] ?? '-'); ?></label>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="form-group mb-3">
+                            <label class="input-title-Details">Régimen Fiscal:</label>
+                            <label class="detailsData">
+                                <?php
+                                echo htmlspecialchars(
+                                    $client['regimen_codigo'] . ' – ' . $client['regimen_desc']
+                                );
+                                ?>
+                            </label>
+                        </div>
+                    </div>
                 </div>
 
                 <div class="d-flex justify-content-end mt-4">
@@ -102,4 +137,5 @@ require_once '../../includes/footer.php';
         </div>
     </main>
 </body>
+
 </html>

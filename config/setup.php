@@ -1,7 +1,9 @@
 <?php
 session_start();
 
-require_once 'database.php';
+// Carga el archivo que define la clase Database
+require_once __DIR__ . '/db_respaldo.php';
+
 
 // Función para redireccionar
 function redirect($location) {
