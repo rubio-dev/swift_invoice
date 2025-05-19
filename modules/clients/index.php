@@ -41,13 +41,6 @@ $clients = $stmt->fetchAll(PDO::FETCH_ASSOC);
     </div>
 
     <main>
-        <?php if (isset($_SESSION['success_message'])): ?>
-            <div class="alert alert-success">
-                <?php echo $_SESSION['success_message'];
-                unset($_SESSION['success_message']); ?>
-            </div>
-        <?php endif; ?>
-
         <?php if (empty($clients)): ?>
             <p>No hay clientes registrados.</p>
         <?php else: ?>

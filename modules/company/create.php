@@ -38,36 +38,7 @@ if (isset($_SESSION['company_form_errors'])) {
     unset($_SESSION['company_form_errors']);
 }
 
-// Mensajes de sesión
-if (isset($_SESSION['success_message'])) {
-    echo '<script>
-        Swal.fire({
-            icon: "success",
-            title: "' . $_SESSION['success_message'] . '",
-            text: "Redirigiendo al listado...",
-            timer: 2000,
-            showConfirmButton: false
-        }).then(() => {
-            window.location.href = "/swift_invoice/modules/company/";
-        });
-    </script>';
-    unset($_SESSION['success_message']);
-}
 
-if (isset($_SESSION['company_save_error'])) {
-    echo '<script>
-        Swal.fire({
-            icon: "error",
-            title: "Error",
-            text: "' . $_SESSION['company_save_error'] . '",
-            confirmButtonText: "OK",
-            didOpen: () => {
-                document.body.style.paddingRight = "0px";
-            }
-        });
-    </script>';
-    unset($_SESSION['company_save_error']);
-}
 ?>
 
 <!DOCTYPE html>
@@ -80,16 +51,48 @@ if (isset($_SESSION['company_save_error'])) {
     <link rel="stylesheet" href="/swift_invoice/assets/css/companies.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
+
 <body>
-<main class="d-flex align-items-center justify-content-center min-vh-100">
-    <div class="company-container" style="max-width: 750px;">
-        <div class="card-header rounded-top-4 px-4 py-3">
-            <h2 class="card-title mb-0 fw-bold text-center">Agregar Nueva Empresa</h2>
-        </div>
+
+ <?php
+    if (isset($_SESSION['success_message'])) {
+      echo '<script>
+        Swal.fire({
+          icon: "success",
+          title: "' . $_SESSION['success_message'] . '",
+          text: "Redirigiendo al listado...",
+          timer: 2000,
+          showConfirmButton: false
+        }).then(() => {
+          window.location.href = "/swift_invoice/modules/company/";
+        });
+      </script>';
+      unset($_SESSION['success_message']);
+    }
+
+    if (isset($_SESSION['company_save_error'])) {
+      echo '<script>
+        Swal.fire({
+          icon: "error",
+          title: "Error",
+          text: "' . $_SESSION['company_save_error'] . '",
+          confirmButtonText: "OK",
+          didOpen: () => { document.body.style.paddingRight = "0px"; }
+        });
+      </script>';
+      unset($_SESSION['company_save_error']);
+    }
+  ?> 
+  <main class="d-flex align-items-center justify-content-center min-vh-100">
+    <div class="clients-container" style="max-width: 820px;">
+      <div class="card-header rounded-top-4 px-4 py-3">
+        <h2 class="card-title mb-0 fw-bold text-center">Agregar Empresa</h2>
+      </div>
 
         <div class="card-body px-2 py-2">
             <form method="POST" action="save.php">
-                <div class="row">
+                
+            <div class="row">
                     <div class="col-md-6">
                         <div class="form-group">
                             <label class="input-title" for="business_name">Nombre de la Empresa:</label>
@@ -99,7 +102,9 @@ if (isset($_SESSION['company_save_error'])) {
                                 <span class="text-danger"><?php echo $errors['business_name']; ?></span>
                             <?php endif; ?>
                         </div>
+                    </div>
 
+                    <div class="col-md-6">
                         <div class="form-group">
                             <label class="input-title" for="rfc">RFC:</label>
                             <input type="text" id="rfc" name="rfc" class="form-control" 
@@ -108,7 +113,11 @@ if (isset($_SESSION['company_save_error'])) {
                                 <span class="text-danger"><?php echo $errors['rfc']; ?></span>
                             <?php endif; ?>
                         </div>
+                        </div>
+                        </div>
 
+                        <div class="row">
+                        <div class="col-md-6">
                         <div class="form-group">
                             <label class="input-title" for="fiscal_address">Dirección Fiscal:</label>
                             <textarea id="fiscal_address" name="fiscal_address" class="form-control" rows="3" required><?php echo htmlspecialchars($company['fiscal_address']); ?></textarea>
@@ -116,13 +125,19 @@ if (isset($_SESSION['company_save_error'])) {
                                 <span class="text-danger"><?php echo $errors['fiscal_address']; ?></span>
                             <?php endif; ?>
                         </div>
+                        </div>
 
+                        <div class="col-md-6">
                         <div class="form-group">
                             <label class="input-title" for="phone">Teléfono:</label>
                             <input type="tel" id="phone" name="phone" class="form-control" 
                                    value="<?php echo htmlspecialchars($company['phone']); ?>">
                         </div>
+                        </div>
+                        </div>
 
+                        <div class="row">
+                        <div class="col-md-6">
                         <div class="form-group">
                             <label class="input-title" for="email">Email:</label>
                             <input type="email" id="email" name="email" class="form-control" 
@@ -131,7 +146,8 @@ if (isset($_SESSION['company_save_error'])) {
                                 <span class="text-danger"><?php echo $errors['email']; ?></span>
                             <?php endif; ?>
                         </div>
-                    </div>
+                        </div>
+                   
 
                     <div class="col-md-6">
                         <div class="form-group">
@@ -142,7 +158,11 @@ if (isset($_SESSION['company_save_error'])) {
                                 <span class="text-danger"><?php echo $errors['legal_representative']; ?></span>
                             <?php endif; ?>
                         </div>
+                        </div>
+                        </div>
 
+                        <div class="row">
+                        <div class="col-md-6">
                         <div class="form-group">
                             <label class="input-title" for="business_type_id">Razón Social:</label>
                             <select id="business_type_id" name="business_type_id" class="form-control" required>
@@ -158,7 +178,9 @@ if (isset($_SESSION['company_save_error'])) {
                                 <span class="text-danger"><?php echo $errors['business_type_id']; ?></span>
                             <?php endif; ?>
                         </div>
+                        </div>
 
+                        <div class="col-md-6">
                         <div class="form-group">
                             <label class="input-title" for="tax_regime_id">Régimen Fiscal:</label>
                             <select id="tax_regime_id" name="tax_regime_id" class="form-control" required>
@@ -174,17 +196,19 @@ if (isset($_SESSION['company_save_error'])) {
                                 <span class="text-danger"><?php echo $errors['tax_regime_id']; ?></span>
                             <?php endif; ?>
                         </div>
+                        </div>
                     </div>
-                </div>
+             
+               <div class="d-flex justify-content-between mt-4">
+    <a href="index.php" class="btnback">Volver</a>
+    <button type="submit" class="btn btn-success ms-3">Guardar Empresa</button>
+</div>
 
-                <div class="d-flex justify-content-between mt-4">
-                    <a href="index.php" class="btn btn-secondary">← Volver</a>
-                    <button type="submit" class="btn btn-success">Guardar Empresa</button>
-                </div>
             </form>
         </div>
     </div>
 </main>
 </body>
 </html>
+
 <?php require_once '../../includes/footer.php'; ?>

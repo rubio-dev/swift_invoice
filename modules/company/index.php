@@ -24,7 +24,7 @@ $companies = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css">
     <!-- Estilos personalizados -->
-    <link rel="stylesheet" href="/swift_invoice/assets/css/tableCompanies.css">
+ <link rel="stylesheet" href="/swift_invoice/assets/css/tableClients.css">
 </head>
 
 <body>
@@ -39,13 +39,7 @@ $companies = $stmt->fetchAll(PDO::FETCH_ASSOC);
         <a href="create.php" class="btnAgregar">Agregar Empresa</a>
     </div>
 
-    <main class="container mt-4">
-        <?php if (isset($_SESSION['success_message'])): ?>
-            <div class="alert alert-success">
-                <?php echo $_SESSION['success_message']; unset($_SESSION['success_message']); ?>
-            </div>
-        <?php endif; ?>
-
+    <main>
         <?php if (empty($companies)): ?>
             <p>No hay empresas registradas.</p>
         <?php else: ?>

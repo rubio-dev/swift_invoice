@@ -50,13 +50,6 @@ $sales = $stmt->fetchAll(PDO::FETCH_ASSOC);
     </div>
 
     <main class="">
-        <?php if (isset($_SESSION['success_message'])): ?>
-            <div class="alert alert-success">
-                <?php echo $_SESSION['success_message'];
-                unset($_SESSION['success_message']); ?>
-            </div>
-        <?php endif; ?>
-
         <?php if (empty($sales)): ?>
             <p>No hay ventas registradas.</p>
         <?php else: ?>
