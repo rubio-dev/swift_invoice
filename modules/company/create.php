@@ -38,36 +38,7 @@ if (isset($_SESSION['company_form_errors'])) {
     unset($_SESSION['company_form_errors']);
 }
 
-// Mensajes de sesión
-if (isset($_SESSION['success_message'])) {
-    echo '<script>
-        Swal.fire({
-            icon: "success",
-            title: "' . $_SESSION['success_message'] . '",
-            text: "Redirigiendo al listado...",
-            timer: 2000,
-            showConfirmButton: false
-        }).then(() => {
-            window.location.href = "/swift_invoice/modules/company/";
-        });
-    </script>';
-    unset($_SESSION['success_message']);
-}
 
-if (isset($_SESSION['company_save_error'])) {
-    echo '<script>
-        Swal.fire({
-            icon: "error",
-            title: "Error",
-            text: "' . $_SESSION['company_save_error'] . '",
-            confirmButtonText: "OK",
-            didOpen: () => {
-                document.body.style.paddingRight = "0px";
-            }
-        });
-    </script>';
-    unset($_SESSION['company_save_error']);
-}
 ?>
 
 <!DOCTYPE html>
@@ -82,6 +53,36 @@ if (isset($_SESSION['company_save_error'])) {
 </head>
 
 <body>
+
+ <?php
+    if (isset($_SESSION['success_message'])) {
+      echo '<script>
+        Swal.fire({
+          icon: "success",
+          title: "' . $_SESSION['success_message'] . '",
+          text: "Redirigiendo al listado...",
+          timer: 2000,
+          showConfirmButton: false
+        }).then(() => {
+          window.location.href = "/swift_invoice/modules/company/";
+        });
+      </script>';
+      unset($_SESSION['success_message']);
+    }
+
+    if (isset($_SESSION['company_save_error'])) {
+      echo '<script>
+        Swal.fire({
+          icon: "error",
+          title: "Error",
+          text: "' . $_SESSION['company_save_error'] . '",
+          confirmButtonText: "OK",
+          didOpen: () => { document.body.style.paddingRight = "0px"; }
+        });
+      </script>';
+      unset($_SESSION['company_save_error']);
+    }
+  ?> 
   <main class="d-flex align-items-center justify-content-center min-vh-100">
     <div class="clients-container" style="max-width: 820px;">
       <div class="card-header rounded-top-4 px-4 py-3">
@@ -209,4 +210,5 @@ if (isset($_SESSION['company_save_error'])) {
 </main>
 </body>
 </html>
+
 <?php require_once '../../includes/footer.php'; ?>

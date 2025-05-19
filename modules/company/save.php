@@ -58,25 +58,48 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (empty($errors)) {
         try {
             if ($company_id) {
-                $stmt = $conn->prepare("UPDATE companies SET business_name = :business_name, rfc = :rfc, fiscal_address = :fiscal_address, phone = :phone, email = :email, legal_representative = :legal_representative, business_type_id = :business_type_id, tax_regime_id = :tax_regime_id WHERE id = :id");
+                $stmt = $conn->prepare("
+                    UPDATE companies
+                       SET business_name         = :business_name,
+                           rfc                   = :rfc,
+                           fiscal_address        = :fiscal_address,
+                           phone                 = :phone,
+                           email                 = :email,
+                           legal_representative  = :legal_representative,
+                           business_type_id      = :business_type_id,
+                           tax_regime_id         = :tax_regime_id
+                     WHERE id = :id
+                ");
                 $stmt->bindParam(':id', $company_id);
             } else {
-                $stmt = $conn->prepare("INSERT INTO companies (business_name, rfc, fiscal_address, phone, email, legal_representative, business_type_id, tax_regime_id) VALUES (:business_name, :rfc, :fiscal_address, :phone, :email, :legal_representative, :business_type_id, :tax_regime_id)");
+                $stmt = $conn->prepare("
+                    INSERT INTO companies
+                        (business_name, rfc, fiscal_address, phone, email, legal_representative, business_type_id, tax_regime_id)
+                    VALUES
+                        (:business_name, :rfc, :fiscal_address, :phone, :email, :legal_representative, :business_type_id, :tax_regime_id)
+                ");
             }
 
-            $stmt->bindParam(':business_name', $business_name);
-            $stmt->bindParam(':rfc', $rfc);
-            $stmt->bindParam(':fiscal_address', $fiscal_address);
-            $stmt->bindParam(':phone', $phone);
-            $stmt->bindParam(':email', $email);
+            // Bind de parámetros
+            $stmt->bindParam(':business_name',        $business_name);
+            $stmt->bindParam(':rfc',                  $rfc);
+            $stmt->bindParam(':fiscal_address',       $fiscal_address);
+            $stmt->bindParam(':phone',                $phone);
+            $stmt->bindParam(':email',                $email);
             $stmt->bindParam(':legal_representative', $legal_representative);
-            $stmt->bindParam(':business_type_id', $business_type_id);
-            $stmt->bindParam(':tax_regime_id', $tax_regime_id);
+            $stmt->bindParam(':business_type_id',     $business_type_id);
+            $stmt->bindParam(':tax_regime_id',        $tax_regime_id);
 
             if ($stmt->execute()) {
-                $_SESSION['success_message'] = $company_id ? 'Empresa actualizada correctamente.' : 'Empresa creada correctamente.';
-                // Redirige al índice
-                redirect('/swift_invoice/modules/company/index.php');
+                // Éxito: establecemos success_message para la alerta
+                if ($company_id) {
+                    $_SESSION['success_message'] = 'Empresa actualizada correctamente.';
+                    redirect('/swift_invoice/modules/company/edit.php?id=' . $company_id);
+                } else {
+                    // En el caso de CREATE, redirigimos a create.php para disparar tu SweetAlert allí
+                    $_SESSION['success_message'] = 'Empresa creada correctamente.';
+                    redirect('/swift_invoice/modules/company/create.php');
+                }
             } else {
                 $_SESSION['company_save_error'] = 'Error al guardar la empresa. Intente nuevamente.';
                 if ($company_id) {
@@ -99,21 +122,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     }
 
-    // Si hay errores, guardar en sesión y regresar al formulario
+    // Si hay errores de validación, los guardamos en sesión y regresamos al formulario
     if (!empty($errors)) {
         $company = [
-            'business_name' => $business_name,
-            'rfc' => $rfc,
-            'fiscal_address' => $fiscal_address,
-            'phone' => $phone,
-            'email' => $email,
+            'business_name'        => $business_name,
+            'rfc'                  => $rfc,
+            'fiscal_address'       => $fiscal_address,
+            'phone'                => $phone,
+            'email'                => $email,
             'legal_representative' => $legal_representative,
-            'business_type_id' => $business_type_id,
-            'tax_regime_id' => $tax_regime_id
+            'business_type_id'     => $business_type_id,
+            'tax_regime_id'        => $tax_regime_id
         ];
 
         $_SESSION['company_form_errors'] = $errors;
-        $_SESSION['company_form_data'] = $company;
+        $_SESSION['company_form_data']   = $company;
 
         if ($company_id) {
             redirect('/swift_invoice/modules/company/edit.php?id=' . $company_id);
@@ -122,6 +145,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     }
 } else {
+    // Si no es POST, regresamos al listado de empresas
     redirect('/swift_invoice/modules/company/');
 }
 ?>
