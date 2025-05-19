@@ -100,7 +100,7 @@ if (isset($_SESSION['error_message'])) {
               <span id="subtotal">$<?php echo number_format($totals['subtotal'],2); ?></span>
             </div>
             <div class="summary-row">
-              <span>Impuestos (<?php echo $totals['tax_percentage']; ?>%):</span>
+              <span>Impuestos:</span>
               <span id="tax-amount">$<?php echo number_format($totals['tax_amount'],2); ?></span>
             </div>
             <div class="summary-row total">
@@ -139,7 +139,7 @@ if (isset($_SESSION['error_message'])) {
         </div>
         <div class="col-md-1">
           <label for="quantity" class="input-title">Cantidad:</label>
-          <input type="number" id="quantity" class="form-control" min="1" value="1"/>
+          <input type="number" id="quantity" class="form-control" min="1" step="1" value="1" style="width: 90px;" />
         </div>
         <div class="col-md-2">
           <label>&nbsp;</label>
