@@ -86,7 +86,7 @@ if (isset($_SESSION['company_form_errors'])) {
   <main class="d-flex align-items-center justify-content-center min-vh-100">
     <div class="clients-container" style="max-width: 820px;">
       <div class="card-header rounded-top-4 px-4 py-3">
-        <h2 class="card-title mb-0 fw-bold text-center">Agregar Compañia</h2>
+        <h2 class="card-title mb-0 fw-bold text-center">Agregar Empresa</h2>
       </div>
 
         <div class="card-body px-2 py-2">
