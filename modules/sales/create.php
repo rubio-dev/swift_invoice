@@ -56,7 +56,7 @@ if (isset($_SESSION['error_message'])) {
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title><?php echo $page_title; ?></title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
-  <link rel="stylesheet" href="/swift_invoice/assets/css/sales.css" />
+  <link rel="stylesheet" href="/swift_invoice/assets/css/tableSales.css" />
   <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css" />
 </head>
 <body>
@@ -113,8 +113,8 @@ if (isset($_SESSION['error_message'])) {
 
       <!-- Selección de productos/servicios -->
       <h3 class="text-start pt-3">Productos / Servicios</h3>
-      <div class="row align-items-end mb-3">
-        <div class="col-md-2">
+      <div class="product-row mb-3">
+        <div class="form-group">
           <label for="type_select" class="input-title">Tipo:</label>
           <select id="type_select" class="form-control">
             <option value="">Seleccionar...</option>
@@ -122,28 +122,27 @@ if (isset($_SESSION['error_message'])) {
             <option value="Servicio">Servicio</option>
           </select>
         </div>
-        <div class="col-md-3">
+        <div class="form-group">
           <label for="product_id" class="input-title">Catálogo:</label>
           <select id="product_id" class="form-control">
             <option value="">Seleccionar...</option>
             <!-- Se llena desde JS -->
           </select>
         </div>
-        <div class="col-md-2">
+        <div class="form-group">
           <label for="price" class="input-title">Precio:</label>
           <input type="number" id="price" class="form-control" min="0" step="0.01" />
         </div>
-        <div class="col-md-2">
+        <div class="form-group">
           <label for="tax_rate" class="input-title">Impuesto (%):</label>
           <input type="number" id="tax_rate" class="form-control" min="0" step="0.01" value="0.00" placeholder="0.00" />
         </div>
-        <div class="col-md-1">
+        <div class="form-group">
           <label for="quantity" class="input-title">Cantidad:</label>
-          <input type="number" id="quantity" class="form-control" min="1" step="1" value="1" style="width: 90px;" />
+          <input type="number" id="quantity" class="form-control cantidad-input" min="1" step="1" value="1" />
         </div>
-        <div class="col-md-2">
-          <label>&nbsp;</label>
-          <button type="button" id="add-product" class="btncss w-100">Agregar</button>
+        <div class="form-group d-flex align-items-end">
+          <button type="button" id="add-product" class="btncss btn-add-product">Agregar</button>
         </div>
       </div>
 
