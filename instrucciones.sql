@@ -486,7 +486,51 @@ ALTER TABLE `sale_details`
   ADD CONSTRAINT `sale_details_ibfk_2` FOREIGN KEY (`product_id`) REFERENCES `products` (`id`);
 COMMIT;
 
+-- Asegurarse que columnas que usan ON DELETE SET NULL permitan NULL
+ALTER TABLE `companies` MODIFY COLUMN `business_type_id` INT NULL;
+ALTER TABLE `companies` MODIFY COLUMN `tax_regime_id` INT NULL;
 
+-- Añadir claves foráneas para mantener integridad referencial
+-- sales.client_id -> clients.id
+ALTER TABLE `sales`
+ADD CONSTRAINT IF NOT EXISTS fk_sales_client
+FOREIGN KEY (`client_id`) REFERENCES `clients`(`id`)
+ON DELETE CASCADE
+ON UPDATE CASCADE;
+
+-- companies.business_type_id -> business_types.id
+ALTER TABLE `companies`
+ADD CONSTRAINT IF NOT EXISTS fk_companies_business_type
+FOREIGN KEY (`business_type_id`) REFERENCES `business_types`(`id`)
+ON DELETE SET NULL
+ON UPDATE CASCADE;
+
+-- companies.tax_regime_id -> tax_regimes.id
+ALTER TABLE `companies`
+ADD CONSTRAINT IF NOT EXISTS fk_companies_tax_regime
+FOREIGN KEY (`tax_regime_id`) REFERENCES `tax_regimes`(`id`)
+ON DELETE SET NULL
+ON UPDATE CASCADE;
+
+-- sale_details.sale_id -> sales.id
+ALTER TABLE `sale_details`
+ADD CONSTRAINT IF NOT EXISTS fk_sale_details_sale
+FOREIGN KEY (`sale_id`) REFERENCES `sales`(`id`)
+ON DELETE CASCADE
+ON UPDATE CASCADE;
+
+-- sale_details.product_id -> products.id
+ALTER TABLE `sale_details`
+ADD CONSTRAINT IF NOT EXISTS fk_sale_details_product
+FOREIGN KEY (`product_id`) REFERENCES `products`(`id`)
+ON DELETE RESTRICT
+ON UPDATE CASCADE;
+
+-- Restricción para porcentaje de impuestos en sales
+-- Nota: CHECK se aplica en MySQL 8.0.16+, en versiones anteriores se ignora
+-- Eliminar en caso de usar una version anterior
+ALTER TABLE `sales`
+ADD CONSTRAINT IF NOT EXISTS chk_tax_percentage CHECK (`tax_percentage` >= 0 AND `tax_percentage` <= 100);
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
