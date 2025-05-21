@@ -1,7 +1,7 @@
 <?php
 class Database {
-    private $host = '127.0.0.1'; // o mantener 'localhost'
-    private $port = '3307'; // PUERTO que muestra XAMPP
+    private $host = 'localhost'; // o mantener 'localhost'
+    private $port = '3306'; // PUERTO que muestra XAMPP
     private $db_name = 'swift_invoice_db';
     private $username = 'root';
     private $password = '';
