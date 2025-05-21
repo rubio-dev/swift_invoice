@@ -77,7 +77,7 @@ $invoices = $stmt->fetchAll(PDO::FETCH_ASSOC);
     ?>
 
     <div class="card-header d-flex justify-content-between align-items-center">
-        <h2 class="card-title">Pre-Facturas</h2>
+        <h2 class="card-title">Facturas</h2>
     </div>
 
     <div class="container mt-5">
