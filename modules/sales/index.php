@@ -1,7 +1,6 @@
 <?php
 require_once '../../config/setup.php';
 requireAuth();
-
 require_once 'functions.php';
 
 $page_title = "Ventas - Swift Invoice";
@@ -10,16 +9,19 @@ require_once '../../includes/header.php';
 $db = new Database();
 $conn = $db->connect();
 
-// 1) Ejecutar consulta y obtener resultados
+// Consulta con join para saber si la venta está facturada
 $stmt = $conn->query("
     SELECT 
       s.*,
       c.first_name, 
       c.last_name,
-      co.business_name
+      co.business_name,
+      i.id AS invoice_id,
+      i.invoice_number
     FROM sales AS s
     LEFT JOIN clients   AS c  ON (s.client_type = 'person'  AND s.client_id = c.id)
     LEFT JOIN companies AS co ON (s.client_type = 'company' AND s.client_id = co.id)
+    LEFT JOIN invoices  AS i  ON (i.sale_id = s.id)
     ORDER BY s.sale_date DESC
 ");
 $sales = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -27,7 +29,6 @@ $sales = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -36,13 +37,41 @@ $sales = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <link rel="stylesheet" href="/swift_invoice/assets/css/tableClients.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css">
 </head>
-
 <body>
     <nav class="navbar navbar-expand navbar-custom py-2 sticky-top">
         <div class="container-fluid">
             <a class="navbar-brand navbar-brand-custom ms-3" href="/swift_invoice">SWIFT INVOICE</a>
         </div>
     </nav>
+
+    <!-- Mensajes de éxito o error (SweetAlert2) -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <?php
+    if (isset($_SESSION['success_message'])) {
+        echo '<script>
+          Swal.fire({
+            icon: "success",
+            title: "' . addslashes($_SESSION['success_message']) . '",
+            text: "Redirigiendo al listado de ventas...",
+            timer: 2000,
+            showConfirmButton: false
+          });
+        </script>';
+        unset($_SESSION['success_message']);
+    }
+    if (isset($_SESSION['error_message'])) {
+        echo '<script>
+          Swal.fire({
+            icon: "error",
+            title: "Error",
+            text: "' . addslashes($_SESSION['error_message']) . '",
+            confirmButtonText: "OK",
+            didOpen: () => { document.body.style.paddingRight = "0px"; }
+          });
+        </script>';
+        unset($_SESSION['error_message']);
+    }
+    ?>
 
     <div class="card-header d-flex justify-content-between align-items-center">
         <h2 class="card-title">Ventas</h2>
@@ -85,12 +114,17 @@ $sales = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                 <td><?php echo htmlspecialchars($sale['created_at']); ?></td>
                                 <td>
                                     <div class="d-flex gap-2">
-                                        <a href="view.php?id=<?php echo $sale['id']; ?>" class="btnDetails">
-                                            Detalles
-                                        </a>
+                                        <a href="view.php?id=<?php echo $sale['id']; ?>" class="btnDetails">Detalles</a>
                                         <a href="edit.php?id=<?php echo $sale['id']; ?>" class="btnEdit">Editar</a>
-                                        <button class="btnDelete"
-                                            onclick="confirmDelete(<?php echo $sale['id']; ?>)">Eliminar</button>
+                                        <button class="btnDelete" onclick="confirmDelete(<?php echo $sale['id']; ?>)">Eliminar</button>
+                                        <?php if ($sale['invoice_id']): ?>
+                                            <span class="badge bg-success ms-1">Facturada</span>
+                                        <?php else: ?>
+                                            <a href="/swift_invoice/modules/invoices/invoice.php?sale_id=<?= $sale['id']; ?>" 
+                                               class="btn btn-sm btn-primary ms-1">
+                                               Generar factura
+                                            </a>
+                                        <?php endif; ?>
                                     </div>
                                 </td>
                             </tr>
@@ -99,12 +133,14 @@ $sales = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 </table>
             </div>
         <?php endif; ?>
+        <div class="d-flex justify-content-start mt-4">
+            <a href="/swift_invoice/" class="btn btn-secondary">← Volver al inicio</a>
+        </div>
     </main>
 
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <script>
         $(document).ready(function () {
@@ -155,6 +191,6 @@ $sales = $stmt->fetchAll(PDO::FETCH_ASSOC);
         }
     </script>
 
-    <?php
-    require_once '../../includes/footer.php';
-    ?>
+    <?php require_once '../../includes/footer.php'; ?>
+</body>
+</html>
