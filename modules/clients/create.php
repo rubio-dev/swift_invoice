@@ -121,6 +121,7 @@ if (isset($_SESSION['client_save_error'])) {
               <div class="form-group">
                 <label class="input-title" for="phone">Teléfono:</label>
                 <input type="tel" id="phone" name="phone" class="form-control" pattern="[0-9]{10}"
+                  inputmode="numeric"
                   title="Ingrese un teléfono válido de 10 dígitos"
                   value="<?php echo htmlspecialchars($client['phone']); ?>">
               </div>
