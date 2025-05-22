@@ -444,3 +444,68 @@ body {
     background-clip: text;
     -webkit-background-clip: text;
   } 
+  .btn.btn-primary {
+    background: transparent;
+    color: white !important;
+    font-weight: 600;
+    border: 3px solid #047857; 
+    border-radius: var(--radius-sm);
+    font-size: 1.1rem;
+    position: relative;
+    overflow: hidden;
+    z-index: 1;
+    transition: var(--transition-smooth);
+    text-transform: none;
+    box-shadow: none;
+}
+
+.btn.btn-primary::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: linear-gradient(to right, #065f46, #047857); 
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    z-index: -1;
+}
+
+.btn.btn-primary:hover,
+.btn.btn-primary:focus,
+.btn.btn-primary:active {
+    color: white !important;
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-hover);
+}
+
+.btn.btn-primary:hover::before,
+.btn.btn-primary:focus::before,
+.btn.btn-primary:active::before {
+    opacity: 1;
+}
+
+.badge.bg-success {
+    background: transparent !important;
+    color: white !important;
+    font-weight: 600;
+    border: 3px solid #047857;
+    border-radius: var(--radius-sm);
+    font-size: 1.1rem;
+    position: relative;
+    padding: 0.3rem 1.5rem;
+    z-index: 1;
+    transition: var(--transition-smooth);
+    box-shadow: none;
+    text-transform: none;
+}
+
+.badge.bg-success::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: linear-gradient(to right, #065f46, #047857);
+    opacity: 1;
+    z-index: -1;
+    border-radius: inherit;
+}
