@@ -8,7 +8,6 @@ require_once '../../includes/header.php';
 $db = new Database();
 $conn = $db->connect();
 
-// Consulta real (cuando tengas DB activa):
 $stmt = $conn->query("
     SELECT 
         i.id, 
@@ -102,13 +101,13 @@ $invoices = $stmt->fetchAll(PDO::FETCH_ASSOC);
                             <td><?= htmlspecialchars($invoice['invoice_date']) ?></td>
                             <td>$<?= number_format($invoice['total'], 2) ?></td>
                             <td>
-                                <a href="generate.php?id=<?= $invoice['id'] ?>&format=pdf" class="btn btn-sm btn-danger" title="Descargar PDF">
+                                <a href="generate.php?id=<?= $invoice['id'] ?>&format=pdf&download=1" class="btn btn-sm btn-danger" title="Descargar PDF">
                                     <i class="fa-solid fa-file-pdf"></i> PDF
                                 </a>
-                                <a href="generate.php?id=<?= $invoice['id'] ?>&format=xlsx" class="btn btn-sm btn-success" title="Descargar Excel">
+                                <a href="generate.php?id=<?= $invoice['id'] ?>&format=xlsx&download=1" class="btn btn-sm btn-success" title="Descargar Excel">
                                     <i class="fa-solid fa-file-excel"></i> Excel
                                 </a>
-                                <a href="generate.php?id=<?= $invoice['id'] ?>&format=xml" class="btn btn-sm btn-primary" title="Descargar XML">
+                                <a href="generate.php?id=<?= $invoice['id'] ?>&format=xml&download=1" class="btn btn-sm btn-primary" title="Descargar XML">
                                     <i class="fa-solid fa-file-code"></i> XML
                                 </a>
                             </td>
