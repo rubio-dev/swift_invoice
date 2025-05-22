@@ -182,8 +182,8 @@ if (isset($_SESSION['error_message'])) {
       </div>
 
       <div class="d-flex justify-content-center gap-5 mb-4">
-        <a href="index.php" class="btnback">Cancelar</a>
-        <button type="submit" class="btncss" disabled>Guardar Venta</button>
+       <button type="button" class="btnback" onclick="window.location.href='index.php'">Cancelar</button>
+       <button type="submit" class="btnGuardarVenta" disabled>Guardar Venta</button>
       </div>
 
       <input type="hidden" name="subtotal"       value="<?php echo $totals['subtotal']; ?>">
