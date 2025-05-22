@@ -440,6 +440,12 @@ ALTER TABLE `sale_details`
   ADD CONSTRAINT `sale_details_ibfk_2` FOREIGN KEY (`product_id`) REFERENCES `products` (`id`);
 COMMIT;
 
+ALTER TABLE `clients`
+  ADD COLUMN `tax_regime_id` INT(11) NOT NULL DEFAULT 1 AFTER `address`,
+  ADD CONSTRAINT `fk_clients_tax_regime`
+    FOREIGN KEY (`tax_regime_id`)
+    REFERENCES `tax_regimes`(`id`);
+
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

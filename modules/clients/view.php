@@ -18,22 +18,20 @@ $client_id = (int) $_GET['id'];
 $stmt = $conn->prepare("
     SELECT
       c.*,
-      s.codigo      AS regimen_codigo,
-      s.descripcion AS regimen_desc
+      t.id   AS tax_regime_id,
+      t.name AS tax_regime_name
     FROM clients c
-    JOIN sat_regimen_fiscal s
-      ON c.regimen_fiscal = s.codigo
+    LEFT JOIN tax_regimes t
+      ON c.tax_regime_id = t.id
     WHERE c.id = :id
 ");
 $stmt->bindParam(':id', $client_id, PDO::PARAM_INT);
 $stmt->execute();
-
-if ($stmt->rowCount() === 0) {
+$client = $stmt->fetch(PDO::FETCH_ASSOC);
+if (! $client) {
     $_SESSION['client_fetch_error'] = 'Error al consultar los datos del cliente.';
     redirect('/swift_invoice/modules/clients/');
 }
-
-$client = $stmt->fetch(PDO::FETCH_ASSOC);
 
 require_once '../../includes/footer.php';
 ?>
@@ -120,12 +118,13 @@ require_once '../../includes/footer.php';
                         <div class="form-group mb-3">
                             <label class="input-title-Details">Régimen Fiscal:</label>
                             <label class="detailsData">
-                                <?php
-                                echo htmlspecialchars(
-                                    $client['regimen_codigo'] . ' – ' . $client['regimen_desc']
-                                );
-                                ?>
-                            </label>
+      <?php
+        $code = $client['tax_regime_id'] ?? '-';
+        $name = $client['tax_regime_name'] ?? '-';
+        echo htmlspecialchars("$code – $name");
+      ?>
+    </label>
+
                         </div>
                     </div>
                 </div>

@@ -38,9 +38,9 @@ if (isset($_SESSION['client_form_errors'])) {
 }
 
 // Cargar catálogo de regímenes fiscales
-$stmt2 = $conn->prepare("SELECT codigo, descripcion FROM sat_regimen_fiscal ORDER BY codigo");
+$stmt2 = $conn->prepare("SELECT id, name FROM tax_regimes ORDER BY id");
 $stmt2->execute();
-$regimenes = $stmt2->fetchAll(PDO::FETCH_ASSOC);
+$taxRegimes = $stmt2->fetchAll(PDO::FETCH_ASSOC);
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -128,7 +128,7 @@ $regimenes = $stmt2->fetchAll(PDO::FETCH_ASSOC);
                             </div>
                         </div>
 
-                              <div class="col-md-6">
+                        <div class="col-md-6">
                             <div class="form-group">
                                 <label class="input-title" for="address">Dirección:</label>
                                 <textarea id="address" name="address" class="form-control"
@@ -144,19 +144,21 @@ $regimenes = $stmt2->fetchAll(PDO::FETCH_ASSOC);
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label class="input-title" for="regimen_fiscal">Régimen Fiscal:</label>
-                                <select name="regimen_fiscal" id="regimen_fiscal" class="form-control" required>
+                                <label class="input-title" for="tax_regime_id">Régimen Fiscal:</label>
+                                <select name="tax_regime_id" id="tax_regime_id" class="form-control" required>
                                     <option value="">Seleccione...</option>
-                                    <?php foreach ($regimenes as $opt):
-                                        $sel = ($client['regimen_fiscal'] ?? '') === $opt['codigo'] ? 'selected' : '';
+                                    <?php foreach ($taxRegimes as $opt):
+                                        $sel = (isset($client['tax_regime_id'])
+                                            && $client['tax_regime_id'] == $opt['id'])
+                                            ? 'selected' : '';
                                         ?>
-                                        <option value="<?php echo htmlspecialchars($opt['codigo']); ?>" <?php echo $sel; ?>>
-                                            <?php echo htmlspecialchars($opt['codigo'] . ' – ' . $opt['descripcion']); ?>
+                                        <option value="<?= htmlspecialchars($opt['id']) ?>" <?= $sel ?>>
+                                            <?= htmlspecialchars($opt['id'] . ' – ' . $opt['name']) ?>
                                         </option>
                                     <?php endforeach; ?>
                                 </select>
-                                <?php if (isset($errors['regimen_fiscal'])): ?>
-                                    <span class="error-text"><?php echo $errors['regimen_fiscal']; ?></span>
+                                <?php if (!empty($errors['tax_regime_id'])): ?>
+                                    <span class="error-text"><?= htmlspecialchars($errors['tax_regime_id']) ?></span>
                                 <?php endif; ?>
                             </div>
                         </div>
@@ -174,7 +176,7 @@ $regimenes = $stmt2->fetchAll(PDO::FETCH_ASSOC);
                                 </small>
                             </div>
                         </div>
-                  
+
                     </div>
 
                     <div class="d-flex justify-content-between mt-4">

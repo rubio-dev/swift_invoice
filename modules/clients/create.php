@@ -19,11 +19,9 @@ $client = [
 // Conexión a la base de datos y carga de regímenes fiscales
 $db = new Database();
 $conn = $db->connect();
-$stmt = $conn->prepare(
-  "SELECT codigo, descripcion FROM sat_regimen_fiscal ORDER BY codigo"
-);
+$stmt = $conn->prepare("SELECT id, name FROM tax_regimes ORDER BY id");
 $stmt->execute();
-$regimenes = $stmt->fetchAll(PDO::FETCH_ASSOC);
+$taxRegimes = $stmt->fetchAll(PDO::FETCH_ASSOC);
 ?>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
@@ -120,8 +118,7 @@ if (isset($_SESSION['client_save_error'])) {
             <div class="col-md-6">
               <div class="form-group">
                 <label class="input-title" for="phone">Teléfono:</label>
-                <input type="tel" id="phone" name="phone" class="form-control" pattern="[0-9]{10}"
-                  inputmode="numeric"
+                <input type="tel" id="phone" name="phone" class="form-control" pattern="[0-9]{10}" inputmode="numeric"
                   title="Ingrese un teléfono válido de 10 dígitos"
                   value="<?php echo htmlspecialchars($client['phone']); ?>">
               </div>
@@ -155,24 +152,26 @@ if (isset($_SESSION['client_save_error'])) {
           </div>
 
           <div class="row">
-            <div class="col-md-6">
-              <div class="form-group">
-                <label class="input-title" for="regimen_fiscal">Régimen Fiscal:</label>
-                <select name="regimen_fiscal" id="regimen_fiscal" class="form-control" required>
-                  <option value="">Seleccione...</option>
-                  <?php foreach ($regimenes as $opt):
-                    $sel = (isset($client['regimen_fiscal']) && $client['regimen_fiscal'] === $opt['codigo']) ? 'selected' : '';
-                    ?>
-                    <option value="<?= htmlspecialchars($opt['codigo']) ?>" <?= $sel ?>>
-                      <?= htmlspecialchars($opt['codigo'] . ' – ' . $opt['descripcion']) ?>
-                    </option>
-                  <?php endforeach; ?>
-                </select>
-                <?php if (isset($errors['regimen_fiscal'])): ?>
-                  <span class="error-text"><?php echo $errors['regimen_fiscal']; ?></span>
-                <?php endif; ?>
-              </div>
-            </div>
+     <div class="col-md-6">
+  <div class="form-group">
+    <label class="input-title" for="tax_regime_id">Régimen Fiscal:</label>
+    <select name="tax_regime_id" id="tax_regime_id" class="form-control" required>
+      <option value="">Seleccione...</option>
+      <?php foreach ($taxRegimes as $opt): 
+        $sel = (isset($client['tax_regime_id']) && 
+                $client['tax_regime_id'] == $opt['id'])
+               ? 'selected' : '';
+      ?>
+        <option value="<?= htmlspecialchars($opt['id']) ?>" <?= $sel ?>>
+          <?= htmlspecialchars($opt['id'] . ' – ' . $opt['name']) ?>
+        </option>
+      <?php endforeach; ?>
+    </select>
+    <?php if (!empty($errors['tax_regime_id'])): ?>
+      <span class="error-text"><?= htmlspecialchars($errors['tax_regime_id']) ?></span>
+    <?php endif; ?>
+  </div>
+</div>
 
             <div class="col-md-6">
               <div class="form-group">

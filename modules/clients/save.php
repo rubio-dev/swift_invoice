@@ -2,22 +2,22 @@
 require_once '../../config/setup.php';
 requireAuth();
 
-$db   = new Database();
+$db = new Database();
 $conn = $db->connect();
 
 $errors = [];
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Recoger y sanitizar datos
-    $client_id         = isset($_POST['client_id']) ? (int) $_POST['client_id'] : null;
-    $first_name        = mb_strtoupper(trim($_POST['first_name'] ?? ''), 'UTF-8');
-    $last_name         = mb_strtoupper(trim($_POST['last_name'] ?? ''), 'UTF-8');
-    $mother_last_name  = mb_strtoupper(trim($_POST['mother_last_name'] ?? ''), 'UTF-8');
-    $phone             = trim($_POST['phone'] ?? '');
-    $email             = trim($_POST['email'] ?? '');
-    $rfc               = mb_strtoupper(trim($_POST['rfc'] ?? ''), 'UTF-8');
-    $address           = mb_strtoupper(trim($_POST['address'] ?? ''), 'UTF-8');
-    $regimen_fiscal    = trim($_POST['regimen_fiscal'] ?? '');
+    $client_id = isset($_POST['client_id']) ? (int) $_POST['client_id'] : null;
+    $first_name = mb_strtoupper(trim($_POST['first_name'] ?? ''), 'UTF-8');
+    $last_name = mb_strtoupper(trim($_POST['last_name'] ?? ''), 'UTF-8');
+    $mother_last_name = mb_strtoupper(trim($_POST['mother_last_name'] ?? ''), 'UTF-8');
+    $phone = trim($_POST['phone'] ?? '');
+    $email = trim($_POST['email'] ?? '');
+    $rfc = mb_strtoupper(trim($_POST['rfc'] ?? ''), 'UTF-8');
+    $address = mb_strtoupper(trim($_POST['address'] ?? ''), 'UTF-8');
+    $tax_regime_id = isset($_POST['tax_regime_id']) ? (int) $_POST['tax_regime_id'] : null;
 
     // Validaciones
     if ($first_name === '') {
@@ -26,8 +26,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if ($last_name === '') {
         $errors['last_name'] = 'El apellido paterno es requerido';
     }
-    if ($regimen_fiscal === '') {
-        $errors['regimen_fiscal'] = 'El régimen fiscal es requerido';
+    if ($tax_regime_id === null) {
+        $errors['tax_regime_id'] = 'El régimen fiscal es requerido';
     }
     if ($email !== '' && !filter_var($email, FILTER_VALIDATE_EMAIL)) {
         $errors['email'] = 'El email no es válido';
@@ -37,10 +37,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
     // Verificar que el régimen exista
     if (empty($errors)) {
-        $val = $conn->prepare("SELECT 1 FROM sat_regimen_fiscal WHERE codigo = ?");
-        $val->execute([$regimen_fiscal]);
+        $val = $conn->prepare("SELECT 1 FROM tax_regimes WHERE id = ?");
+        $val->execute([$tax_regime_id]);
         if (!$val->fetch()) {
-            $errors['regimen_fiscal'] = 'Régimen fiscal inválido';
+            $errors['tax_regime_id'] = 'Régimen fiscal inválido';
         }
     }
 
@@ -57,18 +57,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         email            = :email,
                         rfc              = :rfc,
                         address          = :address,
-                        regimen_fiscal   = :regimen_fiscal
+                        tax_regime_id    = :tax_regime_id
                      WHERE id = :id"
                 );
                 $stmt->bindParam(':id', $client_id, PDO::PARAM_INT);
             } else {
                 // Insertar nuevo cliente
-                $stmt = $conn->prepare(
-                    "INSERT INTO clients
-                        (first_name, last_name, mother_last_name, phone, email, rfc, address, regimen_fiscal)
-                     VALUES
-                        (:first_name, :last_name, :mother_last_name, :phone, :email, :rfc, :address, :regimen_fiscal)"
-                );
+                $stmt = $conn->prepare("
+    INSERT INTO clients
+      (first_name, last_name, mother_last_name, phone, email, rfc, address, tax_regime_id)
+    VALUES
+      (:first_name, :last_name, :mother_last_name, :phone, :email, :rfc, :address, :tax_regime_id)
+  ");
             }
             // Bindeo común
             $stmt->bindParam(':first_name', $first_name);
@@ -78,7 +78,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $stmt->bindParam(':email', $email);
             $stmt->bindParam(':rfc', $rfc);
             $stmt->bindParam(':address', $address);
-            $stmt->bindParam(':regimen_fiscal', $regimen_fiscal);
+            $stmt->bindParam(':tax_regime_id', $tax_regime_id, PDO::PARAM_INT);
 
             if ($stmt->execute()) {
                 if ($client_id) {
@@ -97,13 +97,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             } else {
                 $_SESSION['client_save_error'] = 'Error en la base de datos: ' . $e->getMessage();
             }
-            redirect($client_id 
+            redirect(
+                $client_id
                 ? '/swift_invoice/modules/clients/edit.php?id=' . $client_id
                 : '/swift_invoice/modules/clients/create.php'
             );
         } catch (Exception $e) {
             $_SESSION['client_save_error'] = $e->getMessage();
-            redirect($client_id 
+            redirect(
+                $client_id
                 ? '/swift_invoice/modules/clients/edit.php?id=' . $client_id
                 : '/swift_invoice/modules/clients/create.php'
             );
@@ -114,16 +116,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (!empty($errors)) {
         $_SESSION['client_form_errors'] = $errors;
         $_SESSION['client_form_data'] = [
-            'first_name'       => $first_name,
-            'last_name'        => $last_name,
+            'first_name' => $first_name,
+            'last_name' => $last_name,
             'mother_last_name' => $mother_last_name,
-            'phone'            => $phone,
-            'email'            => $email,
-            'rfc'              => $rfc,
-            'address'          => $address,
-            'regimen_fiscal'   => $regimen_fiscal
+            'phone' => $phone,
+            'email' => $email,
+            'rfc' => $rfc,
+            'address' => $address,
+            'tax_regime_id' => $tax_regime_id
         ];
-        redirect($client_id 
+        redirect(
+            $client_id
             ? '/swift_invoice/modules/clients/edit.php?id=' . $client_id
             : '/swift_invoice/modules/clients/create.php'
         );
