@@ -20,6 +20,11 @@ class ComposerStaticInit5ce13f389270716aa74fac6c4293dda4
         array (
             'ZipStream\\' => 10,
         ),
+        'S' => 
+        array (
+            'Svg\\' => 4,
+            'Sabberworm\\CSS\\' => 15,
+        ),
         'P' => 
         array (
             'Psr\\SimpleCache\\' => 16,
@@ -34,6 +39,11 @@ class ComposerStaticInit5ce13f389270716aa74fac6c4293dda4
             'Mpdf\\PsrHttpMessageShim\\' => 24,
             'Mpdf\\' => 5,
             'Matrix\\' => 7,
+            'Masterminds\\' => 12,
+        ),
+        'F' => 
+        array (
+            'FontLib\\' => 8,
         ),
         'E' => 
         array (
@@ -41,6 +51,7 @@ class ComposerStaticInit5ce13f389270716aa74fac6c4293dda4
         ),
         'D' => 
         array (
+            'Dompdf\\' => 7,
             'DeepCopy\\' => 9,
             'DASPRiD\\Enum\\' => 13,
         ),
@@ -63,6 +74,14 @@ class ComposerStaticInit5ce13f389270716aa74fac6c4293dda4
         'ZipStream\\' => 
         array (
             0 => __DIR__ . '/..' . '/maennchen/zipstream-php/src',
+        ),
+        'Svg\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/dompdf/php-svg-lib/src/Svg',
+        ),
+        'Sabberworm\\CSS\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/sabberworm/php-css-parser/src',
         ),
         'Psr\\SimpleCache\\' => 
         array (
@@ -101,9 +120,21 @@ class ComposerStaticInit5ce13f389270716aa74fac6c4293dda4
         array (
             0 => __DIR__ . '/..' . '/markbaker/matrix/classes/src',
         ),
+        'Masterminds\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/masterminds/html5/src',
+        ),
+        'FontLib\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/dompdf/php-font-lib/src/FontLib',
+        ),
         'Endroid\\QrCode\\' => 
         array (
             0 => __DIR__ . '/..' . '/endroid/qr-code/src',
+        ),
+        'Dompdf\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/dompdf/dompdf/src',
         ),
         'DeepCopy\\' => 
         array (
@@ -129,6 +160,7 @@ class ComposerStaticInit5ce13f389270716aa74fac6c4293dda4
 
     public static $classMap = array (
         'Composer\\InstalledVersions' => __DIR__ . '/..' . '/composer/InstalledVersions.php',
+        'Dompdf\\Cpdf' => __DIR__ . '/..' . '/dompdf/dompdf/lib/Cpdf.php',
         'FPDF' => __DIR__ . '/..' . '/setasign/fpdf/fpdf.php',
     );
 
