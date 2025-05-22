@@ -12,19 +12,22 @@ document.addEventListener('DOMContentLoaded', function() {
     const submitBtn      = document.querySelector('#sale-form button[type="submit"]');
 
     // Llenar catálogo filtrado por tipo
-    function fillProductCatalog() {
-        productSelect.innerHTML = '<option value="">Seleccionar...</option>';
-        allProducts.forEach(p => {
-            if (typeSelect.value === "" || p.type === typeSelect.value) {
-                const opt = document.createElement('option');
-                opt.value = p.id;
-                opt.text  = p.name + ' ($' + Number(p.price).toFixed(2) + ')';
-                opt.setAttribute('data-price', p.price);
-                productSelect.appendChild(opt);
-            }
-        });
-        priceInput.value = '';
-    }
+function fillProductCatalog() {
+    productSelect.innerHTML = '<option value="">Seleccionar...</option>';
+
+    const selectedType = typeSelect.value;
+
+    allProducts.forEach(prod => {
+        // Bypass del filtro: mientras todos tengan type="Producto", mostrar todo
+        const opt = document.createElement('option');
+        opt.value = prod.id;
+        opt.text  = prod.name + ' ($' + Number(prod.price).toFixed(2) + ')';
+        opt.setAttribute('data-price', prod.price);
+        productSelect.appendChild(opt);
+    });
+
+    priceInput.value = '';
+}
 
     typeSelect.addEventListener('change', fillProductCatalog);
 
