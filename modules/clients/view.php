@@ -1,10 +1,13 @@
 <?php
+// Incluye configuración y protege la vista (solo usuarios autenticados)
 require_once '../../config/setup.php';
 requireAuth();
 
 $page_title = "Detalles Cliente - Swift Invoice";
+// Incluye el encabezado HTML estándar
 require_once '../../includes/header.php';
 
+// Verifica que exista y sea válido el parámetro id, si no, redirige con error
 if (!isset($_GET['id']) || !is_numeric($_GET['id'])) {
     $_SESSION['client_fetch_error'] = 'ID de cliente inválido.';
     redirect('/swift_invoice/modules/clients/');
@@ -14,7 +17,7 @@ $db = new Database();
 $conn = $db->connect();
 $client_id = (int) $_GET['id'];
 
-// Traer datos del cliente junto con su régimen fiscal
+// Trae los datos del cliente junto con su régimen fiscal (LEFT JOIN)
 $stmt = $conn->prepare("
     SELECT
       c.*,
@@ -28,11 +31,14 @@ $stmt = $conn->prepare("
 $stmt->bindParam(':id', $client_id, PDO::PARAM_INT);
 $stmt->execute();
 $client = $stmt->fetch(PDO::FETCH_ASSOC);
+
 if (! $client) {
+    // Si no se encuentra, redirige y muestra error
     $_SESSION['client_fetch_error'] = 'Error al consultar los datos del cliente.';
     redirect('/swift_invoice/modules/clients/');
 }
 
+// Incluye el pie de página (scripts globales)
 require_once '../../includes/footer.php';
 ?>
 <!DOCTYPE html>
@@ -42,7 +48,9 @@ require_once '../../includes/footer.php';
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title><?php echo $page_title; ?></title>
+    <!-- Bootstrap para diseño responsive -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <!-- Estilos personalizados de clientes -->
     <link rel="stylesheet" href="/swift_invoice/assets/css/clients.css" />
 </head>
 
@@ -50,12 +58,14 @@ require_once '../../includes/footer.php';
     <main class="d-flex align-items-center justify-content-center min-vh-100">
         <div class="clients-container" style="max-width: 820px;">
 
+            <!-- Encabezado de la tarjeta -->
             <div class="card-header rounded-top-4 px-4 py-3">
                 <h2 class="card-title mb-0 fw-bold text-center">Detalles del Cliente</h2>
             </div>
 
             <div class="card-body px-4 py-3">
 
+                <!-- Datos principales del cliente en filas y columnas -->
                 <div class="row">
                     <div class="col-md-6">
                         <div class="form-group mb-3">
@@ -63,7 +73,6 @@ require_once '../../includes/footer.php';
                             <label class="detailsData"><?php echo htmlspecialchars($client['first_name']); ?></label>
                         </div>
                     </div>
-
                     <div class="col-md-6">
                         <div class="form-group mb-3">
                             <label class="input-title-Details">Apellido Paterno:</label>
@@ -76,8 +85,7 @@ require_once '../../includes/footer.php';
                     <div class="col-md-6">
                         <div class="form-group mb-3">
                             <label class="input-title-Details">Apellido Materno:</label>
-                            <label
-                                class="detailsData"><?php echo htmlspecialchars($client['mother_last_name']); ?></label>
+                            <label class="detailsData"><?php echo htmlspecialchars($client['mother_last_name']); ?></label>
                         </div>
                     </div>
                     <div class="col-md-6">
@@ -88,7 +96,6 @@ require_once '../../includes/footer.php';
                     </div>
                 </div>
 
-
                 <div class="row">
                     <div class="col-md-6">
                         <div class="form-group mb-3">
@@ -96,12 +103,12 @@ require_once '../../includes/footer.php';
                             <label class="detailsData"><?php echo htmlspecialchars($client['email'] ?? '-'); ?></label>
                         </div>
                     </div>
-
                     <div class="col-md-6">
                         <div class="form-group mb-3">
                             <label class="input-title-Details">Dirección:</label>
-                            <label class="detailsData d-block"
-                                style="white-space: pre-wrap;"><?php echo nl2br(htmlspecialchars(trim($client['address']))); ?></label>
+                            <label class="detailsData d-block" style="white-space: pre-wrap;">
+                                <?php echo nl2br(htmlspecialchars(trim($client['address']))); ?>
+                            </label>
                         </div>
                     </div>
                 </div>
@@ -113,22 +120,21 @@ require_once '../../includes/footer.php';
                             <label class="detailsData"><?php echo htmlspecialchars($client['rfc'] ?? '-'); ?></label>
                         </div>
                     </div>
-
                     <div class="col-md-6">
                         <div class="form-group mb-3">
                             <label class="input-title-Details">Régimen Fiscal:</label>
                             <label class="detailsData">
-      <?php
-        $code = $client['tax_regime_id'] ?? '-';
-        $name = $client['tax_regime_name'] ?? '-';
-        echo htmlspecialchars("$code – $name");
-      ?>
-    </label>
-
+                                <?php
+                                    $code = $client['tax_regime_id'] ?? '-';
+                                    $name = $client['tax_regime_name'] ?? '-';
+                                    echo htmlspecialchars("$code – $name");
+                                ?>
+                            </label>
                         </div>
                     </div>
                 </div>
 
+                <!-- Botón para volver al listado -->
                 <div class="d-flex justify-content-end mt-4">
                     <a href="index.php" class="btn btn-secondary">Volver</a>
                 </div>

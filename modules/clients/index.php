@@ -1,14 +1,17 @@
 <?php
+// Incluye configuración general y protege la vista (solo usuarios autenticados)
 require_once '../../config/setup.php';
 requireAuth();
 
 $page_title = "Clientes - Swift Invoice";
+// Incluye el encabezado HTML estándar
 require_once '../../includes/header.php';
 
+// Conexión a la base de datos y obtención de la lista de clientes
 $db = new Database();
 $conn = $db->connect();
 
-// Obtener lista de clientes
+// Consulta todos los clientes ordenados por apellido y nombre
 $stmt = $conn->query("SELECT * FROM clients ORDER BY last_name, first_name");
 $clients = $stmt->fetchAll(PDO::FETCH_ASSOC);
 ?>
@@ -19,28 +22,31 @@ $clients = $stmt->fetchAll(PDO::FETCH_ASSOC);
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Swift Invoice - Login</title>
-    <!-- Bootstrap CSS -->
+    <title>Swift Invoice - Clientes</title>
+    <!-- Bootstrap CSS para estilos -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Tus estilos personalizados -->
+    <!-- CSS personalizado para tablas de clientes -->
     <link rel="stylesheet" href="/swift_invoice/assets/css/tableClients.css">
-    <!---->
+    <!-- DataTables CSS para tablas dinámicas y búsqueda -->
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css">
 </head>
 
 <body>
+    <!-- Barra de navegación superior simple -->
     <nav class="navbar navbar-expand navbar-custom py-2 sticky-top">
         <div class="container-fluid">
             <a class="navbar-brand navbar-brand-custom ms-3" href="/swift_invoice">SWIFT INVOICE</a>
         </div>
     </nav>
 
+    <!-- Encabezado del listado y botón para agregar -->
     <div class="card-header d-flex justify-content-between align-items-center">
         <h2 class="card-title">Clientes</h2>
         <a href="create.php" class="btnAgregar">Agregar Cliente</a>
     </div>
 
     <main>
+        <!-- Si no hay clientes, muestra mensaje -->
         <?php if (empty($clients)): ?>
             <p>No hay clientes registrados.</p>
         <?php else: ?>
@@ -64,8 +70,11 @@ $clients = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                 <td><?php echo htmlspecialchars($client['rfc'] ?? '-'); ?></td>
                                 <td>
                                     <div class="d-flex gap-2">
+                                        <!-- Botón de detalles -->
                                         <a href="view.php?id=<?php echo $client['id']; ?>" class="btnDetails">Detalles</a>
+                                        <!-- Botón de edición -->
                                         <a href="edit.php?id=<?php echo $client['id']; ?>" class="btnEdit">Editar</a>
+                                        <!-- Botón de eliminar: llama confirmación JS -->
                                         <button class="btnDelete"
                                             onclick="confirmDelete(<?php echo $client['id']; ?>)">Eliminar</button>
                                     </div>
@@ -77,21 +86,23 @@ $clients = $stmt->fetchAll(PDO::FETCH_ASSOC);
             </div>
         <?php endif; ?>
         
+        <!-- Botón para volver al inicio -->
         <div class="d-flex justify-content-start mt-4">
             <a href="/swift_invoice/" class="btn btn-secondary">← Volver al inicio</a>
         </div>
     </main>
 </body>
 
-<!-- jQuery + DataTables JS -->
+<!-- Librerías JS necesarias para DataTables y Bootstrap -->
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
 <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
 
-<!-- SweetAlert2 -->
+<!-- SweetAlert2 para confirmaciones bonitas -->
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <script>
+    // Inicializa DataTables en la tabla de clientes
     $(document).ready(function () {
         $('#clientesTable').DataTable({
             language: {
@@ -111,6 +122,7 @@ $clients = $stmt->fetchAll(PDO::FETCH_ASSOC);
         });
     });
 
+    // Confirmación de borrado de cliente usando SweetAlert2
     function confirmDelete(clientId) {
         Swal.fire({
             title: '¿Eliminar cliente?',
@@ -123,6 +135,7 @@ $clients = $stmt->fetchAll(PDO::FETCH_ASSOC);
             cancelButtonText: 'Cancelar'
         }).then((result) => {
             if (result.isConfirmed) {
+                // Si confirma, crea y envía un formulario oculto por POST para borrar seguro
                 const form = document.createElement('form');
                 form.method = 'POST';
                 form.action = 'delete.php';
@@ -143,5 +156,6 @@ $clients = $stmt->fetchAll(PDO::FETCH_ASSOC);
 </html>
 
 <?php
+// Incluye el pie de página y scripts generales
 require_once '../../includes/footer.php';
 ?>

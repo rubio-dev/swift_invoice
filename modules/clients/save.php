@@ -1,25 +1,28 @@
 <?php
+// Incluye configuración y protege la acción (solo usuarios autenticados)
 require_once '../../config/setup.php';
 requireAuth();
 
+// Conexión a la base de datos
 $db = new Database();
 $conn = $db->connect();
 
+// Arreglo de errores de validación
 $errors = [];
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // Recoger y sanitizar datos
-    $client_id = isset($_POST['client_id']) ? (int) $_POST['client_id'] : null;
-    $first_name = mb_strtoupper(trim($_POST['first_name'] ?? ''), 'UTF-8');
-    $last_name = mb_strtoupper(trim($_POST['last_name'] ?? ''), 'UTF-8');
+    // Recoger y sanitizar datos del formulario
+    $client_id        = isset($_POST['client_id']) ? (int) $_POST['client_id'] : null;
+    $first_name       = mb_strtoupper(trim($_POST['first_name'] ?? ''), 'UTF-8');
+    $last_name        = mb_strtoupper(trim($_POST['last_name'] ?? ''), 'UTF-8');
     $mother_last_name = mb_strtoupper(trim($_POST['mother_last_name'] ?? ''), 'UTF-8');
-    $phone = trim($_POST['phone'] ?? '');
-    $email = trim($_POST['email'] ?? '');
-    $rfc = mb_strtoupper(trim($_POST['rfc'] ?? ''), 'UTF-8');
-    $address = mb_strtoupper(trim($_POST['address'] ?? ''), 'UTF-8');
-    $tax_regime_id = isset($_POST['tax_regime_id']) ? (int) $_POST['tax_regime_id'] : null;
+    $phone            = trim($_POST['phone'] ?? '');
+    $email            = trim($_POST['email'] ?? '');
+    $rfc              = mb_strtoupper(trim($_POST['rfc'] ?? ''), 'UTF-8');
+    $address          = mb_strtoupper(trim($_POST['address'] ?? ''), 'UTF-8');
+    $tax_regime_id    = isset($_POST['tax_regime_id']) ? (int) $_POST['tax_regime_id'] : null;
 
-    // Validaciones
+    // Validaciones de campos obligatorios y formatos
     if ($first_name === '') {
         $errors['first_name'] = 'El nombre es requerido';
     }
@@ -35,7 +38,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if ($rfc !== '' && (strlen($rfc) < 12 || strlen($rfc) > 13)) {
         $errors['rfc'] = 'El RFC debe tener 12 o 13 caracteres';
     }
-    // Verificar que el régimen exista
+
+    // Verifica que el régimen fiscal exista en catálogo
     if (empty($errors)) {
         $val = $conn->prepare("SELECT 1 FROM tax_regimes WHERE id = ?");
         $val->execute([$tax_regime_id]);
@@ -44,10 +48,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     }
 
+    // Si no hay errores de validación, guarda o actualiza el cliente
     if (empty($errors)) {
         try {
             if ($client_id) {
-                // Actualizar cliente
+                // Actualizar cliente existente
                 $stmt = $conn->prepare(
                     "UPDATE clients SET
                         first_name       = :first_name,
@@ -64,13 +69,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             } else {
                 // Insertar nuevo cliente
                 $stmt = $conn->prepare("
-    INSERT INTO clients
-      (first_name, last_name, mother_last_name, phone, email, rfc, address, tax_regime_id)
-    VALUES
-      (:first_name, :last_name, :mother_last_name, :phone, :email, :rfc, :address, :tax_regime_id)
-  ");
+                    INSERT INTO clients
+                      (first_name, last_name, mother_last_name, phone, email, rfc, address, tax_regime_id)
+                    VALUES
+                      (:first_name, :last_name, :mother_last_name, :phone, :email, :rfc, :address, :tax_regime_id)
+                ");
             }
-            // Bindeo común
+            // Bindeo común de parámetros
             $stmt->bindParam(':first_name', $first_name);
             $stmt->bindParam(':last_name', $last_name);
             $stmt->bindParam(':mother_last_name', $mother_last_name);
@@ -80,6 +85,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $stmt->bindParam(':address', $address);
             $stmt->bindParam(':tax_regime_id', $tax_regime_id, PDO::PARAM_INT);
 
+            // Ejecuta el guardado y redirige según éxito y tipo de operación
             if ($stmt->execute()) {
                 if ($client_id) {
                     $_SESSION['success_message'] = 'Cliente actualizado correctamente';
@@ -92,6 +98,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 throw new Exception('Error al guardar el cliente. Intente nuevamente.');
             }
         } catch (PDOException $e) {
+            // Maneja errores por claves únicas duplicadas (RFC, email)
             if ($e->getCode() == 23000) {
                 $_SESSION['client_save_error'] = 'El email, RFC o datos duplicados ya están registrados';
             } else {
@@ -103,6 +110,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 : '/swift_invoice/modules/clients/create.php'
             );
         } catch (Exception $e) {
+            // Otro tipo de error (por ejemplo, error de ejecución)
             $_SESSION['client_save_error'] = $e->getMessage();
             redirect(
                 $client_id
@@ -112,7 +120,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     }
 
-    // Si hay errores, guardarlos en sesión y redirigir
+    // Si hay errores de validación, guarda errores y datos en sesión para repoblar formulario
     if (!empty($errors)) {
         $_SESSION['client_form_errors'] = $errors;
         $_SESSION['client_form_data'] = [
@@ -132,5 +140,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         );
     }
 } else {
+    // Si no viene por POST, redirige al listado
     redirect('/swift_invoice/modules/clients/');
 }
