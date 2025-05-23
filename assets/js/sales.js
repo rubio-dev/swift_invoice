@@ -1,8 +1,7 @@
 document.addEventListener('DOMContentLoaded', function() {
-    const typeSelect     = document.getElementById('type_select');
     const productSelect  = document.getElementById('product_id');
     const priceInput     = document.getElementById('price');
-    const taxInput       = document.getElementById('tax_rate'); // Ahora es input
+    const taxInput       = document.getElementById('tax_rate');
     const quantityInput  = document.getElementById('quantity');
     const addProductBtn  = document.getElementById('add-product');
     const productTable   = document.getElementById('product-table').getElementsByTagName('tbody')[0];
@@ -11,33 +10,32 @@ document.addEventListener('DOMContentLoaded', function() {
     const totalSpan      = document.getElementById('total');
     const submitBtn      = document.querySelector('#sale-form button[type="submit"]');
 
-    // Llenar catálogo filtrado por tipo
-function fillProductCatalog() {
-    productSelect.innerHTML = '<option value="">Seleccionar...</option>';
+    // Si quieres que el catálogo esté lleno desde el inicio:
+    fillProductCatalog();
 
-    const selectedType = typeSelect.value;
-
-    allProducts.forEach(prod => {
-        // Bypass del filtro: mientras todos tengan type="Producto", mostrar todo
-        const opt = document.createElement('option');
-        opt.value = prod.id;
-        opt.text  = prod.name + ' ($' + Number(prod.price).toFixed(2) + ')';
-        opt.setAttribute('data-price', prod.price);
-        productSelect.appendChild(opt);
+    // Cuando cambias el precio, cantidad o impuesto, recalcula todo
+    [priceInput, taxInput, quantityInput].forEach(input => {
+        input.addEventListener('input', updateTotals);
     });
 
-    priceInput.value = '';
-}
+    // Llenar catálogo (ya no filtramos por tipo)
+    function fillProductCatalog() {
+        productSelect.innerHTML = '<option value="">Seleccionar...</option>';
+        allProducts.forEach(prod => {
+            const opt = document.createElement('option');
+            opt.value = prod.id;
+            opt.text  = prod.name + ' ($' + Number(prod.price).toFixed(2) + ')';
+            opt.setAttribute('data-price', prod.price);
+            productSelect.appendChild(opt);
+        });
+        priceInput.value = '';
+    }
 
-    typeSelect.addEventListener('change', fillProductCatalog);
-
-    // Sugerir precio cuando se selecciona catálogo (editable)
     productSelect.addEventListener('change', function() {
         const selected = productSelect.selectedOptions[0];
         priceInput.value = selected && selected.getAttribute('data-price') ? selected.getAttribute('data-price') : '';
     });
 
-    // Agregar producto/servicio a la venta
     addProductBtn.addEventListener('click', function() {
         const productId = productSelect.value;
         const productName = productSelect.options[productSelect.selectedIndex]
@@ -46,6 +44,7 @@ function fillProductCatalog() {
         const productPrice = parseFloat(priceInput.value);
         const quantity = parseInt(quantityInput.value);
         let taxRate = parseFloat(taxInput.value);
+
         if (isNaN(taxRate) || taxRate < 0) taxRate = 0.00;
 
         if (!productId || isNaN(quantity) || quantity < 1 || isNaN(productPrice) || productPrice < 0) {
@@ -94,7 +93,6 @@ function fillProductCatalog() {
         submitBtn.disabled = false;
     });
 
-    // Eliminar producto de la venta
     productTable.addEventListener('click', function(e) {
         if (e.target.classList.contains('remove-product')) {
             const row = e.target.closest('tr');
@@ -107,7 +105,6 @@ function fillProductCatalog() {
         }
     });
 
-    // Guardar producto en sesión (via AJAX)
     function saveProductToSession(product) {
         fetch('save_product_session.php', {
             method: 'POST',
@@ -116,7 +113,6 @@ function fillProductCatalog() {
         });
     }
 
-    // Eliminar producto de la sesión (via AJAX)
     function removeProductFromSession(index) {
         fetch('remove_product_session.php', {
             method: 'POST',
@@ -125,7 +121,6 @@ function fillProductCatalog() {
         });
     }
 
-    // Reindexar filas de la tabla después de eliminar
     function reindexTableRows() {
         const rows = productTable.rows;
         for (let i = 0; i < rows.length; i++) {
@@ -138,7 +133,6 @@ function fillProductCatalog() {
         }
     }
 
-    // Actualizar totales (considerando impuesto por línea)
     function updateTotals() {
         let subtotal = 0;
         let totalTax = 0;
@@ -167,7 +161,13 @@ function fillProductCatalog() {
         document.querySelector('input[name="subtotal"]').value = subtotal;
         document.querySelector('input[name="tax_amount"]').value = totalTax;
         document.querySelector('input[name="total"]').value = total;
-        // (tax_percentage general si quieres, por ahora solo suma)
+
+        // Habilita el botón si hay al menos un producto y los totales tienen sentido
+        if (productTable.rows.length > 0 && subtotal >= 0) {
+            submitBtn.disabled = false;
+        } else {
+            submitBtn.disabled = true;
+        }
     }
 
     // Inicialización

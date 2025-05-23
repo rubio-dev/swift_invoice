@@ -115,14 +115,6 @@ if (isset($_SESSION['error_message'])) {
       <h3 class="text-start pt-3">Productos / Servicios</h3>
       <div class="product-row mb-3">
         <div class="form-group">
-          <label for="type_select" class="input-title">Tipo:</label>
-          <select id="type_select" class="form-control">
-            <option value="">Seleccionar...</option>
-            <option value="Producto">Producto</option>
-            <option value="Servicio">Servicio</option>
-          </select>
-        </div>
-        <div class="form-group">
           <label for="product_id" class="input-title">Catálogo:</label>
           <select id="product_id" class="form-control">
             <option value="">Seleccionar...</option>
@@ -166,7 +158,7 @@ if (isset($_SESSION['error_message'])) {
                 <td>$<?php echo number_format($prod['price'],2); ?></td>
                 <td><?php echo $prod['quantity']; ?></td>
                 <td><?php echo number_format($prod['tax_rate'],2); ?>%</td>
-                <td>$<?php echo number_format($prod['price']*$prod['quantity'],2); ?></td>
+                <td>$<?php echo number_format($prod['price'] * $prod['quantity'],2); ?></td>
                 <td>
                   <button type="button" class="remove-product DeleteBtn">Eliminar</button>
                   <input type="hidden" name="products[<?php echo $i; ?>][id]"       value="<?php echo $prod['id']; ?>">
@@ -216,10 +208,10 @@ if (isset($_SESSION['error_message'])) {
   document.addEventListener('DOMContentLoaded', rebuildClients);
 </script>
 
-<!-- PASO CLAVE: Exportar productos como array JS global -->
+<!-- Exportar productos como array JS global -->
 <script>
 const allProducts = <?php echo json_encode($products); ?>;
-console.log("allProducts:", allProducts); // Para depuración
+console.log("allProducts:", allProducts);
 </script>
 
 <!-- Incluye tu JS de ventas -->

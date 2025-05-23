@@ -1,5 +1,4 @@
 <?php
-// Archivo: modules/sales/process.php
 require_once '../../config/setup.php';
 requireAuth();
 require_once 'functions.php';
@@ -20,7 +19,6 @@ if (
     empty($_POST['products'])
 ) {
     $_SESSION['error_message'] = 'Por favor completa todos los campos';
-    // Si venía con id, mantenemos en edit
     if (isset($_GET['id'])) {
         redirect("/swift_invoice/modules/sales/edit.php?id=" . (int)$_GET['id']);
     }
