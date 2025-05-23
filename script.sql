@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3307
--- Generation Time: May 23, 2025 at 05:40 AM
+-- Generation Time: May 23, 2025 at 06:31 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -63,6 +63,7 @@ CREATE TABLE `clients` (
   `email` varchar(100) DEFAULT NULL,
   `rfc` varchar(13) DEFAULT NULL,
   `address` text DEFAULT NULL,
+  `tax_regime_id` int(11) DEFAULT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -70,10 +71,10 @@ CREATE TABLE `clients` (
 -- Dumping data for table `clients`
 --
 
-INSERT INTO `clients` (`id`, `first_name`, `last_name`, `mother_last_name`, `phone`, `email`, `rfc`, `address`, `created_at`) VALUES
-(2, 'PANFILOMENO', 'MOMICHIS', 'INSANO', '6624560923', 'momichiscorjjp@gmail.com', 'MOM123124215', 'AV DEL PARQUE S/N MESA DE OTAY, 22430, TIJUANA, BC, MEXICO.', '2025-05-10 10:54:57'),
-(3, 'JUAN', 'TORRES', 'VASQUEZ', '6641234567', 'jtorres@gmail.com', 'JAM123124213', 'COL LAS TORRES, 22476. TIJUANA, BAJA CALIFORNIA.', '2025-05-11 12:20:52'),
-(4, 'ABRAHAM', 'ESTRADA', 'SOLANO', '6631236878', 'aleluyo@gmail.com', 'ESSA04102911', 'BLVD ALBERTO LIMON PADILLA S/N MESA DE OTAY', '2025-05-13 21:11:12');
+INSERT INTO `clients` (`id`, `first_name`, `last_name`, `mother_last_name`, `phone`, `email`, `rfc`, `address`, `tax_regime_id`, `created_at`) VALUES
+(2, 'PANFILOMENO', 'MOMICHIS', 'INSANO', '6624560923', 'momichiscorjjp@gmail.com', 'MOM123124215', 'AV DEL PARQUE S/N MESA DE OTAY, 22430, TIJUANA, BC, MEXICO.', NULL, '2025-05-10 10:54:57'),
+(3, 'JUAN', 'TORRES', 'VASQUEZ', '6641234567', 'jtorres@gmail.com', 'JAM123124213', 'COL LAS TORRES, 22476. TIJUANA, BAJA CALIFORNIA.', NULL, '2025-05-11 12:20:52'),
+(4, 'ABRAHAM', 'ESTRADA', 'SOLANO', '6631236878', 'aleluyo@gmail.com', 'ESSA04102911', 'BLVD ALBERTO LIMON PADILLA S/N MESA DE OTAY', NULL, '2025-05-13 21:11:12');
 
 -- --------------------------------------------------------
 
