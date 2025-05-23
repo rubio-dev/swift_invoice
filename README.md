@@ -1,39 +1,39 @@
-Swift Invoice
-Swift Invoice es una aplicación web para la gestión de ventas y facturación, desarrollada en PHP y MySQL. El sistema permite administrar clientes (personas y empresas), productos, y ventas de manera sencilla, práctica y con enfoque modular. Ideal para pequeñas y medianas empresas, así como para despachos que requieren un control rápido y seguro de su información fiscal y operativa.
+# Swift Invoice
 
-Características principales
-Gestión de clientes: Administra personas y empresas como clientes, con datos fiscales y de contacto.
+**Swift Invoice** es una aplicación web para la gestión integral de ventas y facturación, enfocada en la administración eficiente y digital de clientes (personas y empresas), productos y comprobantes fiscales.  
+Funciona en cualquier servidor local o web con PHP y utiliza MySQL para el almacenamiento seguro de la información.
 
-Módulo de ventas: Registra ventas asignando cliente (persona o empresa), productos, cantidades, descuentos e impuestos configurables.
+---
 
-Facturación PDF: Genera facturas o comprobantes en PDF con diseño personalizable.
+## 🧩 **Características**
 
-Catálogo de productos: Alta y edición de productos y servicios, con precios e impuestos individuales.
+- Administración de clientes: personas físicas y empresas, con información fiscal.
+- Registro y edición de ventas, asignando cliente y productos.
+- Generación de facturas o comprobantes en PDF con diseño profesional.
+- Control y configuración de impuestos por producto o venta.
+- Catálogo de productos y servicios con precios y descripciones.
+- Historial y búsqueda de ventas, clientes y productos.
+- Reportes básicos para consulta y análisis.
+- Enfoque **paperless**: reduce uso de papel y facilita la digitalización de procesos.
+- Estructura modular, fácil de mantener y expandir.
+- Compatible con cualquier entorno PHP/MySQL (XAMPP, WAMP, servidores en la nube).
 
-Historial y reportes: Consulta de ventas realizadas, detalles de clientes y reportes básicos.
+---
 
-Control de impuestos: Asigna y calcula impuestos personalizados por producto o venta.
+## ⚙️ **Requisitos**
 
-Enfoque “paperless”: Digitaliza procesos y reduce uso de papel, compatible con almacenamiento en la nube.
+- PHP 7.4 o superior
+- MySQL o MariaDB
+- Servidor web (Apache, Nginx, etc.)
 
-Seguridad: Gestión de sesiones y permisos de usuario básicos.
+---
 
-Tecnologías: PHP, MySQL/MariaDB, HTML, CSS, JavaScript. Fácil de instalar en cualquier hosting compatible.
+## 🚀 **Instalación**
 
-Requisitos
-PHP 7.4 o superior
+1. Clona el repositorio o descarga el proyecto.
+2. Crea una base de datos MySQL y configura la conexión en `/config/setup.php`.
+3. Importa el archivo de estructura de la base de datos (`/database/swift_invoice.sql`).
+4. Accede desde tu navegador a la ruta donde instalaste Swift Invoice.
+5. ¡Listo! Comienza a administrar tus ventas y clientes de manera digital.
 
-MySQL o MariaDB
-
-Servidor web (Apache, Nginx, etc.)
-
-Instalación
-Clona el repositorio:
-git clone https://github.com/tuusuario/swift-invoice.git
-
-Configura la base de datos en /config/setup.php
-
-Importa las tablas desde /database/swift_invoice.sql
-
-Accede desde tu navegador y comienza a utilizarlo.
-
+---
