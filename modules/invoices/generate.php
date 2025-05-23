@@ -3,7 +3,7 @@ require_once '../../config/setup.php';
 requireAuth();
 require_once '../../vendor/autoload.php';
 
-// QUITA ACENTOS Y PONE MAYUSCULAS
+// Quita acentos y pone mayúsculas
 function sin_acentos_mayus($str) {
     $str = mb_strtoupper($str, 'UTF-8');
     $unwanted = ['Á'=>'A','É'=>'E','Í'=>'I','Ó'=>'O','Ú'=>'U','Ñ'=>'N','Ü'=>'U',
@@ -54,96 +54,136 @@ if ($format === 'pdf') {
     $pdf = new FPDF();
     $pdf->AddPage();
 
-    // ENCABEZADO AZUL
-    $pdf->SetFillColor(46,112,232);
-    $pdf->Rect(20,20,170,30,'F');
-    $pdf->SetXY(20,28);
-    $pdf->SetFont('Arial','B',28);
+    // -- ESTILOS --
+    $color_hero_bg = [30,58,138];       // azul hero
+    $color_card_bg = [243,244,246];     // gris claro card
+    $color_table_head = [55,65,81];     // gris tabla
+    $color_table_alt = [229,231,235];   // gris alternado
+    $color_table_row = [255,255,255];   // blanco fila normal
+
+    // HERO - CABECERA AZUL
+    $pdf->SetFillColor(...$color_hero_bg);
+    $pdf->Rect(0,0,210,40,'F');
+    $pdf->SetFont('Arial','B',12); // Tamaño uniforme
     $pdf->SetTextColor(255,255,255);
-    $pdf->Cell(170,10,'FACTURA',0,1,'C');
-    $pdf->Ln(12);
+    $pdf->SetXY(0,18);
+    $pdf->Cell(210,10,'FACTURA',0,1,'C');
 
-    // Info tamaño uniforme
-    $pdf->SetTextColor(30,30,30);
-    $pdf->SetFont('Arial','',13);
-    $bold = 'B'; $normal = '';
-    $espacio = 9; $startX = 20;
+    // Sombra simulada abajo del hero (línea sutil)
+    $pdf->SetDrawColor(200,200,255);
+    $pdf->SetLineWidth(0.5);
+    $pdf->Line(10,40,200,40);
 
-    // Primera fila
-    $pdf->SetX($startX);
-    $pdf->SetFont('Arial',$bold,13); $pdf->Cell(18,$espacio,'FOLIO:',0,0,'L');
-    $pdf->SetFont('Arial',$normal,13); $pdf->Cell(45,$espacio,sin_acentos_mayus($invoice['invoice_number']),0,0,'L');
-    $pdf->SetFont('Arial',$bold,13); $pdf->Cell(16,$espacio,'FECHA:',0,0,'L');
-    $pdf->SetFont('Arial',$normal,13); $pdf->Cell(40,$espacio,sin_acentos_mayus($invoice['sale_date']),0,1,'L');
-    // RFC
-    $pdf->SetX($startX);
-    $pdf->SetFont('Arial',$bold,13); $pdf->Cell(13,$espacio,'RFC:',0,0,'L');
-    $pdf->SetFont('Arial',$normal,13); $pdf->Cell(0,$espacio,sin_acentos_mayus($invoice['rfc']),0,1,'L');
-    // Cliente
-    $pdf->SetX($startX);
-    $pdf->SetFont('Arial',$bold,13); $pdf->Cell(22,$espacio,'CLIENTE:',0,0,'L');
-    $pdf->SetFont('Arial',$normal,13); $pdf->Cell(0,$espacio,sin_acentos_mayus(trim($invoice['last_name'].' '.$invoice['mother_last_name'].' '.$invoice['first_name'])),0,1,'L');
-    // Telefono
-    $pdf->SetX($startX);
-    $pdf->SetFont('Arial',$bold,13); $pdf->Cell(24,$espacio,'TELEFONO:',0,0,'L');
-    $pdf->SetFont('Arial',$normal,13); $pdf->Cell(0,$espacio,sin_acentos_mayus($invoice['phone']),0,1,'L');
-    // Correo
-    $pdf->SetX($startX);
-    $pdf->SetFont('Arial',$bold,13); $pdf->Cell(21,$espacio,'CORREO:',0,0,'L');
-    $pdf->SetFont('Arial',$normal,13); $pdf->MultiCell(0,$espacio,sin_acentos_mayus($invoice['email']),0,'L');
-    // Direccion
-    $pdf->SetX($startX);
-    $pdf->SetFont('Arial',$bold,13); $pdf->Cell(27,$espacio,'DIRECCION:',0,0,'L');
-    $pdf->SetFont('Arial',$normal,13); $pdf->MultiCell(0,$espacio,sin_acentos_mayus($invoice['address']),0,'L');
-    $pdf->Ln(3);
+    // -- BLOQUE DATOS PRINCIPALES (tipo card) --
+    $pdf->SetXY(10,45);
+    $pdf->SetFillColor(...$color_card_bg);
+    $pdf->SetDrawColor(235,235,235);
+    $pdf->Rect(10,45,190,34,'F');
+    $pdf->SetFont('Arial','B',12);
+    $pdf->SetTextColor(30,58,138);
 
-    // TABLA PRODUCTOS
-    $pdf->SetFont('Arial','B',13);
-    $pdf->SetFillColor(18,26,46);
+    $pdf->SetXY(15,50);
+    $pdf->Cell(32,8,'FOLIO:',0,0,'L');
+    $pdf->SetFont('Arial','',12); $pdf->SetTextColor(60,60,60);
+    $pdf->Cell(35,8,sin_acentos_mayus($invoice['invoice_number']),0,0,'L');
+
+    $pdf->SetFont('Arial','B',12); $pdf->SetTextColor(30,58,138);
+    $pdf->Cell(24,8,'FECHA:',0,0,'L');
+    $pdf->SetFont('Arial','',12); $pdf->SetTextColor(60,60,60);
+    $pdf->Cell(0,8,sin_acentos_mayus($invoice['sale_date']),0,1,'L');
+
+    $pdf->SetXY(15,57);
+    $pdf->SetFont('Arial','B',12); $pdf->SetTextColor(30,58,138);
+    $pdf->Cell(32,8,'RFC:',0,0,'L');
+    $pdf->SetFont('Arial','',12); $pdf->SetTextColor(60,60,60);
+    $pdf->Cell(50,8,sin_acentos_mayus($invoice['rfc']),0,0,'L');
+
+    $pdf->SetFont('Arial','B',12); $pdf->SetTextColor(30,58,138);
+    $pdf->Cell(26,8,'CLIENTE:',0,0,'L');
+    $pdf->SetFont('Arial','',12); $pdf->SetTextColor(60,60,60);
+    $pdf->Cell(0,8,sin_acentos_mayus(trim($invoice['last_name'].' '.$invoice['mother_last_name'].' '.$invoice['first_name'])),0,1,'L');
+
+    // -- BLOQUE INFO CONTACTO --
+    $pdf->SetXY(10,82);
+    $pdf->SetFillColor(...$color_card_bg);
+    $pdf->Rect(10,82,190,22,'F');
+
+    $pdf->SetFont('Arial','B',12); $pdf->SetTextColor(30,58,138);
+    $pdf->SetXY(15,86); $pdf->Cell(30,8,'TELEFONO:',0,0,'L');
+    $pdf->SetFont('Arial','',12); $pdf->SetTextColor(60,60,60);
+    $pdf->Cell(45,8,sin_acentos_mayus($invoice['phone']),0,0,'L');
+
+    $pdf->SetFont('Arial','B',12); $pdf->SetTextColor(30,58,138);
+    $pdf->Cell(17,8,'EMAIL:',0,0,'L');
+    $pdf->SetFont('Arial','',12); $pdf->SetTextColor(60,60,60);
+    $pdf->Cell(0,8,sin_acentos_mayus($invoice['email']),0,1,'L');
+
+    // DIRECCION EN CARD PROPIA
+    $pdf->SetXY(10,110);
+    $pdf->SetFillColor(...$color_card_bg);
+    $pdf->Rect(10,110,190,16,'F');
+    $pdf->SetFont('Arial','B',12); $pdf->SetTextColor(30,58,138);
+    $pdf->SetXY(15,114); $pdf->Cell(28,8,'DIRECCION:',0,0,'L');
+    $pdf->SetFont('Arial','',12); $pdf->SetTextColor(60,60,60);
+    $pdf->Cell(0,8,sin_acentos_mayus($invoice['address']),0,1,'L');
+
+    // --- TABLA DE PRODUCTOS ---
+    $tableY = 135;
+    $pdf->SetXY(10, $tableY);
+    $pdf->SetFont('Arial','B',12);
+    $pdf->SetFillColor(...$color_table_head);
     $pdf->SetTextColor(255,255,255);
-    $pdf->Cell(70,12,'PRODUCTO',1,0,'C',true);
-    $pdf->Cell(25,12,'CANTIDAD',1,0,'C',true);
-    $pdf->Cell(35,12,'PRECIO UNIT.',1,0,'C',true);
-    $pdf->Cell(20,12,'IVA',1,0,'C',true);
-    $pdf->Cell(35,12,'SUBTOTAL',1,1,'C',true);
+    $pdf->Cell(60,10,'PRODUCTO',1,0,'C',true);
+    $pdf->Cell(25,10,'CANT.',1,0,'C',true);
+    $pdf->Cell(35,10,'P. UNIT.',1,0,'C',true);
+    $pdf->Cell(20,10,'IVA',1,0,'C',true);
+    $pdf->Cell(40,10,'SUBTOTAL',1,1,'C',true);
 
-    $pdf->SetFont('Arial','',13);
-    $pdf->SetTextColor(30,30,30);
-
+    // Tabla con filas alternadas
+    $pdf->SetFont('Arial','',12);
+    $i = 0;
     foreach ($detalles as $d) {
-        $pdf->Cell(70,10,sin_acentos_mayus($d['name']),1,0,'L');
-        $pdf->Cell(25,10,$d['quantity'],1,0,'C');
-        $pdf->Cell(35,10,'$'.number_format($d['unit_price'],2),1,0,'R');
-        $pdf->Cell(20,10,number_format($d['tax_rate'],2).'%',1,0,'C');
-        $pdf->Cell(35,10,'$'.number_format($d['subtotal'],2),1,1,'R');
+        if ($i % 2 == 0) {
+            $pdf->SetFillColor(...$color_table_alt);
+        } else {
+            $pdf->SetFillColor(...$color_table_row);
+        }
+        $pdf->SetTextColor(45,45,45);
+        $pdf->Cell(60,10,sin_acentos_mayus($d['name']),1,0,'L',true);
+        $pdf->Cell(25,10,$d['quantity'],1,0,'C',true);
+        $pdf->Cell(35,10,'$'.number_format($d['unit_price'],2),1,0,'R',true);
+        $pdf->Cell(20,10,number_format($d['tax_rate'],2).'%',1,0,'C',true);
+        $pdf->Cell(40,10,'$'.number_format($d['subtotal'],2),1,1,'R',true);
+        $i++;
     }
 
-    // TOTALES
-    $pdf->SetFont('Arial','B',13);
-    $pdf->SetFillColor(255,255,255);
+    // --- TOTALES (bloques tipo resumen de web) ---
+    $totY = $pdf->GetY() + 7;
+    $pdf->SetXY(85, $totY);
+    $pdf->SetFont('Arial','B',12); $pdf->SetTextColor(120,120,120);
+    $pdf->Cell(65,10,'SUBTOTAL:',0,0,'R');
+    $pdf->SetFont('Arial','',12); $pdf->SetTextColor(30,58,138);
+    $pdf->Cell(40,10,'$'.number_format($invoice['subtotal'],2),0,1,'R');
 
-    $pdf->Cell(150,12,'SUBTOTAL',1,0,'R');
-    $pdf->SetTextColor(18,26,46); 
-    $pdf->Cell(35,12,'$'.number_format($invoice['subtotal'],2),1,1,'R');
-    $pdf->SetTextColor(30,30,30);
+    $pdf->SetXY(85, $pdf->GetY());
+    $pdf->SetFont('Arial','B',12); $pdf->SetTextColor(120,120,120);
+    $pdf->Cell(65,10,'IVA ('.number_format($invoice['tax_percentage'],2).'%)',0,0,'R');
+    $pdf->SetFont('Arial','',12); $pdf->SetTextColor(46,112,232);
+    $pdf->Cell(40,10,'$'.number_format($invoice['tax_amount'],2),0,1,'R');
 
-    $pdf->Cell(150,12,'IVA ('.number_format($invoice['tax_percentage'],2).'%)',1,0,'R');
-    $pdf->SetTextColor(46,112,232);
-    $pdf->Cell(35,12,'$'.number_format($invoice['tax_amount'],2),1,1,'R');
-    $pdf->SetTextColor(30,30,30);
+    $pdf->SetXY(85, $pdf->GetY()+1);
+    $pdf->SetFont('Arial','B',12); $pdf->SetTextColor(30,58,138);
+    $pdf->Cell(65,10,'TOTAL:',0,0,'R');
+    $pdf->SetFont('Arial','B',12); $pdf->SetTextColor(22,163,74); // verde
+    $pdf->Cell(40,10,'$'.number_format($invoice['total'],2),0,1,'R');
 
-    $pdf->SetFont('Arial','B',13);
-    $pdf->SetFillColor(255,255,255);
-    $pdf->Cell(150,13,'TOTAL',1,0,'R');
-    $pdf->SetTextColor(0,102,204);
-    $pdf->Cell(35,13,'$'.number_format($invoice['total'],2),1,1,'R');
-    $pdf->SetTextColor(30,30,30);
-
-    // FOOTER
-    $pdf->Ln(10);
-    $pdf->SetFont('Arial','I',11);
-    $pdf->SetTextColor(180,180,180);
-    $pdf->Cell(0,8,utf8_decode('Hecho por Swift Invoice'),0,1,'C');
+    // --- Pie de página ---
+    $pdf->SetY(-22);
+    $pdf->SetDrawColor(220,220,220);
+    $pdf->Line(10, $pdf->GetY(), 200, $pdf->GetY());
+    $pdf->SetFont('Arial','I',10); // Footer pequeño, cambia a 12 si lo prefieres
+    $pdf->SetTextColor(160,160,160);
+    $pdf->Cell(0,9,utf8_decode('Gracias por su preferencia. Generado con Swift Invoice.'),0,1,'C');
 
     $pdf->Output('D', 'factura_'.$invoice['invoice_number'].'.pdf');
     exit;

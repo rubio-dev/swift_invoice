@@ -3,13 +3,13 @@ require_once '../../config/setup.php';
 requireAuth();
 require_once 'functions.php';
 
-// 0) Validar ID de la venta a editar
+// Validar ID de la venta a editar
 if (!isset($_GET['id']) || !is_numeric($_GET['id'])) {
     redirect('/swift_invoice/modules/sales/');
 }
 $sale_id = (int)$_GET['id'];
 
-// 1) Conectar y cargar datos de la venta
+// Conectar y cargar datos de la venta
 $db   = new Database();
 $conn = $db->connect();
 
@@ -24,9 +24,9 @@ if (!$sale) {
     redirect('/swift_invoice/modules/sales/');
 }
 
-// 2) Cargar detalles y totales
+// Cargar detalles y totales
 $detailStmt = $conn->prepare("
-    SELECT sd.product_id AS id, p.name, sd.unit_price AS price, sd.quantity
+    SELECT sd.product_id AS id, p.name, sd.unit_price AS price, sd.quantity, sd.tax_rate
     FROM sale_details sd
     JOIN products p ON sd.product_id = p.id
     WHERE sd.sale_id = :sale_id
@@ -36,7 +36,7 @@ $sale_products = $detailStmt->fetchAll(PDO::FETCH_ASSOC);
 
 $totals = calculateSaleTotals($sale_products);
 
-// 3) Listas maestras
+// Listas maestras
 $clients   = getClients($conn);
 $companies = getCompanies($conn);
 $products  = getProducts($conn);
@@ -44,6 +44,7 @@ $products  = getProducts($conn);
 // Serializar para JS
 $jsClients   = json_encode($clients);
 $jsCompanies = json_encode($companies);
+$jsProducts  = json_encode($products);
 $initialType = $sale['client_type'];
 $initialId   = $sale['client_id'];
 
@@ -54,7 +55,6 @@ require_once '../../includes/header.php';
 <!-- SweetAlert2 -->
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <?php
-// Al volver de process.php, muestra alerta de éxito y redirige al listado de ventas
 if (isset($_SESSION['success_message'])) {
     echo '<script>
       Swal.fire({
@@ -69,8 +69,6 @@ if (isset($_SESSION['success_message'])) {
     </script>';
     unset($_SESSION['success_message']);
 }
-
-// Si hubo error, muestra alerta y permanece en esta página
 if (isset($_SESSION['error_message'])) {
     echo '<script>
       Swal.fire({
@@ -101,7 +99,7 @@ if (isset($_SESSION['error_message'])) {
     <h2 class="card-title">Editar Venta</h2>
   </div>
   <div class="card-body">
-      <form id="sale-form" method="POST" action="process.php?id=<?php echo $sale_id; ?>">
+    <form id="sale-form" method="POST" action="process.php?id=<?php echo $sale_id; ?>">
       <div class="row mb-4 justify-content-start">
         <div class="col-md-6">
           <!-- Tipo de cliente -->
@@ -131,51 +129,66 @@ if (isset($_SESSION['error_message'])) {
           <div class="summary-card p-3 border rounded">
             <h4>Resumen de Venta</h4>
             <div class="summary-row"><span>Subtotal:</span> <span id="subtotal">$<?php echo number_format($totals['subtotal'],2);?></span></div>
-            <div class="summary-row"><span>IVA (<?php echo $totals['tax_percentage']; ?>%):</span> <span id="tax-amount">$<?php echo number_format($totals['tax_amount'],2);?></span></div>
-            <div class="summary-row total"><span>Total:</span> <span id="total">$<?php echo number_format($totals['total'],2);?></span></div>
+            <div class="summary-row"><span>Impuestos:</span> <span id="tax-amount">$<?php echo number_format($totals['tax_amount'],2);?></span></div>
+            <div class="summary-row total"><span class="fw-bold">Total:</span> <span id="total" class="fw-bold text-primary">$<?php echo number_format($totals['total'],2);?></span></div>
           </div>
         </div>
       </div>
 
       <!-- Productos -->
-      <h3 class="pt-3 text-start">Productos</h3>
+      <h3 class="pt-3 text-start">Productos / Servicios</h3>
       <div class="row align-items-end mb-3">
-        <div class="col-md-6">
-          <label for="product_id" class="form- input-title">Producto:</label>
+        <div class="col-md-3">
+          <label for="product_id" class="input-title">Catálogo:</label>
           <select id="product_id" class="form-control">
-            <option value="">Seleccionar producto</option>
-            <?php foreach ($products as $p): ?>
-              <option value="<?php echo $p['id']; ?>" data-price="<?php echo $p['price']; ?>">
-                <?php echo htmlspecialchars($p['name']); ?> ($<?php echo number_format($p['price'],2); ?>)
-              </option>
-            <?php endforeach; ?>
+            <option value="">Seleccionar...</option>
+            <!-- JS llenará aquí -->
           </select>
         </div>
         <div class="col-md-3">
-          <label for="quantity" class="form-label input-title">Cantidad:</label>
-          <input type="number" id="quantity" class="form-control" min="1" value="1"/>
+          <label for="price" class="input-title">Precio:</label>
+          <input type="number" id="price" class="form-control" min="0" step="0.01"/>
         </div>
-        <div class="col-md-3">
+        <div class="col-md-2">
+          <label for="tax_rate" class="input-title">Impuesto (%):</label>
+          <input type="number" id="tax_rate" class="form-control" min="0" step="0.01" value="0.00" placeholder="0.00"/>
+        </div>
+        <div class="col-md-2">
+          <label for="quantity" class="input-title">Cantidad:</label>
+          <input type="number" id="quantity" class="form-control cantidad-input" min="1" step="1" value="1"/>
+        </div>
+        <div class="col-md-2 d-grid">
           <button type="button" id="add-product" class="btncss">Agregar</button>
         </div>
       </div>
 
       <div class="table-responsive mb-4">
         <table id="product-table" class="styled-table">
-          <thead><tr><th>Producto</th><th>Precio</th><th>Cantidad</th><th>Subtotal</th><th>Acciones</th></tr></thead>
+          <thead>
+            <tr>
+              <th>Producto/Servicio</th>
+              <th>Precio</th>
+              <th>Cantidad</th>
+              <th>Impuesto</th>
+              <th>Subtotal</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
           <tbody>
             <?php foreach ($sale_products as $i => $prod): ?>
               <tr data-index="<?php echo $i; ?>">
                 <td><?php echo htmlspecialchars($prod['name']); ?></td>
                 <td>$<?php echo number_format($prod['price'],2); ?></td>
                 <td><?php echo $prod['quantity']; ?></td>
-                <td>$<?php echo number_format($prod['price']*$prod['quantity'],2); ?></td>
+                <td><?php echo isset($prod['tax_rate']) ? number_format($prod['tax_rate'],2) : '0.00'; ?>%</td>
+                <td>$<?php echo number_format($prod['price']*$prod['quantity']*(1 + (isset($prod['tax_rate']) ? $prod['tax_rate'] : 0)/100),2); ?></td>
                 <td>
                   <button type="button" class="remove-product DeleteBtn">Eliminar</button>
-                  <input type="hidden" name="products[<?php echo $i;?>][id]" value="<?php echo $prod['id'];?>">
-                  <input type="hidden" name="products[<?php echo $i;?>][name]" value="<?php echo htmlspecialchars($prod['name']);?>">
-                  <input type="hidden" name="products[<?php echo $i;?>][price]" value="<?php echo $prod['price'];?>">
-                  <input type="hidden" name="products[<?php echo $i;?>][quantity]" value="<?php echo $prod['quantity'];?>">
+                  <input type="hidden" name="products[<?php echo $i;?>][id]" value="<?php echo $prod['id'];?>"/>
+                  <input type="hidden" name="products[<?php echo $i;?>][name]" value="<?php echo htmlspecialchars($prod['name']);?>"/>
+                  <input type="hidden" name="products[<?php echo $i;?>][price]" value="<?php echo $prod['price'];?>"/>
+                  <input type="hidden" name="products[<?php echo $i;?>][quantity]" value="<?php echo $prod['quantity'];?>"/>
+                  <input type="hidden" name="products[<?php echo $i;?>][tax_rate]" value="<?php echo isset($prod['tax_rate']) ? $prod['tax_rate'] : 0.00;?>"/>
                 </td>
               </tr>
             <?php endforeach; ?>
@@ -196,12 +209,39 @@ if (isset($_SESSION['error_message'])) {
   </div>
 </div>
 
-<!-- Variables JS -->
+<!-- Exportar datos a JS -->
 <script>
   const clients     = <?php echo $jsClients; ?>;
   const companies   = <?php echo $jsCompanies; ?>;
+  const allProducts = <?php echo $jsProducts; ?>;
   const initialType = "<?php echo $initialType; ?>";
-  const initialId   = <?php echo $initialId; ?>;
+  const initialId   = <?php echo (int)$initialId; ?>;
 </script>
-<script src="/swift_invoice/assets/js/sales-edit.js"></script>
+
+<!-- Script para poblar el combo de clientes/empresas -->
+<script>
+  const typeSelect   = document.getElementById('client_type');
+  const clientSelect = document.getElementById('client_id');
+  function rebuildClients() {
+    clientSelect.innerHTML = '<option value="">Seleccionar cliente</option>';
+    const list = (typeSelect.value === 'company') ? companies : clients;
+    list.forEach(item => {
+      const opt = document.createElement('option');
+      opt.value = item.id;
+      opt.text  = item.name + (typeSelect.value === 'company' ? ' (Empresa)' : '');
+      if (parseInt(item.id) === initialId) opt.selected = true;
+      clientSelect.appendChild(opt);
+    });
+  }
+  typeSelect.addEventListener('change', function() {
+    rebuildClients();
+    clientSelect.value = "";
+  });
+  document.addEventListener('DOMContentLoaded', rebuildClients);
+</script>
+
+<!-- Incluye tu JS de ventas -->
+<script src="/swift_invoice/assets/js/sales.js"></script>
 <?php require_once '../../includes/footer.php'; ?>
+</body>
+</html>
