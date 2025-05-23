@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3307
--- Generation Time: May 20, 2025 at 01:39 AM
+-- Generation Time: May 23, 2025 at 05:40 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -118,6 +118,19 @@ CREATE TABLE `invoices` (
   `created_at` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Dumping data for table `invoices`
+--
+
+INSERT INTO `invoices` (`id`, `sale_id`, `invoice_number`, `invoice_date`, `pdf_path`, `created_at`) VALUES
+(1, 36, 'F001-0001', '2025-05-20', NULL, '2025-05-21 03:14:55'),
+(2, 4, 'F001-0002', '2025-05-20', NULL, '2025-05-21 03:15:01'),
+(3, 30, 'F001-0003', '2025-05-20', NULL, '2025-05-21 03:15:04'),
+(4, 35, 'F001-0004', '2025-05-20', NULL, '2025-05-21 03:15:07'),
+(5, 37, 'F001-0005', '2025-05-22', NULL, '2025-05-23 01:06:47'),
+(6, 38, 'F001-0006', '2025-05-22', NULL, '2025-05-23 01:38:26'),
+(7, 39, 'F001-0007', '2025-05-22', NULL, '2025-05-23 01:39:03');
+
 -- --------------------------------------------------------
 
 --
@@ -138,31 +151,31 @@ CREATE TABLE `products` (
 --
 
 INSERT INTO `products` (`id`, `name`, `description`, `type`, `price`, `created_at`) VALUES
-(1, 'Servicios médicos (consultas)', 'Servicios médicos (consultas)', 'Producto', 500.00, '2025-05-10 11:15:06'),
-(2, 'Exámenes médicos laborales', 'Exámenes médicos laborales', 'Producto', 600.00, '2025-05-10 11:15:06'),
-(3, 'Servicios de diseño gráfico', 'Servicios de diseño gráfico', 'Producto', 1200.00, '2025-05-10 11:15:06'),
-(4, 'Servicios de fotografía comercial', 'Servicios de fotografía comercial', 'Producto', 1100.00, '2025-05-10 11:15:06'),
-(5, 'Servicios de instalación eléctrica', 'Servicios de instalación eléctrica', 'Producto', 1500.00, '2025-05-10 11:15:06'),
-(6, 'Servicios de mantenimiento de edificios', 'Servicios de mantenimiento de edificios', 'Producto', 1300.00, '2025-05-10 11:15:06'),
-(7, 'Servicios educativos y capacitación', 'Servicios educativos y capacitación', 'Producto', 1000.00, '2025-05-10 11:15:06'),
-(8, 'Servicios de imprenta comercial', 'Servicios de imprenta comercial', 'Producto', 950.00, '2025-05-10 11:15:06'),
-(9, 'Servicios de reclutamiento de personal', 'Servicios de reclutamiento de personal', 'Producto', 1400.00, '2025-05-10 11:15:06'),
-(10, 'Servicios de plomería', 'Servicios de plomería', 'Producto', 800.00, '2025-05-10 11:15:06'),
-(11, 'Servicios médicos (consultas)', 'Servicios médicos (consultas)', 'Producto', 500.00, '2025-05-10 11:15:07'),
-(12, 'Exámenes médicos laborales', 'Exámenes médicos laborales', 'Producto', 600.00, '2025-05-10 11:15:07'),
-(13, 'Servicios de diseño gráfico', 'Servicios de diseño gráfico', 'Producto', 1200.00, '2025-05-10 11:15:07'),
-(14, 'Servicios de fotografía comercial', 'Servicios de fotografía comercial', 'Producto', 1100.00, '2025-05-10 11:15:07'),
-(15, 'Servicios de instalación eléctrica', 'Servicios de instalación eléctrica', 'Producto', 1500.00, '2025-05-10 11:15:07'),
-(16, 'Servicios de mantenimiento de edificios', 'Servicios de mantenimiento de edificios', 'Producto', 1300.00, '2025-05-10 11:15:07'),
-(17, 'Servicios educativos y capacitación', 'Servicios educativos y capacitación', 'Producto', 1000.00, '2025-05-10 11:15:07'),
-(18, 'Servicios de imprenta comercial', 'Servicios de imprenta comercial', 'Producto', 950.00, '2025-05-10 11:15:07'),
-(19, 'Servicios de reclutamiento de personal', 'Servicios de reclutamiento de personal', 'Producto', 1400.00, '2025-05-10 11:15:07'),
-(20, 'Servicios de plomería', 'Servicios de plomería', 'Producto', 800.00, '2025-05-10 11:15:07'),
-(21, 'Servicios de carpintería', 'Servicios de carpintería', 'Producto', 900.00, '2025-05-10 11:15:07'),
-(22, 'Servicios de auditoría contable', 'Servicios de auditoría contable', 'Producto', 2100.00, '2025-05-10 11:15:07'),
-(23, 'Servicios de odontología', 'Servicios de odontología', 'Producto', 700.00, '2025-05-10 11:15:07'),
-(24, 'Consultas de medicina general', 'Consultas de medicina general', 'Producto', 500.00, '2025-05-10 11:15:07'),
-(25, 'Servicios de veterinaria', 'Servicios de veterinaria', 'Producto', 600.00, '2025-05-10 11:15:07'),
+(1, 'Servicios médicos (consultas)', 'Servicios médicos (consultas)', 'Servicio', 500.00, '2025-05-10 11:15:06'),
+(2, 'Exámenes médicos laborales', 'Exámenes médicos laborales', 'Servicio', 600.00, '2025-05-10 11:15:06'),
+(3, 'Servicios de diseño gráfico', 'Servicios de diseño gráfico', 'Servicio', 1200.00, '2025-05-10 11:15:06'),
+(4, 'Servicios de fotografía comercial', 'Servicios de fotografía comercial', 'Servicio', 1100.00, '2025-05-10 11:15:06'),
+(5, 'Servicios de instalación eléctrica', 'Servicios de instalación eléctrica', 'Servicio', 1500.00, '2025-05-10 11:15:06'),
+(6, 'Servicios de mantenimiento de edificios', 'Servicios de mantenimiento de edificios', 'Servicio', 1300.00, '2025-05-10 11:15:06'),
+(7, 'Servicios educativos y capacitación', 'Servicios educativos y capacitación', 'Servicio', 1000.00, '2025-05-10 11:15:06'),
+(8, 'Servicios de imprenta comercial', 'Servicios de imprenta comercial', 'Servicio', 950.00, '2025-05-10 11:15:06'),
+(9, 'Servicios de reclutamiento de personal', 'Servicios de reclutamiento de personal', 'Servicio', 1400.00, '2025-05-10 11:15:06'),
+(10, 'Servicios de plomería', 'Servicios de plomería', 'Servicio', 800.00, '2025-05-10 11:15:06'),
+(11, 'Servicios médicos (consultas)', 'Servicios médicos (consultas)', 'Servicio', 500.00, '2025-05-10 11:15:07'),
+(12, 'Exámenes médicos laborales', 'Exámenes médicos laborales', 'Servicio', 600.00, '2025-05-10 11:15:07'),
+(13, 'Servicios de diseño gráfico', 'Servicios de diseño gráfico', 'Servicio', 1200.00, '2025-05-10 11:15:07'),
+(14, 'Servicios de fotografía comercial', 'Servicios de fotografía comercial', 'Servicio', 1100.00, '2025-05-10 11:15:07'),
+(15, 'Servicios de instalación eléctrica', 'Servicios de instalación eléctrica', 'Servicio', 1500.00, '2025-05-10 11:15:07'),
+(16, 'Servicios de mantenimiento de edificios', 'Servicios de mantenimiento de edificios', 'Servicio', 1300.00, '2025-05-10 11:15:07'),
+(17, 'Servicios educativos y capacitación', 'Servicios educativos y capacitación', 'Servicio', 1000.00, '2025-05-10 11:15:07'),
+(18, 'Servicios de imprenta comercial', 'Servicios de imprenta comercial', 'Servicio', 950.00, '2025-05-10 11:15:07'),
+(19, 'Servicios de reclutamiento de personal', 'Servicios de reclutamiento de personal', 'Servicio', 1400.00, '2025-05-10 11:15:07'),
+(20, 'Servicios de plomería', 'Servicios de plomería', 'Servicio', 800.00, '2025-05-10 11:15:07'),
+(21, 'Servicios de carpintería', 'Servicios de carpintería', 'Servicio', 900.00, '2025-05-10 11:15:07'),
+(22, 'Servicios de auditoría contable', 'Servicios de auditoría contable', 'Servicio', 2100.00, '2025-05-10 11:15:07'),
+(23, 'Servicios de odontología', 'Servicios de odontología', 'Servicio', 700.00, '2025-05-10 11:15:07'),
+(24, 'Consultas de medicina general', 'Consultas de medicina general', 'Servicio', 500.00, '2025-05-10 11:15:07'),
+(25, 'Servicios de veterinaria', 'Servicios de veterinaria', 'Servicio', 600.00, '2025-05-10 11:15:07'),
 (26, 'Gasolina', 'Gasolina', 'Producto', 23.50, '2025-05-10 11:15:07'),
 (27, 'Diesel', 'Diesel', 'Producto', 24.00, '2025-05-10 11:15:07'),
 (28, 'Accesorios de computadoras', 'Accesorios de computadoras (cables, adaptadores)', 'Producto', 350.00, '2025-05-10 11:15:07'),
@@ -205,7 +218,10 @@ INSERT INTO `sales` (`id`, `client_id`, `sale_date`, `subtotal`, `tax_percentage
 (4, 2, '2025-05-11', 430.00, 16.00, 68.80, 498.80, '2025-05-12 04:46:22', 'person'),
 (30, 2, '2025-05-11', 120.00, 16.00, 19.20, 139.20, '2025-05-12 11:46:51', 'person'),
 (35, 3, '2025-05-13', 3100.00, 16.00, 496.00, 3596.00, '2025-05-13 21:09:06', 'person'),
-(36, 2, '2025-05-19', 24.00, 16.00, 0.24, 24.24, '2025-05-19 21:39:10', 'person');
+(36, 2, '2025-05-19', 24.00, 16.00, 0.24, 24.24, '2025-05-19 21:39:10', 'person'),
+(37, 2, '2025-05-23', 2800.00, 16.00, 280.00, 3080.00, '2025-05-23 01:06:39', 'company'),
+(38, 3, '2025-05-23', 624.00, 16.00, 124.80, 748.80, '2025-05-23 01:19:00', 'person'),
+(39, 4, '2025-05-23', 600.00, 16.00, 180.00, 780.00, '2025-05-23 01:38:58', 'person');
 
 -- --------------------------------------------------------
 
@@ -234,7 +250,11 @@ INSERT INTO `sale_details` (`id`, `sale_id`, `product_id`, `quantity`, `unit_pri
 (65, 30, 33, 1, 120.00, 0.00, 120.00),
 (73, 35, 32, 2, 300.00, 0.00, 600.00),
 (74, 35, 31, 1, 2500.00, 0.00, 2500.00),
-(75, 36, 27, 1, 24.00, 1.00, 24.00);
+(75, 36, 27, 1, 24.00, 1.00, 24.00),
+(76, 37, 23, 4, 700.00, 10.00, 2800.00),
+(78, 38, 27, 1, 24.00, 20.00, 24.00),
+(79, 38, 12, 1, 600.00, 20.00, 600.00),
+(80, 39, 12, 1, 600.00, 30.00, 600.00);
 
 -- --------------------------------------------------------
 
@@ -383,7 +403,7 @@ ALTER TABLE `companies`
 -- AUTO_INCREMENT for table `invoices`
 --
 ALTER TABLE `invoices`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `products`
@@ -395,13 +415,13 @@ ALTER TABLE `products`
 -- AUTO_INCREMENT for table `sales`
 --
 ALTER TABLE `sales`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=37;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=40;
 
 --
 -- AUTO_INCREMENT for table `sale_details`
 --
 ALTER TABLE `sale_details`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=76;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=81;
 
 --
 -- AUTO_INCREMENT for table `tax_regimes`
@@ -439,12 +459,6 @@ ALTER TABLE `sale_details`
   ADD CONSTRAINT `sale_details_ibfk_1` FOREIGN KEY (`sale_id`) REFERENCES `sales` (`id`),
   ADD CONSTRAINT `sale_details_ibfk_2` FOREIGN KEY (`product_id`) REFERENCES `products` (`id`);
 COMMIT;
-
-ALTER TABLE `clients`
-  ADD COLUMN `tax_regime_id` INT(11) NOT NULL DEFAULT 1 AFTER `address`,
-  ADD CONSTRAINT `fk_clients_tax_regime`
-    FOREIGN KEY (`tax_regime_id`)
-    REFERENCES `tax_regimes`(`id`);
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
