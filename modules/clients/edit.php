@@ -88,7 +88,7 @@ $taxRegimes = $stmt2->fetchAll(PDO::FETCH_ASSOC);
                                 <label class="input-title" for="first_name">Nombre(s):</label>
                                 <input type="text" id="first_name" name="first_name" class="form-control"
                                     pattern="[A-Za-zÁÉÍÓÚáéíóúÑñ\s]{1,50}" title="Solo letras y espacios"
-                                    value="<?php echo htmlspecialchars($client['first_name']); ?>" required>
+                                    value="<?php echo htmlspecialchars($client['first_name']); ?>" oninput="this.value = this.value.replace(/[^A-Za-zÁÉÍÓÚáéíóúÑñ\s]/g, '')" required>
                                 <?php if (isset($errors['first_name'])): ?>
                                     <span class="error-text"><?php echo $errors['first_name']; ?></span>
                                 <?php endif; ?>
@@ -101,7 +101,7 @@ $taxRegimes = $stmt2->fetchAll(PDO::FETCH_ASSOC);
                                 <label class="input-title" for="last_name">Apellido Paterno:</label>
                                 <input type="text" id="last_name" name="last_name" class="form-control"
                                     pattern="[A-Za-zÁÉÍÓÚáéíóúÑñ\s]{1,50}" title="Solo letras y espacios"
-                                    value="<?php echo htmlspecialchars($client['last_name']); ?>" required>
+                                    value="<?php echo htmlspecialchars($client['last_name']); ?>" oninput="this.value = this.value.replace(/[^A-Za-zÁÉÍÓÚáéíóúÑñ\s]/g, '')" required>
                                 <?php if (isset($errors['last_name'])): ?>
                                     <span class="error-text"><?php echo $errors['last_name']; ?></span>
                                 <?php endif; ?>
@@ -116,7 +116,7 @@ $taxRegimes = $stmt2->fetchAll(PDO::FETCH_ASSOC);
                                 <label class="input-title" for="mother_last_name">Apellido Materno:</label>
                                 <input type="text" id="mother_last_name" name="mother_last_name" class="form-control"
                                     pattern="[A-Za-zÁÉÍÓÚáéíóúÑñ\s]{1,50}" title="Solo letras y espacios"
-                                    value="<?php echo htmlspecialchars($client['mother_last_name']); ?>" required>
+                                    value="<?php echo htmlspecialchars($client['mother_last_name']); ?>" oninput="this.value = this.value.replace(/[^A-Za-zÁÉÍÓÚáéíóúÑñ\s]/g, '')" required>
                             </div>
                         </div>
                         <!-- Campo: Teléfono -->

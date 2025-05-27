@@ -127,7 +127,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             
             <div class="form-group">
                 <label for="first_name">Nombre:</label>
-                <input type="text" id="first_name" name="first_name" required>
+                <input type="text" id="first_name" name="first_name"  oninput="this.value = this.value.replace(/[^A-Za-zÁÉÍÓÚáéíóúÑñ\s]/g, '')" required>
                 <?php if (isset($errors['first_name'])): ?>
                     <span class="error-text"><?php echo $errors['first_name']; ?></span>
                 <?php endif; ?>
@@ -135,12 +135,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             
             <div class="form-group">
                 <label for="last_name">Apellido:</label>
-                <input type="text" id="last_name" name="last_name" required>
+                <input type="text" id="last_name" name="last_name"  oninput="this.value = this.value.replace(/[^A-Za-zÁÉÍÓÚáéíóúÑñ\s]/g, '')" required>
             </div>
             
             <div class="form-group">
                 <label for="phone">Teléfono:</label>
-                <input type="text" id="phone" name="phone">
+                <input type="tel" id="phone" name="phone" class="form-control" pattern="[0-9]{10}" inputmode="numeric"
+                  title="Ingrese un teléfono válido de 10 dígitos"
+                  
+                  oninput="this.value = this.value.replace(/[^0-9]/g, '');" maxlength="10" required>
+                  <?php if (isset($errors['email'])): ?>
+                    <span class="error-text"><?php echo $errors['phone']; ?></span>
+                <?php endif; ?>
             </div>
             
             <div class="form-group">

@@ -168,7 +168,7 @@ if (isset($_SESSION['company_form_errors'])) {
                 <label class="input-title" for="legal_representative">Representante Legal:</label>
                 <input type="text" id="legal_representative" name="legal_representative" class="form-control"
                    pattern="[A-Za-zÁÉÍÓÚáéíóúÑñ\s]{1,50}"  title="Solo letras y espacios"
-                  value="<?php echo htmlspecialchars($company['legal_representative']); ?>" required>
+                  value="<?php echo htmlspecialchars($company['legal_representative']); ?>" required oninput="this.value = this.value.replace(/[^A-Za-zÁÉÍÓÚáéíóúÑñ\s]/g, '')">
                 <?php if (isset($errors['legal_representative'])): ?>
                   <span class="error-text"><?php echo $errors['legal_representative']; ?></span>
                 <?php endif; ?>
