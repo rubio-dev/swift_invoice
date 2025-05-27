@@ -106,7 +106,7 @@ require_once '../../includes/footer.php';
                     <div class="col-md-6">
                         <div class="form-group mb-3">
                             <label class="input-title-Details">Dirección:</label>
-                            <label class="detailsData d-block" style="white-space: pre-wrap;">
+                            <label class="detailsData d-block" style="white-space: normal;">
                                 <?php echo nl2br(htmlspecialchars(trim($client['address']))); ?>
                             </label>
                         </div>

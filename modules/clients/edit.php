@@ -116,7 +116,7 @@ $taxRegimes = $stmt2->fetchAll(PDO::FETCH_ASSOC);
                                 <label class="input-title" for="mother_last_name">Apellido Materno:</label>
                                 <input type="text" id="mother_last_name" name="mother_last_name" class="form-control"
                                     pattern="[A-Za-zÁÉÍÓÚáéíóúÑñ\s]{1,50}" title="Solo letras y espacios"
-                                    value="<?php echo htmlspecialchars($client['mother_last_name']); ?>">
+                                    value="<?php echo htmlspecialchars($client['mother_last_name']); ?>" required>
                             </div>
                         </div>
                         <!-- Campo: Teléfono -->
@@ -125,7 +125,7 @@ $taxRegimes = $stmt2->fetchAll(PDO::FETCH_ASSOC);
                                 <label class="input-title" for="phone">Teléfono:</label>
                                 <input type="tel" id="phone" name="phone" class="form-control" pattern="[0-9]{10}"
                                     title="Ingrese un teléfono válido de 10 dígitos"
-                                    value="<?php echo htmlspecialchars($client['phone']); ?>">
+                                    value="<?php echo htmlspecialchars($client['phone']); ?>" oninput="this.value = this.value.replace(/[^0-9]/g, '');" maxlength="10" required>
                             </div>
                         </div>
                     </div>

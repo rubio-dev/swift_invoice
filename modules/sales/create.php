@@ -173,10 +173,15 @@ if (isset($_SESSION['error_message'])) {
         </table>
       </div>
 
-      <div class="d-flex justify-content-center gap-5 mb-4">
-       <button type="button" class="btnback" onclick="window.location.href='index.php'">Cancelar</button>
-       <button type="submit" class="btnGuardarVenta" disabled>Guardar Venta</button>
-      </div>
+   <div class="row mb-4">
+  <div class="col-6 pe-2">
+    <button type="button" class="btnback w-100" onclick="window.location.href='index.php'">Cancelar</button>
+  </div>
+  <div class="col-6 ps-2">
+    <button type="submit" class="btnSave w-100" disabled>Guardar Venta</button>
+  </div>
+</div>
+
 
       <input type="hidden" name="subtotal"       value="<?php echo $totals['subtotal']; ?>">
       <input type="hidden" name="tax_percentage" value="<?php echo $totals['tax_percentage']; ?>">

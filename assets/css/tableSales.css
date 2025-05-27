@@ -425,3 +425,100 @@ input[type=number] {
   opacity: 1;
 }
 
+
+.input-title {
+    font-size: 1.15rem;
+    color: var(--text);
+    font-weight: 500;
+    position: relative;
+    padding-bottom: 0.3rem;
+    padding-top: 0.6rem;
+    text-align: justify;
+    width: 100%;
+}
+
+
+.btnSave {
+    width: 100%;
+    padding: .40rem;
+    background: linear-gradient(to right, var(--primary), var(--secondary));
+    color: var(--text) !important;
+    font-weight: 550;
+    border: none;
+    border-radius: 10px;
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: 0.75rem;
+    letter-spacing: 0.5px;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.2);
+    z-index: 1;
+}
+
+.btnSave::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to right, var(--primary-dark), var(--primary));
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    z-index: -1;
+}
+
+.btnSave:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 15px rgba(0, 0, 0, 0.2), 0 4px 6px rgba(0, 0, 0, 0.2);
+}
+
+.btnSave:hover::before {
+    opacity: 1;
+}
+
+.btnback {
+    width: 100%;
+    padding: .40rem;
+    background: transparent;
+    color: var(--text-light) !important;
+    font-weight: 550;
+    border: none;
+    border-radius: 10px;
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: 0.75rem;
+    letter-spacing: 0.5px;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.2);
+    z-index: 1;
+    border: 3.5px solid var(--border-light);
+    text-decoration: none;
+    text-align: center;
+}
+
+.btnback::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to right, var(--border-dark), var(--border-light));
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    z-index: -1;
+}
+
+.btnback:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 15px rgba(0, 0, 0, 0.2), 0 4px 6px rgba(0, 0, 0, 0.2);
+}
+
+.btnback:hover::before {
+    opacity: 1;
+}
